@@ -16,8 +16,8 @@ const categories: Category[] = [
 
 export const CategoryBar = () => {
     return (
-        <div className="bg-background-light sticky top-0 backdrop-blur-2xl z-50 border-b border-neutral-muted">
-            <div className="max-w-7xl mx-auto px-4 md:px-6 overflow-x-auto">
+        <div className="hidden lg:block bg-background-light sticky top-0 backdrop-blur-2xl z-50 border-b border-neutral-muted">
+            <div className="container overflow-x-auto">
                 <nav className="flex items-center justify-center flex-wrap whitespace-nowrap text-sm md:text-base font-medium py-2 backdrop-blur-sm">
                     {categories.map((cat, idx) => (
                         <Link
