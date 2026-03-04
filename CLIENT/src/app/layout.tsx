@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Noto_Sans_Bengali, Noto_Serif_Bengali } from "next/f
 import "./globals.css";
 import { Header } from '@/components/Layout/Header'
 import { Footer } from "@/components/Layout/Footer";
+import { CategoryBar } from "@/components/Layout/CategoryBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header />
+        <CategoryBar />
         {children}
         <Footer />
       </body>
