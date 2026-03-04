@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans_Bengali, Noto_Serif_Bengali } from "next/font/google";
 import "./globals.css";
+import { Header } from '@/components/Layout/Header'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,21 +13,36 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const notoSerifBengali = Noto_Serif_Bengali({
+  weight: ['400', '700'], 
+  subsets: ['bengali'],   
+  display: 'swap',
+});
+
+const notoSansBengali = Noto_Sans_Bengali({
+  weight: ['400', '700'],
+  subsets: ['bengali'],
+  display: 'swap',
+});
+
+
 export const metadata: Metadata = {
   title: "Home",
   description: "A NewsPaper",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en"
+      style={{
+        '--font-display': notoSerifBengali.style.fontFamily,
+        '--font-sans': notoSansBengali.style.fontFamily,
+      } as React.CSSProperties}
+    >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Header />
         {children}
       </body>
     </html>
