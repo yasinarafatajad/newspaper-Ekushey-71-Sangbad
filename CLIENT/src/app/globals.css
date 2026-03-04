@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* ---------------- THEME VARIABLES ---------------- */
+@theme {
+    /* Colors */
+    --color-primary: #d41111;
+    --color-text-main: #221010;
+    --color-background-light: #f8f6f6;
+    --color-background-dark: #221010;
+    --color-neutral-subtle: #f1eeee;
+    --color-neutral-muted: #e2dada;
+
+    /* Border radius */
+    --radius-default: 0.25rem;
+    --radius-lg: 0.5rem;
+    --radius-xl: 0.75rem;
+    --radius-full: 9999px;
+}
+
+/* ---------------- Global font usage ---------------- */
+body {
+    font-family: var(--font-sans);
+    background-color: var(--color-background-light);
+    color: var(--color-text-main);
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+    font-family: var(--font-display);
+}
+.container{
+    @apply max-w-7xl mx-auto px-4 md:px-6;
+}
+/* ---------------- Scrollbar styles ---------------- */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-background-light);
+    border-radius: var(--radius-lg);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary);
+    border-radius: var(--radius-lg);
+    border: 3px solid var(--color-background-light);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #b21111;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-background-light);
+}
+
+/* ---------------- Utilities / Card transitions ---------------- */
+.card-image-swap {
+    transition: opacity 0.4s ease-in-out;
+}
+
+/* ---------------- 404 Page ---------------- */
+.watermark-text {
+    user-select: none;
+    pointer-events: none;
+    letter-spacing: 0.2em;
+    opacity: 0.1;
+    font-size: 15vw;
+}
+
+.serif-404 {
+    font-weight: 200;
+    line-height: 0.8;
+}
