@@ -3,7 +3,8 @@ import { Logs, Search, X } from "lucide-react"
 import Link from "next/link";
 import { useState } from "react";
 
-const navLinks = [
+type NavLinks = { label: string; src: string }
+const navLinks: NavLinks[] = [
   { label: 'প্রচ্ছদ', src: '/' },
   { label: 'রাজনীতি', src: '/' },
   { label: 'অর্থনীতি', src: '/' },
@@ -13,7 +14,7 @@ const navLinks = [
 ]
 
 export const Header = () => {
-  const [mobileOpen, setMobileOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <header className="border-b border-neutral-muted dark:border-primary/20 bg-background-light dark:bg-background-dark">
       <div className="container">
@@ -57,9 +58,9 @@ export const Header = () => {
             <span className="text-sm font-bold">৫ই মার্চ ২০২৬ খ্রিষ্টাব্দ</span>
           </div>
           <div className="relative w-full mb-2.5">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Search /></span>
-              <input className="pl-10 pr-4 py-2 w-full bg-neutral-subtle dark:bg-primary/10 border-none rounded-md text-sm w-40 lg:w-60 transition-all" placeholder="অনুসন্ধান করুন..." type="text" />
-            </div>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Search /></span>
+            <input className="pl-10 pr-4 py-2 w-full bg-neutral-subtle dark:bg-primary/10 border-none rounded-md text-sm transition-all" placeholder="অনুসন্ধান করুন..." type="text" />
+          </div>
           <nav className="flex flex-col gap-4 text-lg font-medium">
             {navLinks.map((link, idx) => (
               <Link
