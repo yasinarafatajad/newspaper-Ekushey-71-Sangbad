@@ -28,7 +28,7 @@ export const Header = () => {
           <div className="flex items-center gap-4">
             <div className="hidden md:flex flex-col text-right">
               <span className="text-xs text-slate-500 uppercase">সোমবার</span>
-              <span className="text-sm font-bold">২০ মে, ২০২৪</span>
+              <span className="text-sm font-bold">৫ই মার্চ ২০২৬ খ্রিষ্টাব্দ</span>
             </div>
             <div className="relative hidden sm:block">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Search /></span>
@@ -52,6 +52,14 @@ export const Header = () => {
               <X />
             </button>
           </div>
+          <div className="flex flex-col border-b mb-2">
+            <span className="text-xs text-slate-500 uppercase">সোমবার</span>
+            <span className="text-sm font-bold">৫ই মার্চ ২০২৬ খ্রিষ্টাব্দ</span>
+          </div>
+          <div className="relative w-full mb-2.5">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Search /></span>
+              <input className="pl-10 pr-4 py-2 w-full bg-neutral-subtle dark:bg-primary/10 border-none rounded-md text-sm w-40 lg:w-60 transition-all" placeholder="অনুসন্ধান করুন..." type="text" />
+            </div>
           <nav className="flex flex-col gap-4 text-lg font-medium">
             {navLinks.map((link, idx) => (
               <Link
