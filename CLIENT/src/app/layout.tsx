@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from '@/components/Layout/Header'
 import { Footer } from "@/components/Layout/Footer";
 import { CategoryBar } from "@/components/Layout/CategoryBar";
+import { TitleBar } from "@/components/Layout/TitleBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header />
+        <TitleBar />
         <CategoryBar />
         {children}
         <Footer />
