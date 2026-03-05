@@ -16,3 +16,11 @@ export const formatDay = (dateString: string): string => {
     weekday: "long",
   })
 }
+
+// Format Number
+export const formatNumber = (num: number): string => {
+  return num
+    .toString()
+    .padStart(2, "0")
+    .replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[parseInt(d)])
+}

@@ -7,7 +7,7 @@ import logo from '@/assets/logoLight.png'
 
 
 export const Hero = () => {
-    const latest = articles[0]
+    const latest = articles[articles.length-1]
 
     return (
         <article className="mb-10 group cursor-pointer py-6">
