@@ -1,5 +1,5 @@
 "use client"
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatDay } from "@/lib/utils";
 import { Logs, Search, X } from "lucide-react"
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +18,7 @@ const navLinks: NavLinks[] = [
 
 export const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const today: string = new Date().toISOString();
   return (
     <header className="border-b border-neutral-muted bg-background-light">
       <div className="container">
@@ -37,8 +38,8 @@ export const Header = () => {
           {/* Right Actions  */}
           <div className="flex items-center gap-4">
             <div className="hidden md:flex flex-col text-right">
-              <span className="text-xs text-slate-500 uppercase">সোমবার</span>
-              <span className="text-sm font-bold">{formatDate(new Date().toDateString())} খ্রিষ্টাব্দ</span>
+              <span className="text-xs text-slate-500 uppercase">{formatDay(today)}</span>
+              <span className="text-sm font-bold">{formatDate(today)} খ্রিষ্টাব্দ</span>
             </div>
             <div className="relative hidden sm:block">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Search /></span>

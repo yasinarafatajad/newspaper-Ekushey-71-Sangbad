@@ -1,4 +1,4 @@
-import { formatDate } from '@/lib/utils'
+import { formatDate, formatDay } from '@/lib/utils'
 import Image from 'next/image'
 
 export const Category = () => {
@@ -21,7 +21,7 @@ export const Category = () => {
                         <div>
                             <h4 className="font-bold leading-tight group-hover:text-primary transition-colors">মধ্যপ্রাচ্যে শান্তি
                                 ফেরাতে বড় উদ্যোগ বড় দেশগুলোর</h4>
-                            <span className="text-xs text-slate-500">{formatDate(date)}</span>
+                            <span className="text-xs text-slate-500">{formatDate(date)}, {formatDay(date)}</span>
                         </div>
                     </div>
                     <div className="flex gap-4 group cursor-pointer">
@@ -36,7 +36,7 @@ export const Category = () => {
                         <div>
                             <h4 className="font-bold leading-tight group-hover:text-primary transition-colors">জলবায়ু পরিবর্তন রোধে
                                 নতুন প্রযুক্তির উদ্ভাবন</h4>
-                            <span className="text-xs text-slate-500">{formatDate(date)}</span>
+                            <span className="text-xs text-slate-500">{formatDate(date)}, {formatDay(date)}</span>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@ export const Category = () => {
                         <div>
                             <h4 className="font-bold leading-tight group-hover:text-primary transition-colors">মেট্রোরেলের নতুন রুটের
                                 কাজ শুরু হচ্ছে আগামী মাসেই</h4>
-                            <span className="text-xs text-slate-500">{formatDate(date)}</span>
+                            <span className="text-xs text-slate-500">{formatDate(date)}, {formatDay(date)}</span>
                         </div>
                     </div>
                     <div className="flex gap-4 group cursor-pointer">
@@ -71,7 +71,7 @@ export const Category = () => {
                         <div>
                             <h4 className="font-bold leading-tight group-hover:text-primary transition-colors">ধানের বাম্পার ফলনে
                                 কৃষকের মুখে স্বস্তির হাসি</h4>
-                            <span className="text-xs text-slate-500">{formatDate(date)}</span>
+                            <span className="text-xs text-slate-500">{formatDate(date)}, {formatDay(date)}</span>
                         </div>
                     </div>
                 </div>

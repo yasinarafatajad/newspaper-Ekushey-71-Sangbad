@@ -1,5 +1,5 @@
 import { articles } from "@/lib/newses";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatDay } from "@/lib/utils";
 import { ClipboardClock } from "lucide-react"
 import Image from "next/image";
 import Link from "next/link"
@@ -41,7 +41,7 @@ export const Hero = () => {
             </p>
             {/* time and author */}
             <div className="flex items-center gap-4 text-sm text-slate-500">
-                <span className="flex items-center gap-1"><ClipboardClock size={18} /> {formatDate(latest?.publishedAt)}</span>
+                <span className="flex items-center gap-1"><ClipboardClock size={18} /> {formatDate(latest?.publishedAt)} , {formatDay(latest?.publishedAt)}</span>
             </div>
         </article>
     )
