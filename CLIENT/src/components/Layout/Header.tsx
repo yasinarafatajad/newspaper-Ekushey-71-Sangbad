@@ -1,7 +1,10 @@
 "use client"
+import { formatDate } from "@/lib/utils";
 import { Logs, Search, X } from "lucide-react"
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import logo from '@/assets/logoLight.png'
 
 type NavLinks = { label: string; src: string }
 const navLinks: NavLinks[] = [
@@ -22,14 +25,20 @@ export const Header = () => {
           {/* Logo  */}
           <div className="flex items-center gap-3">
             <Link href={'/'}>
-              <h1 className="text-2xl md:text-3xl font-bold text-primary tracking-tight">Selim</h1>
+              <Image
+                src={logo}
+                alt="Ekushey 71 Sangbad"
+                width={180}
+                height={64}
+                className="h-16 lg:h-20 w-auto"
+              />
             </Link>
           </div>
           {/* Right Actions  */}
           <div className="flex items-center gap-4">
             <div className="hidden md:flex flex-col text-right">
               <span className="text-xs text-slate-500 uppercase">সোমবার</span>
-              <span className="text-sm font-bold">৫ই মার্চ ২০২৬ খ্রিষ্টাব্দ</span>
+              <span className="text-sm font-bold">{formatDate(new Date().toDateString())} খ্রিষ্টাব্দ</span>
             </div>
             <div className="relative hidden sm:block">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Search /></span>

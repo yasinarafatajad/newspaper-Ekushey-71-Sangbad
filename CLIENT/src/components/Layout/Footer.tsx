@@ -1,13 +1,15 @@
 import Link from 'next/link'
+import logo from '@/assets/logoDark.png'
+import Image from 'next/image';
 
 type SubNavLink = {
     label: string;
     href: string;
 };
-type CONTACT = {
-    label: string;
-    href?: string;
-};
+// type CONTACT = {
+//     label: string;
+//     href?: string;
+// };
 
 const subNavLinks: SubNavLink[] = [
     { label: 'রাজনীতি', href: '/politics' },
@@ -27,11 +29,11 @@ const footerLinks: SubNavLink[] = [
     { label: "শর্তাবলী", href: "/terms" },
     { label: "কুকি পলিসি", href: "/cookie-policy" },
 ];
-const contactLinks: CONTACT[] = [
-    { label: 'ইমেইল: selim@gmail.com', href: 'mailto:selim@gmail.com' },
-    { label: 'ফোন: +880123456789', href: 'tel:+880123456789' },
-    { label: 'ঠিকানা: খালিয়াজুড়ি, নেত্রকোণা' },
-];
+// const contactLinks: CONTACT[] = [
+//     { label: 'ইমেইল: selim@gmail.com', href: 'mailto:selim@gmail.com' },
+//     { label: 'ফোন: +880123456789', href: 'tel:+880123456789' },
+//     { label: 'ঠিকানা: খালিয়াজুড়ি, নেত্রকোণা' },
+// ];
 
 // Convert English digits to Bangla digits
 const toBanglaNumber = (num: number) => {
@@ -47,15 +49,15 @@ const currentYear = toBanglaNumber(new Date().getFullYear());
 
 export const Footer = () => {
     return (
-        <footer className="bg-background-dark text-slate-300 py-16 mt-20 border-t border-primary/20">
-            <div className="max-w-7xl mx-auto px-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+        <footer className="bg-background-dark text-slate-300 pt-8 pb-16 mt-20 border-t border-primary/20">
+            <div className="container">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
                     {/* branding */}
                     <div className="col-span-1 md:col-span-1 sm:col-span-2 lg:col-span-1">
                         {/* Logo  */}
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 mb-5">
                             <Link href={'/'}>
-                                <h1 className="text-2xl md:text-3xl font-bold text-primary tracking-tight">Selim</h1>
+                                <Image src={logo} alt="Ekushey 71 Sangbad" height={80} />
                             </Link>
                         </div>
                         <p className="text-sm leading-relaxed mb-6">
@@ -98,7 +100,7 @@ export const Footer = () => {
                         </ul>
                     </div>
                     {/* contact */}
-                    <div>
+                    {/* <div>
                         <h4 className="text-white font-bold mb-6">যোগাযোগ</h4>
                         <ul className="space-y-3 text-sm">
                             {contactLinks.map((link, idx) => (
@@ -116,7 +118,7 @@ export const Footer = () => {
                                 </li>
                             ))}
                         </ul>
-                    </div>
+                    </div> */}
                     {/* app download */}
                     {/* <div>
                         <h4 className="text-white font-bold mb-6">অ্যাপ ডাউনলোড করুন</h4>
