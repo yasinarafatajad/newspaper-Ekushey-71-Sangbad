@@ -1,4 +1,5 @@
 import { MainLayout } from "@/components/Layout/MainLayout";
+import { Category } from "@/components/Sections/Home/Category";
 import { Hero } from "@/components/Sections/Home/Hero";
 import { Metadata } from "next";
 
@@ -14,6 +15,7 @@ export default function Home() {
         {/* left */}
         <main className="lg:col-span-8">
           <Hero />
+          <Category />
         </main>
 
         {/* right */}
