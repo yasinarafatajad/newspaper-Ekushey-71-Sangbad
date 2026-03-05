@@ -63,9 +63,6 @@ export const Footer = () => {
                         <p className="text-sm leading-relaxed mb-6">
                             সবার আগে সঠিক ও বস্তুনিষ্ঠ সংবাদ পৌঁছে দিতে আমরা অঙ্গীকারবদ্ধ। আমাদের সাথেই থাকুন।
                         </p>
-                        <div className="flex gap-4">
-                            <Link className="hover:text-primary transition-colors" href="https:facebook.com/" target='_blank'><span className="material-symbols-outlined uppercase">FACEBOOK</span></Link>
-                        </div>
                     </div>
                     {/* category */}
                     <div>
