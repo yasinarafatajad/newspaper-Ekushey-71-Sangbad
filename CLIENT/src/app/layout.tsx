@@ -32,6 +32,9 @@ const notoSansBengali = Noto_Sans_Bengali({
 export const metadata: Metadata = {
   title: "Ekushey 71 Sangbad",
   description: "A NewsPaper",
+  verification: {
+    google: "zM88wOzTVkD5ZWHiOEjquywBRnz9UF0ZMRjqbaB9qmc"
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
