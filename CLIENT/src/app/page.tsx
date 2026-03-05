@@ -1,5 +1,11 @@
 import { MainLayout } from "@/components/Layout/MainLayout";
 import { Hero } from "@/components/Sections/Home/Hero";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ekushey 71 Sangbad",
+  description: "All News",
+};
 
 export default function Home() {
   return (
