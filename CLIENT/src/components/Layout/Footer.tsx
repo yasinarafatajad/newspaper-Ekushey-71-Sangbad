@@ -57,7 +57,7 @@ export const Footer = () => {
                         {/* Logo  */}
                         <div className="flex items-center gap-3 mb-5">
                             <Link href={'/'}>
-                                <Image src={logo} alt="Ekushey 71 Sangbad" height={80} />
+                                <Image src={logo} alt="Ekushey 71 Sangbad" height={64} width={307} className='h-16 lg:h-20 w-auto' />
                             </Link>
                         </div>
                         <p className="text-sm leading-relaxed mb-6">

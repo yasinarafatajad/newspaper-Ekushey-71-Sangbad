@@ -17,8 +17,11 @@ export const TitleBar = () => {
                 <div className="z-20 overflow-hidden border-l-3 py-1.5 border-primary/40">
                     <div className="flex items-center animate-marquee lg:animate-marquee-lg">
                         {headlines.map((title, idx) => (
-                            <p key={idx} className={`text-sm font-medium whitespace-nowrap px-2 ${idx === headlines.length - 1 ? 'border-r-0' : 'border-r-3 border-primary'}`}>
-                                {title}
+                            <p key={idx} className={`text-sm font-medium whitespace-nowrap px-2 flex items-center gap-1.5 `}>
+                                <span className="bg-primary p-1 rounded-full" />
+                                <span>
+                                    {title}
+                                </span>
                             </p>
                         ))}
                     </div>
