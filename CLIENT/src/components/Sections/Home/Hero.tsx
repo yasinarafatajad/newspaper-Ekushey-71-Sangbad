@@ -18,15 +18,15 @@ export const Hero = () => {
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbVQv4RUO1NgEuJtduHzGBF6U19TvO_ZFY_ZyujyEuJFrxyZASGX_x1Ln7b6o1KLyz8foOYJSn6u7E0H_bSnPQqaICiMrAm0YUHYbdN8b1Gb_YU2Dpu67SZTSQkvOCKkgsd3DQYu9Uly1zeoXkUDSgRaDsaPC0J9YiE-8YhEn1dF1DlCzkYob6dglMvQOdliIV2BhouFD4XNncXf-_AspAI3_n_LgozeyRjB41gVJdFmZgCLyEK5C3wMdplxhMDvQA65wQDR6NZaJR"
                     fill
                 />
-                <div className="absolute top-4 left-4">
-                    <span className="bg-primary text-white px-3 py-1 rounded-lg text-sm font-bold">শীর্ষ সংবাদ</span>
+                <div className=" flex justify-between items-start absolute top-4 px-4 w-full">
                     <Image
                         src={logo}
                         alt="Ekushey 71 Sangbad"
-                        width={180}
-                        height={64}
-                        className="h-16 lg:h-20 w-auto mt-4 -ml-4 pointer-events-none"
+                        width={230}
+                        height={48}
+                        className="h-12 lg:h-16 w-auto pointer-events-none"
                     />
+                    <span className="bg-primary text-white px-3 py-1 mt-2.5 lg:mt-3 rounded-lg text-sm font-bold text-nowrap">শীর্ষ সংবাদ</span>
                 </div>
             </div>
             {/* headline */}

@@ -29,7 +29,7 @@ export const Header = () => {
               <Image
                 src={logo}
                 alt="Ekushey 71 Sangbad"
-                width={180}
+                width={307}
                 height={64}
                 className="h-16 lg:h-20 w-auto"
               />
