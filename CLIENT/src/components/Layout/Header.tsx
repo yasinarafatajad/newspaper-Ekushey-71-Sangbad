@@ -1,9 +1,9 @@
 "use client"
 import { formatDate, formatDay } from "@/lib/utils";
-import { Logs, Search, X } from "lucide-react"
+import { Logs, X } from "lucide-react"
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import logo from '@/assets/logoLight.png'
 import { articles } from "@/lib/newses";
 
@@ -13,18 +13,9 @@ export const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const today: string = new Date().toISOString();
 
-  const [uniqueCategoriesEN, setUniqueCategoriesEN] = useState<string[]>([])
-  const [uniqueCategoriesBN, setUniqueCategoriesBN] = useState<string[]>([])
-
   // fetch categories
-  useEffect(() => {
-    if (articles.length > 0) {
-      const categoriesEN = Array.from(new Set(articles.map(a => a.categoryEN)));
-      const categoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
-      setUniqueCategoriesEN(categoriesEN);
-      setUniqueCategoriesBN(categoriesBN);
-    }
-  }, [articles]);
+  const uniqueCategoriesEN = Array.from(new Set(articles.map(a => a.categoryEN)));
+  const uniqueCategoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
 
   const navlinks: NavLinks[] = [
     { label: 'Home', href: '/' },

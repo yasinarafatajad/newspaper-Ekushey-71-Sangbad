@@ -2,7 +2,6 @@
 import { articles } from "@/lib/newses";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 type Category = {
     label: string;
@@ -13,18 +12,10 @@ type Category = {
 
 export const CategoryBar = () => {
     const pathname = usePathname();
-    const [uniqueCategoriesEN, setUniqueCategoriesEN] = useState<string[]>([])
-    const [uniqueCategoriesBN, setUniqueCategoriesBN] = useState<string[]>([])
 
     // fetch categories
-    useEffect(() => {
-        if (articles.length > 0) {
-            const categoriesEN = Array.from(new Set(articles.map(a => a.categoryEN)));
-            const categoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
-            setUniqueCategoriesEN(categoriesEN);
-            setUniqueCategoriesBN(categoriesBN);
-        }
-    }, [articles]);
+    const uniqueCategoriesEN = Array.from(new Set(articles.map(a => a.categoryEN)));
+    const uniqueCategoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
 
     const navlinks: Category[] = [
         { label: 'Home', href: '/' },

@@ -1,8 +1,6 @@
 import { ArticleGrid } from "@/components/ui/ArticleGrid";
 import { articles } from "@/lib/newses";
 import { Article } from "@/lib/type";
-import { formatDate, formatDay } from "@/lib/utils";
-import Image from "next/image";
 import Link from "next/link";
 
 interface PageProps {
