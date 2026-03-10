@@ -35,7 +35,7 @@ export const Category = () => {
                     <div className="flex flex-col gap-3">
 
                         {news?.reverse().slice(0, 2).map((article) => {
-                            const date = new Date(article.publishedAt)
+                            const date : string = new Date(article.publishedAt).toISOString()
 
                             return (
                                 <Link key={article.id} href={`/news/${article.slug}`}>
@@ -59,7 +59,7 @@ export const Category = () => {
                                             </h4>
 
                                             <span className="text-xs text-slate-500">
-                                                {formatDate(date.toISOString())}, {formatDay(date.toISOString())}
+                                                {formatDate(date)}, {formatDay(date)}
                                             </span>
                                         </div>
 

@@ -1,11 +1,8 @@
-import { NextPage } from 'next'
 
-interface Props {}
-
-const Page: NextPage<Props> = ({}) => {
-  return <div>
-    all categories page here
-  </div>
+const Category = () => {
+  return (
+    <div>All Category here</div>
+  )
 }
 
-export default Page
+export default Category
