@@ -5,25 +5,20 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export const Category = () => {
-    const date: string = new Date().toISOString()
-
     const groupedArticles: Record<string, Article[]> = articles.reduce(
-  (acc, article) => {
-    const category = article.categoryEN;
+        (acc, article) => {
+            const category = article.categoryEN;
 
-    if (!acc[category]) {
-      acc[category] = [];
-    }
+            if (!acc[category]) {
+                acc[category] = [];
+            }
 
-    acc[category].push(article);
+            acc[category].push(article);
 
-    return acc;
-  },
-  {} as Record<string, Article[]>
-);
-    // console.log(groupedArticles);
-
-
+            return acc;
+        },
+        {} as Record<string, Article[]>
+    );
 
     return (
         <div className="container grid grid-cols-1 md:grid-cols-3 gap-10 border-t border-neutral-muted pt-8">

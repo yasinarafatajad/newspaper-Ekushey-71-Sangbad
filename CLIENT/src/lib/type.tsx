@@ -21,7 +21,7 @@ export interface Article {
 }
 export interface AUTHOR {
     name: string
-    src: any
+    src: string
     location: string
     publishedAt: string
 }
