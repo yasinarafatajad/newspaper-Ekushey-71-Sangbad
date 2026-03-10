@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image"
+
 // news article
 export interface Article {
     id: string
@@ -21,7 +23,7 @@ export interface Article {
 }
 export interface AUTHOR {
     name: string
-    src: string
+    src: string | StaticImageData
     location: string
     publishedAt: string
 }
