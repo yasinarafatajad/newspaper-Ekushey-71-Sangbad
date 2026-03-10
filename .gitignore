@@ -12,7 +12,6 @@ node_modules
 dist
 dist-ssr
 *.local
-ui
 ADMIN
 
 # Editor directories and files
