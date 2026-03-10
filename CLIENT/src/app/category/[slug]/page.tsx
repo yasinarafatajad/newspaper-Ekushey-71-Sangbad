@@ -1,8 +1,6 @@
 import { ArticleGrid } from "@/components/ui/ArticleGrid";
 import { articles } from "@/lib/newses";
 import { Article } from "@/lib/type";
-import { formatDate, formatDay } from "@/lib/utils";
-import Image from "next/image";
 import Link from "next/link";
 
 interface PageProps {
@@ -12,7 +10,6 @@ interface PageProps {
 }
 
 const Page = async (props: PageProps) => {
-    // NO await here
     const { slug } = await props.params;
 
     // Filter articles by category
