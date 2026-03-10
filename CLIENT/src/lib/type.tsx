@@ -3,14 +3,25 @@ export interface Article {
     id: string
     title: string
     slug: string
-    excerpt: string
     content: string
-    category: string
-    author: string
+    categoryEN: string
+    categoryBN: string
+    author: {
+        title: string
+        src: string
+        location: string
+    },
     publishedAt: string
     updatedAt: string | null
     featuredImage: string
+    imageCaption: string
     tags: string[]
     views: number
     isFeatured: boolean
+}
+export interface AUTHOR {
+    name: string
+    src: any
+    location: string
+    publishedAt: string
 }

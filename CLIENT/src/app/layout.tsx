@@ -28,7 +28,6 @@ const notoSansBengali = Noto_Sans_Bengali({
   display: 'swap',
 });
 
-
 export const metadata: Metadata = {
   title: "Ekushey 71 Sangbad",
   description: "A NewsPaper",
