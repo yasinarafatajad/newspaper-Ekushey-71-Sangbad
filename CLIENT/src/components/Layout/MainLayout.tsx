@@ -7,7 +7,7 @@ interface mainLayout{
 export const MainLayout = ({children} : mainLayout) => {
     return (
         <div className="container">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 md:gap-12">
                 {children}
             </div>
         </div>

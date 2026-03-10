@@ -6,15 +6,16 @@ import Link from "next/link";
 import { useState } from "react";
 import logo from '@/assets/logoLight.png'
 
-type NavLinks = { label: string; src: string }
+type NavLinks = { label: string; href: string }
 const navLinks: NavLinks[] = [
-  { label: 'প্রচ্ছদ', src: '/' },
-  { label: 'রাজনীতি', src: '/' },
-  { label: 'অর্থনীতি', src: '/' },
-  { label: 'খেলাধুলা', src: '/' },
-  { label: 'বিনোদন', src: '/' },
-  { label: 'প্রযুক্তি', src: '/' },
-]
+    { label: 'Home', href: '/' },
+    { label: 'রাজনীতি', href: 'category/politics' },
+    { label: 'আন্তর্জাতিক', href: 'category/international' },
+    { label: 'অর্থনীতি', href: 'category/economy' },
+    { label: 'খেলাধুলা', href: 'category/sports' },
+    { label: 'বিনোদন', href: 'category/entertainment' },
+    { label: 'বিজ্ঞান ও প্রযুক্তি', href: 'category/science-technology' },
+];
 
 export const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -31,7 +32,8 @@ export const Header = () => {
                 alt="Ekushey 71 Sangbad"
                 width={307}
                 height={64}
-                className="h-16 lg:h-20 w-auto"
+                loading="lazy"
+                className="h-16 lg:h-20 w-auto pointer-events-none"
               />
             </Link>
           </div>
@@ -41,10 +43,10 @@ export const Header = () => {
               <span className="text-xs text-slate-500 uppercase">{formatDay(today)}</span>
               <span className="text-sm font-bold">{formatDate(today)} খ্রিষ্টাব্দ</span>
             </div>
-            <div className="relative hidden sm:block">
+            {/* <div className="relative hidden sm:block">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Search /></span>
               <input className="pl-10 pr-4 py-2 bg-neutral-subtle border-none rounded-full text-sm focus:ring-2 focus:ring-primary w-40 lg:w-60 transition-all" placeholder="অনুসন্ধান করুন..." type="text" />
-            </div>
+            </div> */}
             <button onClick={() => setMobileOpen(true)} className="lg:hidden p-2 rounded-lg hover:bg-neutral-subtle flex items-center justify-center">
               <Logs />
             </button>
@@ -63,19 +65,20 @@ export const Header = () => {
               <X />
             </button>
           </div>
-          <div className="flex flex-col border-b mb-2">
-            <span className="text-xs text-slate-500 uppercase">সোমবার</span>
-            <span className="text-sm font-bold">৫ই মার্চ ২০২৬ খ্রিষ্টাব্দ</span>
-          </div>
-          <div className="relative w-full mb-2.5">
+          <div className="flex flex-col border-b mb-2 text-right">
+              <span className="text-xs text-slate-500 uppercase">{formatDay(today)}</span>
+              <span className="text-sm font-bold">{formatDate(today)} খ্রিষ্টাব্দ</span>
+            </div>
+          {/* <div className="relative w-full mb-2.5">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Search /></span>
             <input className="pl-10 pr-4 py-2 w-full bg-neutral-subtle border-none rounded-md text-sm transition-all" placeholder="অনুসন্ধান করুন..." type="text" />
-          </div>
+          </div> */}
           <nav className="flex flex-col gap-4 text-lg font-medium">
             {navLinks.map((link, idx) => (
               <Link
                 key={idx}
-                href={link.src}
+                href={link.href}
+                onClick={()=>setMobileOpen(false)}
                 className={`py-2 border-b border-neutral-muted ${idx === navLinks.length - 1 ? "border-b-0" : ""
                   }`}
               >

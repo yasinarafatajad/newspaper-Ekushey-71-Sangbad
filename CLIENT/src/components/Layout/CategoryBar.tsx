@@ -1,31 +1,53 @@
+"use client"
+import { articles } from "@/lib/newses";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type Category = {
     label: string;
     href: string;
 };
 
-const categories: Category[] = [
-    { label: 'রাজনীতি', href: '/politics' },
-    { label: 'আন্তর্জাতিক', href: '/international' },
-    { label: 'অর্থনীতি', href: '/economy' },
-    { label: 'খেলাধুলা', href: '/sports' },
-    { label: 'বিনোদন', href: '/entertainment' },
-    { label: 'বিজ্ঞান ও প্রযুক্তি', href: '/science-technology' },
-];
+
 
 export const CategoryBar = () => {
+    const pathname = usePathname();
+    const [uniqueCategoriesEN, setUniqueCategoriesEN] = useState<string[]>([])
+    const [uniqueCategoriesBN, setUniqueCategoriesBN] = useState<string[]>([])
+
+    // fetch categories
+    useEffect(() => {
+        if (articles.length > 0) {
+            const categoriesEN = Array.from(new Set(articles.map(a => a.categoryEN)));
+            const categoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
+            setUniqueCategoriesEN(categoriesEN);
+            setUniqueCategoriesBN(categoriesBN);
+        }
+    }, [articles]);
+
+    const navlinks: Category[] = [
+        { label: 'Home', href: '/' },
+        ...uniqueCategoriesEN?.map((catEN, index) => ({
+            label: uniqueCategoriesBN[index],
+            href: `/category/${catEN.toLowerCase().replace(/\s+/g, '-')}`
+        }))
+    ];
+
+    console.log('catsE: ', uniqueCategoriesEN);
+    console.log('catsB: ', uniqueCategoriesBN);
+
     return (
         <div className="hidden lg:block bg-background-light sticky top-0 backdrop-blur-2xl z-50 border-b border-neutral-muted">
             <div className="container overflow-x-auto">
-                <nav className="flex items-center justify-center flex-wrap whitespace-nowrap text-sm md:text-base font-medium py-2 backdrop-blur-sm">
-                    {categories.map((cat, idx) => (
+                <nav className="flex items-center justify-start flex-wrap gap-y-3 whitespace-nowrap text-sm md:text-base font-medium py-2 backdrop-blur-sm">
+                    {navlinks.map((cat, idx) => (
                         <Link
                             key={idx}
                             href={cat.href}
-                            className={`${idx === categories.length - 1 ? 'border-r-0' : 'border-r'}`}
+                            className={`${idx === navlinks.length - 1 ? 'border-r-0' : 'border-r'}`}
                         >
-                            <span className="hover:bg-primary/20  px-3 py-1 mx-2.5 text-nowrap transition-colors">{cat.label}</span>
+                            <span className={`hover:bg-primary/20 px-3 py-1 mx-2.5 text-nowrap text-center transition-colors ${pathname === cat.href ? "border-b-2 border-primary" : ""}`} >{cat.label}</span>
                         </Link>
                     ))}
                 </nav>
