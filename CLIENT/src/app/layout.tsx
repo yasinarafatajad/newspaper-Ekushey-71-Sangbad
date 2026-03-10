@@ -5,6 +5,7 @@ import { Header } from '@/components/Layout/Header'
 import { Footer } from "@/components/Layout/Footer";
 import { CategoryBar } from "@/components/Layout/CategoryBar";
 import { TitleBar } from "@/components/Layout/TitleBar";
+import ScrollToTop from "@/components/Layout/ScrollToTop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 const notoSerifBengali = Noto_Serif_Bengali({
-  weight: ['400', '700'], 
-  subsets: ['bengali'],   
+  weight: ['400', '700'],
+  subsets: ['bengali'],
   display: 'swap',
 });
 
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ScrollToTop />
         <Header />
         <TitleBar />
         <CategoryBar />

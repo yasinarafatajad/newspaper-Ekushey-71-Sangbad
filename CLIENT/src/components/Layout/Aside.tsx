@@ -14,7 +14,7 @@ export const Aside = () => {
                 <ul className="space-y-4">
                     {articles?.reverse().slice(0, 3).map((article) => (
                         <li key={article?.id} className="border-b border-neutral-muted dark:border-primary/10 pb-4 last:border-0 last:pb-0">
-                            <Link className="group" href={`news/${article.slug}`}>
+                            <Link className="group" href={`/news/${article.slug}`}>
                                 <span className="text-xs text-primary font-bold block mb-1">{article?.categoryBN}</span>
                                 <p className="text-base font-medium group-hover:text-primary transition-colors">{article?.title}</p>
                             </Link>
@@ -33,7 +33,7 @@ export const Aside = () => {
                     {articles?.reverse().slice(0, 5).map((article, index) => (
                         <div key={article?.id} className="flex gap-4 items-start">
                             <span className="text-4xl font-bold text-neutral-muted dark:text-primary/20 leading-none">{formatNumber(index + 1)}</span>
-                            <Link href={`news/${article.slug}`} className="font-bold hover:text-primary cursor-pointer transition-colors">{article?.title}</Link>
+                            <Link href={`/news/${article.slug}`} className="font-bold hover:text-primary cursor-pointer transition-colors">{article?.title}</Link>
                         </div>
                     ))}
                 </div>
