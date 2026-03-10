@@ -34,9 +34,6 @@ export const CategoryBar = () => {
         }))
     ];
 
-    console.log('catsE: ', uniqueCategoriesEN);
-    console.log('catsB: ', uniqueCategoriesBN);
-
     return (
         <div className="hidden lg:block bg-background-light sticky top-0 backdrop-blur-2xl z-50 border-b border-neutral-muted">
             <div className="container overflow-x-auto">

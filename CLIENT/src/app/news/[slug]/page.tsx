@@ -104,15 +104,17 @@ const Page = async (props: PageProps) => {
                 <Aside />
             </MainLayout>
 
-            <section className="mt-20">
-                <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
-                    <Activity className="text-primary" />
-                    সম্পর্কিত খবর
-                </h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 grid-cols-1">
-                    {related.map(a => <ArticleCard key={a.id} props={a} />)}
-                </div>
-            </section>
+            {related?.length > 0 && (
+                <section className="mt-20">
+                    <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
+                        <Activity className="text-primary" />
+                        সম্পর্কিত খবর
+                    </h3>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 grid-cols-1">
+                        {related.map(a => <ArticleCard key={a.id} props={a} />)}
+                    </div>
+                </section>
+            )}
         </main>
     )
 }
