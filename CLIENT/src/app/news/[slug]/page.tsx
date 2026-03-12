@@ -18,8 +18,7 @@ interface PageProps {
 
 // **Server Component**
 const Page = async (props: PageProps) => {
-    const { slug } = await props.params  // directly accessible in server component
-    console.log("Server slug:", slug)
+    const { slug } = await props.params 
 
     // Find the article
     const article: Article | undefined = await articles.find(a => a.slug === slug)
