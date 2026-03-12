@@ -94,7 +94,7 @@ const AllPosts = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold font-heading text-foreground mb-6">
-        All Posts
+        All News
       </h1>
 
       {/* Filters */}
@@ -167,7 +167,7 @@ const AllPosts = () => {
                       asChild
                       className="h-8 w-8 rounded-sm"
                     >
-                      <Link to={`/edit-post/${post._id}`}>
+                      <Link to={`/edit-news/${post._id}`}>
                         <Pencil className="h-4 w-4" />
                       </Link>
                     </Button>

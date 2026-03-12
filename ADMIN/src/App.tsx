@@ -23,9 +23,9 @@ const App = () => (
         <DashboardLayout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/new-post" element={<NewPost />} />
-            <Route path="/edit-post/:id" element={<NewPost />} />
-            <Route path="/all-posts" element={<AllPosts />} />
+            <Route path="/new-news" element={<NewPost />} />
+            <Route path="/edit-news/:id" element={<NewPost />} />
+            <Route path="/all-news" element={<AllPosts />} />
             <Route path="/categories" element={<Categories />} />
             {/* <Route path="/profile" element={<Profile />} /> */}
             {/* <Route path="/settings" element={<SettingsPage />} /> */}

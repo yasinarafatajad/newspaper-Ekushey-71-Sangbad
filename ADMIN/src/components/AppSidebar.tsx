@@ -26,8 +26,8 @@ import icon from "../assets/icon.png"
 
 const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "New Post", url: "/new-post", icon: FilePlus },
-  { title: "All Posts", url: "/all-posts", icon: FileText },
+  { title: "New News", url: "/new-news", icon: FilePlus },
+  { title: "All News", url: "/all-news", icon: FileText },
   { title: "Categories", url: "/categories", icon: FolderOpen },
   // { title: "Profile", url: "/profile", icon: User },
   // { title: "Settings", url: "/settings", icon: Settings },

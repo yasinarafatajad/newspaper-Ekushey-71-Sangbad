@@ -137,7 +137,7 @@ const Categories = () => {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-xs text-muted-foreground font-body">
-                    {cat.postCount} posts
+                    {cat.postCount} news
                   </span>
                   <div className="p-3 text-right">
                     <div className="flex items-center justify-end">
