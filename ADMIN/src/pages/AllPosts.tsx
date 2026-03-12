@@ -13,11 +13,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Post } from "@/data/mockData";
 import { Search, Pencil, Trash2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import api from "@/lib/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Post } from "@/lib/type";
+import { formatDate } from "@/lib/formats";
 
 const fetchAllNews = async (): Promise<Post[]> => {
   const { data } = await api.get("/AllNews");
@@ -157,7 +158,7 @@ const AllPosts = () => {
                   </Badge>
                 </td>
                 <td className="p-3 hidden md:table-cell text-muted-foreground">
-                  {post.date}
+                  {formatDate(post.createdAt)}
                 </td>
                 <td className="p-3 text-right">
                   <div className="flex items-center justify-end gap-1">

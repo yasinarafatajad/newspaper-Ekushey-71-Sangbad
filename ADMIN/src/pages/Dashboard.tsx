@@ -1,68 +1,58 @@
 import { FileText, FilePlus, FolderOpen, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
-import { mockAuthors, mockCategories, Post } from "@/data/mockData";
+import { mockCategories } from "@/data/mockData";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Post } from "@/lib/type";
+import api from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { formatDate, formatDay } from "@/lib/formats";
 
-const mockPosts: Post[] = [
-  {
-    id: "1",
-    bnTitle: "জাতীয় নির্বাচনে নতুন কমিশন গঠন",
-    enTitle: "hello test this case",
-    slug: "new-election-commission",
-    content: "জাতীয় নির্বাচনে নতুন কমিশন গঠিত হয়েছে। নতুন কমিশনের সদস্যরা তাদের দায়িত্ব পালন শুরু করেছেন।",
-    categoryEN: "Politics",
-    categoryBN: "রাজনীতি",
-    author: mockAuthors[0],
-    status: "published",
-    date: "2026-03-10",
-  },
-  {
-    id: "2",
-    bnTitle: "জাতীয় নির্বাচনে নতুন কমিশন গঠন",
-    enTitle: "hello test this case",
-    slug: "new-election-commission",
-    content: "জাতীয় নির্বাচনে নতুন কমিশন গঠিত হয়েছে। নতুন কমিশনের সদস্যরা তাদের দায়িত্ব পালন শুরু করেছেন।",
-    categoryEN: "Politics",
-    categoryBN: "রাজনীতি",
-    author: mockAuthors[0],
-    status: "published",
-    date: "2026-03-10",
-  }
-]
-
-const stats = [
-  {
-    label: "Total News",
-    value: mockPosts.length,
-    icon: FileText,
-  },
-  {
-    label: "Published",
-    value: mockPosts.filter((p) => p.status === "published").length,
-    icon: Eye,
-  },
-  {
-    label: "Drafts",
-    value: mockPosts.filter((p) => p.status === "draft").length,
-    icon: FilePlus,
-  },
-  {
-    label: "Categories",
-    value: mockCategories.length,
-    icon: FolderOpen,
-  },
-];
+const fetchAllNews = async (): Promise<Post[]> => {
+  const { data } = await api.get("/AllNews");
+  return data;
+};
 
 const Dashboard = () => {
-  const today = new Date().toLocaleDateString("bn-BD", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const stats = [
+    {
+      label: "Total News",
+      value: posts.length,
+      icon: FileText,
+    },
+    {
+      label: "Published",
+      value: posts.filter((p) => p.status === "published").length,
+      icon: Eye,
+    },
+    {
+      label: "Drafts",
+      value: posts.filter((p) => p.status === "draft").length,
+      icon: FilePlus,
+    },
+    {
+      label: "Categories",
+      value: mockCategories.length,
+      icon: FolderOpen,
+    },
+  ];
+
+  const { data } = useQuery({
+    queryKey: ["allNews"],
+    queryFn: fetchAllNews,
   });
 
-  const recentPosts = mockPosts.slice(0, 5);
+  useEffect(() => {
+    if (data) setPosts(data ?? []);
+  }, [data]);
+  
+
+  const today = new Date().toISOString();
+
+  const recentPosts = posts?.reverse().slice(0, 5);
 
   return (
     <div>
@@ -71,8 +61,8 @@ const Dashboard = () => {
           <h1 className="text-2xl font-bold font-heading text-foreground">
             Dashboard
           </h1>
-          <p className="text-sm text-muted-foreground font-body mt-1">
-            {today}
+          <p className="text-sm text-muted-foreground font-body mt-1 flex items-center gap-1">
+            <span>{formatDate(today)},</span><span>{formatDay(today)}</span>
           </p>
         </div>
         <Button asChild className="rounded-sm">
@@ -125,7 +115,7 @@ const Dashboard = () => {
             <tbody>
               {recentPosts.map((post) => (
                 <tr
-                  key={post.id}
+                  key={post._id}
                   className="border-b border-border last:border-0 hover:bg-accent/50"
                 >
                   <td className="p-3 text-foreground">{post.bnTitle}</td>
@@ -136,15 +126,15 @@ const Dashboard = () => {
                     <Badge
                       variant={post.status === "published" ? "default" : "secondary"}
                       className={`rounded-sm text-xs ${post.status === "published"
-                          ? "bg-success text-success-foreground"
-                          : ""
+                        ? "bg-success text-success-foreground"
+                        : ""
                         }`}
                     >
                       {post.status === "published" ? "Published" : "Draft"}
                     </Badge>
                   </td>
                   <td className="p-3 hidden md:table-cell text-muted-foreground">
-                    {post.date}
+                    {formatDate(post.createdAt)}
                   </td>
                 </tr>
               ))}
