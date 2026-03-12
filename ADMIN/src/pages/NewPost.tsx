@@ -278,8 +278,17 @@ const NewPost = () => {
       } else {
         await createPost(formData);
       }
-    } finally {
+
       setPublishState("idle");
+      navigate("/all-posts");
+    } catch (err: unknown) {
+      console.error("Create post error:", err);
+      const message = err instanceof Error ? err.message : String(err);
+      toast({
+        title: "পোস্ট প্রকাশ করা যায়নি",
+        description: message || "Last: অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
+        variant: "destructive",
+      });
     }
   };
 
@@ -289,7 +298,7 @@ const NewPost = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold font-heading text-foreground mb-6">
-        {editingPost ? "Edit Post" : "New Post"}
+        {editingPost ? "Edit News" : "Upload News"}
       </h1>
 
       <div className="space-y-5 max-w-3xl">

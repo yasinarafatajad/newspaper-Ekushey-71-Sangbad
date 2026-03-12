@@ -33,7 +33,7 @@ const mockPosts: Post[] = [
 
 const stats = [
   {
-    label: "Total Posts",
+    label: "Total News",
     value: mockPosts.length,
     icon: FileText,
   },
@@ -76,9 +76,9 @@ const Dashboard = () => {
           </p>
         </div>
         <Button asChild className="rounded-sm">
-          <Link to="/new-post">
+          <Link to="/new-news">
             <FilePlus className="h-4 w-4 mr-2" />
-            New Post
+            Add News
           </Link>
         </Button>
       </div>
@@ -109,7 +109,7 @@ const Dashboard = () => {
       <div className="bg-card border border-border rounded-sm">
         <div className="p-4 border-b border-border">
           <h2 className="text-lg font-bold font-heading text-foreground">
-            Recent Posts
+            Recent News
           </h2>
         </div>
         <div className="overflow-x-auto">
