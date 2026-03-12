@@ -22,16 +22,16 @@ export const mockAuthors: Author[] = [
   },
 ];
 
-export const mockCategories: Category[] = [
-  { id: "1", nameEN: "Politics", nameBN: "রাজনীতি", postCount: 24 },
-  { id: "2", nameEN: "Sports", nameBN: "খেলাধুলা", postCount: 18 },
-  { id: "3", nameEN: "Technology", nameBN: "প্রযুক্তি", postCount: 12 },
-  { id: "4", nameEN: "Entertainment", nameBN: "বিনোদন", postCount: 15 },
-  { id: "5", nameEN: "Economy", nameBN: "অর্থনীতি", postCount: 20 },
-  { id: "6", nameEN: "International", nameBN: "আন্তর্জাতিক", postCount: 9 },
-  { id: "7", nameEN: "Education", nameBN: "শিক্ষা", postCount: 7 },
-  { id: "8", nameEN: "Health", nameBN: "স্বাস্থ্য", postCount: 6 },
-];
+// export const mockCategories: Category[] = [
+//   { id: "1", nameEN: "Politics", nameBN: "রাজনীতি", postCount: 24 },
+//   { id: "2", nameEN: "Sports", nameBN: "খেলাধুলা", postCount: 18 },
+//   { id: "3", nameEN: "Technology", nameBN: "প্রযুক্তি", postCount: 12 },
+//   { id: "4", nameEN: "Entertainment", nameBN: "বিনোদন", postCount: 15 },
+//   { id: "5", nameEN: "Economy", nameBN: "অর্থনীতি", postCount: 20 },
+//   { id: "6", nameEN: "International", nameBN: "আন্তর্জাতিক", postCount: 9 },
+//   { id: "7", nameEN: "Education", nameBN: "শিক্ষা", postCount: 7 },
+//   { id: "8", nameEN: "Health", nameBN: "স্বাস্থ্য", postCount: 6 },
+// ];
 
 // export const mockPosts: Post[] = [
 //   {

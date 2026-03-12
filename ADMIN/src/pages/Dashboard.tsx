@@ -1,9 +1,8 @@
 import { FileText, FilePlus, FolderOpen, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
-import { mockCategories } from "@/data/mockData";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Post } from "@/lib/type";
+import { Category, CategoryResponse, Post } from "@/lib/type";
 import api from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -16,6 +15,8 @@ const fetchAllNews = async (): Promise<Post[]> => {
 
 const Dashboard = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+  
 
   const stats = [
     {
@@ -35,11 +36,12 @@ const Dashboard = () => {
     },
     {
       label: "Categories",
-      value: mockCategories.length,
+      value: categories.length,
       icon: FolderOpen,
     },
   ];
 
+  // fetch all news
   const { data } = useQuery({
     queryKey: ["allNews"],
     queryFn: fetchAllNews,
@@ -49,6 +51,20 @@ const Dashboard = () => {
     if (data) setPosts(data ?? []);
   }, [data]);
   
+  // fetch all category
+    const fetchAllCategories = async (): Promise<CategoryResponse> => {
+      const { data } = await api.get("/AllCategory");
+      return data;
+    };
+  
+    const { data: categoryData } = useQuery({
+      queryKey: ["AllCategories"],
+      queryFn: fetchAllCategories,
+    });
+    
+    useEffect(() => {
+      if (categoryData) setCategories(categoryData?.data ?? []);
+    }, [categoryData]);
 
   const today = new Date().toISOString();
 

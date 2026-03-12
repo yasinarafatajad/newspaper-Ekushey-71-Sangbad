@@ -17,13 +17,8 @@ import { Check, LoaderCircle, Upload, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import api from "@/lib/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Author, Category, Post } from "@/lib/type";
+import { Author, Category, CategoryResponse, Post } from "@/lib/type";
 
-// type category
-interface CategoryResponse {
-  success: boolean;
-  data: Category[];
-}
 
 const NewPost = () => {
   // React Router hooks
