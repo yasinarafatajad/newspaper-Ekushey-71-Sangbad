@@ -23,3 +23,8 @@ export interface AUTHOR {
     src: string 
     location: string
 }
+export interface Category {
+  nameEN: string;
+  nameBN: string;
+  postCount?: number;
+}

@@ -25,8 +25,8 @@ export interface Post {
 }
 
 export interface Category {
-    _id?: string;
     id?: string;
+    _id?: string;
     nameEN: string;
     nameBN: string;
     postCount: number;

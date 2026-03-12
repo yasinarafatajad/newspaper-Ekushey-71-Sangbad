@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { mockCategories, type Category } from "@/data/mockData";
 import { Plus, Pencil, Check, X, Trash2 } from "lucide-react";
 import {
   AlertDialog,
@@ -13,53 +12,190 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Category } from "../lib/type";
+import { toast } from "@/hooks/use-toast";
+import api from "@/lib/api";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+interface CategoryResponse {
+  success: boolean;
+  data: Category[];
+}
+//fetch all categories
+const fetchAllCategories = async (): Promise<CategoryResponse> => {
+  const { data } = await api.get("/AllCategory");
+  return data;
+};
 
 const Categories = () => {
-  const [categories, setCategories] = useState<Category[]>(mockCategories);
+  const [categories, setCategories] = useState<Category[]>();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editNameBN, setEditNameBN] = useState("");
   const [editNameEN, setEditNameEN] = useState("");
   const [showAdd, setShowAdd] = useState(false);
   const [newNameBN, setNewNameBN] = useState("");
   const [newNameEN, setNewNameEN] = useState("");
-  const newFormData = { newNameEN, newNameBN }
   const [deleteTarget, setDeleteTarget] = useState<Category | null>(null);
+  const queryClient = useQueryClient();
 
+  // get all category
+  const { data } = useQuery({
+    queryKey: ["AllCategories"],
+    queryFn: fetchAllCategories,
+  });
+  useEffect(() => {
+    if (data) setCategories(data?.data ?? []);
+  }, [data]);
+
+  // open edit form
   const startEdit = (cat: Category) => {
-    setEditingId(cat.id);
+    setEditingId(cat._id);
     setEditNameBN(cat.nameBN);
     setEditNameEN(cat.nameEN);
   };
 
-  const saveEdit = () => {
+  // update category
+  const saveEdit = async () => {
     if (!editingId) return;
-    setCategories((prev) =>
-      prev.map((c) =>
-        c.id === editingId ? { ...c, nameBN: editNameBN, nameEN: editNameEN } : c
-      )
-    );
-    // console.log('edited: ',editFormData);
-    setEditingId(null);
+
+    if (!editNameBN.trim() || !editNameEN.trim()) {
+      toast({
+        title: "তথ্য অসম্পূর্ণ",
+        description: "বাংলা এবং ইংরেজি ক্যাটাগরি নাম অবশ্যই দিতে হবে।",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const payload = {
+        nameBN: editNameBN.trim(),
+        nameEN: editNameEN.trim(),
+      };
+
+      const res = await api.put(`/UpdateCategory/${editingId}`, payload);
+
+      if (res.status !== 200) {
+        throw new Error("Server failed to update category.");
+      }
+
+      const updatedCategory: Category = res?.data?.data;
+
+      // refetch categories
+      queryClient.invalidateQueries({ queryKey: ["AllCategories"] });
+
+      toast({
+        title: "ক্যাটাগরি আপডেট হয়েছে",
+        description: `"${updatedCategory.nameBN}" সফলভাবে আপডেট করা হয়েছে।`,
+      });
+
+      // reset editing state
+      setEditingId(null);
+      setEditNameBN("");
+      setEditNameEN("");
+
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Unknown error occurred.";
+
+      console.error("Update category error:", message);
+
+      toast({
+        title: "ক্যাটাগরি আপডেট করা যায়নি",
+        description: message,
+        variant: "destructive",
+      });
+    }
   };
 
-  const addCategory = () => {
-    if (!newNameBN || !newNameEN) return;
-    const newCat: Category = {
-      id: String(Date.now()),
-      nameBN: newNameBN,
-      nameEN: newNameEN,
-      postCount: 0,
-    };
-    setCategories((prev) => [...prev, newCat]);
-    // console.log('new added: ', newFormData);
-    setNewNameBN("");
-    setNewNameEN("");
-    setShowAdd(false);
+  // create new category
+  const addCategory = async () => {
+    // basic validation
+    if (!newNameBN.trim() || !newNameEN.trim()) {
+      toast({
+        title: "তথ্য অসম্পূর্ণ",
+        description: "বাংলা এবং ইংরেজি ক্যাটাগরি নাম অবশ্যই দিতে হবে।",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const payload = {
+        nameBN: newNameBN.trim(),
+        nameEN: newNameEN.trim(),
+      };
+
+      const res = await api.post("/addCategory", payload);
+
+      if (res.status !== 200) {
+        throw new Error("Server failed to create category.");
+      }
+      // refetch
+      queryClient.invalidateQueries({ queryKey: ["AllCategories"] });
+
+      const newCategory: Category = res?.data.category;
+      console.log(newCategory);
+
+
+      toast({
+        title: "ক্যাটাগরি যোগ হয়েছে",
+        description: `"${newCategory.nameBN}" সফলভাবে তৈরি হয়েছে।`,
+      });
+
+      // reset form
+      setNewNameBN("");
+      setNewNameEN("");
+      setShowAdd(false);
+
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Unknown error occurred.";
+      console.error("Add category error:", message);
+
+
+      toast({
+        title: "ক্যাটাগরি যোগ করা যায়নি",
+        description: message,
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleDeleteCategory = () => {
-    alert('no logic integrated!');
-  }
+  // delete category
+  const handleDeleteCategory = async () => {
+    if (!deleteTarget?._id) return;    
+
+    try {
+      const res = await api.delete(`/DeleteCategory/${deleteTarget?._id}`);
+
+      if (res.status !== 200) {
+        throw new Error("Server failed to delete category.");
+      }
+
+      // refetch categories
+      queryClient.invalidateQueries({ queryKey: ["AllCategories"] });
+
+      toast({
+        title: "ক্যাটাগরি মুছে ফেলা হয়েছে",
+        description: `"${deleteTarget.nameBN}" সফলভাবে মুছে ফেলা হয়েছে।`,
+      });
+
+      // reset delete state
+      setDeleteTarget(null);
+
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Unknown error occurred.";
+
+      console.error("Delete category error:", message);
+
+      toast({
+        title: "ক্যাটাগরি মুছে ফেলা যায়নি",
+        description: message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  // console.log(categories);
 
   return (
     <div>
@@ -101,12 +237,12 @@ const Categories = () => {
           </div>
         )}
 
-        {categories.map((cat) => (
+        {categories?.map((cat) => (
           <div
-            key={cat.id}
+            key={cat._id}
             className="flex items-center justify-between p-3 border-b border-border last:border-0 hover:bg-accent/50"
           >
-            {editingId === cat.id ? (
+            {editingId === cat._id ? (
               <div className="flex items-center gap-2 flex-1">
                 <Input
                   value={editNameBN}

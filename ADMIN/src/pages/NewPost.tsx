@@ -12,12 +12,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { mockAuthors, mockCategories } from "@/data/mockData";
+import { mockAuthors } from "@/data/mockData";
 import { Check, LoaderCircle, Upload, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import api from "@/lib/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Author, Post } from "@/lib/type";
+import { Author, Category, Post } from "@/lib/type";
+
+// type category
+interface CategoryResponse {
+  success: boolean;
+  data: Category[];
+}
 
 const NewPost = () => {
   // React Router hooks
@@ -30,7 +36,6 @@ const NewPost = () => {
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
   // Main editing post state
-  // Initially null; will be set after fetching the post from API
   const [editingPost, setEditingPost] = useState<Post | null>(null);
 
   // Local state for form fields
@@ -50,7 +55,8 @@ const NewPost = () => {
   const [status, setStatus] = useState<string>("draft");                               // draft/published
   const [isTyping, setIsTyping] = useState(false);                                    // content editor typing state
   const [publishState, setPublishState] = useState<"idle" | "publishing" | "success">("idle"); // for submit button
-  const fileInputRef = useRef<HTMLInputElement>(null);                                 // file input ref
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   // Handlers for content editor focus/blur
   const handleContentFocus = () => setIsTyping(true);
@@ -62,14 +68,12 @@ const NewPost = () => {
     return data; // returns a single Post object
   };
 
-  // React Query: fetch the post dynamically
   const { data, isLoading, isError, error } = useQuery<Post>({
-    queryKey: ["news", id],                  // dynamic query key based on post ID
-    queryFn: () => fetchNews(id as string),  // only call if id exists
-    enabled: !!id,                            // skip query if id is undefined
+    queryKey: ["news", id],
+    queryFn: () => fetchNews(id as string),
+    enabled: !!id,
   });
 
-  // useEffect to populate local state after fetch
   useEffect(() => {
     if (!data) return;
 
@@ -92,17 +96,20 @@ const NewPost = () => {
 
   }, [data]);
 
-  // optional: handle fetch errors
+  // fetch categories
+  const fetchAllCategories = async (): Promise<CategoryResponse> => {
+    const { data } = await api.get("/AllCategory");
+    return data;
+  };
+
+  const { data: categoryData } = useQuery({
+    queryKey: ["AllCategories"],
+    queryFn: fetchAllCategories,
+  });
+  
   useEffect(() => {
-    if (isError) {
-      console.error("Failed to fetch post:", error);
-      toast({
-        title: "Error fetching post",
-        description: error instanceof Error ? error.message : "Unknown error",
-        variant: "destructive",
-      });
-    }
-  }, [isError, error]);
+    if (categoryData) setCategories(categoryData?.data ?? []);
+  }, [categoryData]);
 
   const generateSlug = (text: string) => {
     return text
@@ -157,7 +164,7 @@ const NewPost = () => {
   };
 
   const handleCategoryChange = (value: string) => {
-    const selected = mockCategories.find((cat) => cat.nameEN === value);
+    const selected = categories.find((cat) => cat.nameEN === value);
     if (selected) {
       setCategoryEN(selected.nameEN);
       setCategoryBN(selected.nameBN);
@@ -372,8 +379,8 @@ const NewPost = () => {
               <SelectValue placeholder="ক্যাটাগরি নির্বাচন করুন" />
             </SelectTrigger>
             <SelectContent>
-              {mockCategories.map((cat) => (
-                <SelectItem key={cat.id} value={cat.nameEN}>
+              {categories.map((cat) => (
+                <SelectItem key={cat._id} value={cat.nameEN}>
                   {cat.nameBN} ({cat.nameEN})
                 </SelectItem>
               ))}
