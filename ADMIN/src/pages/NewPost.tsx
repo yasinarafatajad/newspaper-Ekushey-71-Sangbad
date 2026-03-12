@@ -208,7 +208,6 @@ const NewPost = () => {
           description: `"${formData.bnTitle}" সফলভাবে প্রকাশিত হয়েছে।`,
         });
         queryClient.invalidateQueries({ queryKey: ["allNews"] });
-        navigate("/all-posts");
       }
     } catch (err: unknown) {
       console.error("Create post error:", err);
@@ -231,7 +230,6 @@ const NewPost = () => {
           description: `"${formData.bnTitle}" সফলভাবে আপডেট করা হয়েছে।`,
         });
         queryClient.invalidateQueries({ queryKey: ["allNews"] });
-        navigate("/all-posts");
       }
     } catch (err: unknown) {
       console.error("Update post error:", err);
@@ -280,7 +278,7 @@ const NewPost = () => {
       }
 
       setPublishState("idle");
-      navigate("/all-posts");
+      navigate("/all-news");
     } catch (err: unknown) {
       console.error("Create post error:", err);
       const message = err instanceof Error ? err.message : String(err);
