@@ -14,7 +14,7 @@ const authorSchema = new Schema<AUTHOR & Document>({
 const newsSchema = new Schema<NEWS & Document>({
   bnTitle: { type: String, required: true },
   enTitle: { type: String, required: true },
-  slug: { type: String, required: true },
+  slug: { type: String, required: true, unique: true, },
   content: { type: String, required: true },
   categoryEN: { type: String, required: true },
   categoryBN: { type: String, required: true },
