@@ -31,3 +31,8 @@ export interface Category {
     nameBN: string;
     postCount: number;
 }
+// type category
+export interface CategoryResponse {
+  success: boolean;
+  data: Category[];
+}
