@@ -12,11 +12,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Author, mockAuthors, mockCategories, Post } from "@/data/mockData";
+import { mockAuthors, mockCategories } from "@/data/mockData";
 import { Check, LoaderCircle, Upload, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import api from "@/lib/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Author, Post } from "@/lib/type";
 
 const NewPost = () => {
   // React Router hooks
