@@ -1,6 +1,5 @@
 import { StaticImageData } from "next/image"
 
-// news article
 export interface Article {
     id: string
     title: string
