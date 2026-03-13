@@ -5,6 +5,7 @@ import {
   FolderOpen,
   User,
   UserRoundPen,
+  LogOut,
   // Settings,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
@@ -22,8 +23,8 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
-import logo from "../assets/logoLight.png"
-import icon from "../assets/icon.png"
+import logo from "../assets/logoLight.png";
+import icon from "../assets/icon.png";
 
 const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -47,7 +48,11 @@ export function AppSidebar() {
         {!collapsed ? (
           <img src={logo} alt="Ekushey 71 Sangbad Logo" />
         ) : (
-          <img src={icon} alt="Ekushey 71 Sangbad icon" className="w-full h-full scale-150" />
+          <img
+            src={icon}
+            alt="Ekushey 71 Sangbad icon"
+            className="w-full h-full scale-150"
+          />
         )}
       </SidebarHeader>
 
@@ -85,9 +90,21 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border p-4">
+      <SidebarFooter className="border-t border-border p-4 flex flex-col gap-2">
+        <SidebarMenuButton
+          asChild
+          className="text-destructive hover:bg-destructive/10 hover:text-destructive w-full cursor-pointer"
+        >
+          <div
+            onClick={() => console.log("logout")}
+            className="flex items-center gap-3 px-3 py-2 font-body text-sm rounded-sm"
+          >
+            <LogOut className="h-5 w-5 shrink-0" />
+            {!collapsed && <span>Log Out</span>}
+          </div>
+        </SidebarMenuButton>
         {!collapsed && (
-          <p className="text-xs text-muted-foreground font-body">
+          <p className="text-xs text-muted-foreground font-body text-center mt-2">
             © {new Date().getFullYear()} Ekushey 71 Sangbad
           </p>
         )}

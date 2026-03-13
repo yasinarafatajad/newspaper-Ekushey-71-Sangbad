@@ -1,5 +1,7 @@
 import type { Request, Response } from "express";
 import Author from "../models/authorSchema.js";
+import NewsModel from "../models/newsSchema.js";
+import mongoose from "mongoose";
 
 // CREATE AUTHOR
 export const createAuthor = async (req: Request, res: Response) => {
@@ -65,14 +67,51 @@ export const getAuthor = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({
-      success: true,
-      data: author,
-    });
+    res.status(200).json(author);
   } catch (err: any) {
     res.status(500).json({
       success: false,
       message: "Failed to fetch author",
+      error: err.message,
+    });
+  }
+};
+
+// GET NEWS BY AUTHOR
+export const getNewsByAuthor = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  // Guard: id must exist and must be a string
+  if (!id || Array.isArray(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid or missing author ID",
+    });
+  }
+
+  // Guard: valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid author ID format",
+    });
+  }
+
+  try {
+    // find news by author
+    const news = await NewsModel.find({
+      "author._id" : new mongoose.Types.ObjectId(id),
+    }).sort({ createdAt: -1 });
+
+    // send response
+    res.status(200).json({
+      success: true,
+      data: news,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch author Articles",
       error: err.message,
     });
   }

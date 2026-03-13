@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,13 +12,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { mockAuthors } from "@/data/mockData";
 import { Check, LoaderCircle, Upload, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import api from "@/lib/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Author, Category, CategoryResponse, Post } from "@/lib/type";
 
+// Fetch All Authors
+const fetchAllAuthors = async (): Promise<{ data: Author[] }> => {
+  const { data } = await api.get("/AllAuthors");
+  return data;
+};
 
 const NewPost = () => {
   // React Router hooks
@@ -32,6 +36,7 @@ const NewPost = () => {
 
   // Main editing post state
   const [editingPost, setEditingPost] = useState<Post | null>(null);
+  const [authors, setAuthors] = useState<Author[]>([]);
 
   // Local state for form fields
   const [bnTitle, setBnTitle] = useState("");
@@ -41,15 +46,19 @@ const NewPost = () => {
   const [categoryEN, setCategoryEN] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState<Author | null>(null);
-  const [featuredImageLocal, setFeaturedImageLocal] = useState<File | null>(null); // local upload
-  const [featuredImage, setFeaturedImage] = useState("");                             // uploaded image URL
-  const [imagePreview, setImagePreview] = useState<string | null>(null);             // preview before upload
-  const [imageCaption, setImageCaption] = useState("");                               // image caption
-  const [tags, setTags] = useState<string[]>([]);                                     // tag list
-  const [tagInput, setTagInput] = useState("");                                       // tag input field
-  const [status, setStatus] = useState<string>("draft");                               // draft/published
-  const [isTyping, setIsTyping] = useState(false);                                    // content editor typing state
-  const [publishState, setPublishState] = useState<"idle" | "publishing" | "success">("idle"); // for submit button
+  const [featuredImageLocal, setFeaturedImageLocal] = useState<File | null>(
+    null,
+  );
+  const [featuredImage, setFeaturedImage] = useState(""); // uploaded image URL
+  const [imagePreview, setImagePreview] = useState<string | null>(null); // preview before upload
+  const [imageCaption, setImageCaption] = useState(""); // image caption
+  const [tags, setTags] = useState<string[]>([]); // tag list
+  const [tagInput, setTagInput] = useState(""); // tag input field
+  const [status, setStatus] = useState<string>("draft"); // draft/published
+  const [isTyping, setIsTyping] = useState(false); // content editor typing state
+  const [publishState, setPublishState] = useState<
+    "idle" | "publishing" | "success"
+  >("idle");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -57,7 +66,7 @@ const NewPost = () => {
   const handleContentFocus = () => setIsTyping(true);
   const handleContentBlur = () => setIsTyping(false);
 
-  // Fetch a single post by ID from API
+  // Fetch a single post by ID
   const fetchNews = async (postId: string): Promise<Post> => {
     const { data } = await api.get(`/news/${postId}`);
     return data; // returns a single Post object
@@ -88,7 +97,6 @@ const NewPost = () => {
     setImageCaption(data.imageCaption || "");
     setTags(data.tags || []);
     setStatus(data.status || "draft");
-
   }, [data]);
 
   // fetch categories
@@ -101,10 +109,20 @@ const NewPost = () => {
     queryKey: ["AllCategories"],
     queryFn: fetchAllCategories,
   });
-  
+
   useEffect(() => {
     if (categoryData) setCategories(categoryData?.data ?? []);
   }, [categoryData]);
+
+  // Fetch All Authors
+  const { data: authorsData } = useQuery({
+    queryKey: ["allAuthors"],
+    queryFn: fetchAllAuthors,
+  });
+
+  useEffect(() => {
+    if (authorsData) setAuthors(authorsData.data ?? []);
+  }, [authorsData]);
 
   const generateSlug = (text: string) => {
     return text
@@ -147,10 +165,26 @@ const NewPost = () => {
     setTagInput("");
   };
 
+  const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (val.includes(",")) {
+      const parts = val.split(",");
+      const newTags = parts
+        .map((p) => p.trim())
+        .filter((p) => p && !tags.includes(p));
+      if (newTags.length > 0) {
+        setTags([...tags, ...newTags]);
+      }
+      setTagInput("");
+    } else {
+      setTagInput(val);
+    }
+  };
+
   const handleTagKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === ",") {
+    if (e.key === "Enter") {
       e.preventDefault();
-      addTag();
+      // addTag(); // Removing addTag on Enter per requirement
     }
   };
 
@@ -167,9 +201,9 @@ const NewPost = () => {
   };
 
   const handleAuthor = (value: string) => {
-    const author = mockAuthors.find((a) => a.name === value);
-    if (author) setAuthor(author)
-  }
+    const author = authors.find((a) => a.name === value);
+    if (author) setAuthor(author);
+  };
 
   const handleImgUpload = async () => {
     if (!featuredImageLocal) return null;
@@ -185,7 +219,7 @@ const NewPost = () => {
         {
           method: "POST",
           body: data,
-        }
+        },
       );
 
       const json = await res.json();
@@ -274,14 +308,14 @@ const NewPost = () => {
         status,
       };
 
-      if (editingPost?._id || editingPost?.id) {
-        await updatePost(editingPost._id || editingPost.id!, formData);
+      if (editingPost?._id) {
+        await updatePost(editingPost._id, formData);
       } else {
         await createPost(formData);
       }
 
       setPublishState("idle");
-      navigate("/all-news");
+      navigate("/");
     } catch (err: unknown) {
       console.error("Create post error:", err);
       const message = err instanceof Error ? err.message : String(err);
@@ -355,7 +389,7 @@ const NewPost = () => {
               <SelectValue placeholder="লেখকের নাম..." />
             </SelectTrigger>
             <SelectContent>
-              {mockAuthors.map((author, index) => (
+              {authors.map((author, index) => (
                 <SelectItem key={index} value={author.name}>
                   {author.name}
                 </SelectItem>
@@ -385,7 +419,9 @@ const NewPost = () => {
 
         {/* Featured Image */}
         <div className={fadeClass(isTyping)}>
-          <Label className="font-body text-sm font-semibold">Featured Image</Label>
+          <Label className="font-body text-sm font-semibold">
+            Featured Image
+          </Label>
           <div className="mt-1">
             {imagePreview ? (
               <div className="relative border border-border rounded-sm overflow-hidden">
@@ -410,7 +446,9 @@ const NewPost = () => {
                 className="w-full h-32 border-2 border-dashed border-border rounded-sm flex flex-col items-center justify-center gap-2 text-muted-foreground hover:border-primary hover:text-primary transition-colors cursor-pointer"
               >
                 <Upload className="h-6 w-6" />
-                <span className="font-body text-sm">ছবি আপলোড করুন (max 10 MB)</span>
+                <span className="font-body text-sm">
+                  ছবি আপলোড করুন (max 10 MB)
+                </span>
               </button>
             )}
             <input
@@ -426,7 +464,10 @@ const NewPost = () => {
         {/* Image Caption */}
         {imagePreview && (
           <div className={fadeClass(isTyping)}>
-            <Label htmlFor="caption" className="font-body text-sm font-semibold">
+            <Label
+              htmlFor="caption"
+              className="font-body text-sm font-semibold"
+            >
               Image Caption
             </Label>
             <Input
@@ -464,9 +505,9 @@ const NewPost = () => {
           <Input
             id="tags"
             value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
+            onChange={handleTagChange}
             onKeyDown={handleTagKeyDown}
-            placeholder="ট্যাগ লিখে Enter চাপুন..."
+            placeholder="ট্যাগ লিখে কমা (,) চাপুন..."
             className="rounded-sm border-border font-body"
           />
         </div>

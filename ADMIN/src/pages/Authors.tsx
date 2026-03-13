@@ -12,7 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { UserPlus, Eye, Trash2, Upload, X } from "lucide-react";
+import { UserPlus, Eye, Edit, Trash2, Upload, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import api from "@/lib/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -20,7 +20,8 @@ import { Author } from "@/lib/type";
 import { Link } from "react-router-dom";
 import AuthorCard from "@/components/AuthorCard";
 
-const fetchAllAuthors = async (): Promise<Author[]> => {
+// Fetch All Authors
+const fetchAllAuthors = async (): Promise<{ data: Author[] }> => {
   const { data } = await api.get("/AllAuthors");
   return data;
 };
@@ -32,6 +33,7 @@ const Authors = () => {
   const [form, setForm] = useState(EMPTY_FORM);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Author | null>(null);
+  const [editingAuthor, setEditingAuthor] = useState<Author | null>(null);
 
   // Image upload state (mirrors NewPost.tsx pattern)
   const [photoLocal, setPhotoLocal] = useState<File | null>(null); // selected file
@@ -44,17 +46,52 @@ const Authors = () => {
 
   const queryClient = useQueryClient();
 
-  const { data } = useQuery({
+  // Fetch All Authors
+  const { data: authorsData } = useQuery({
     queryKey: ["allAuthors"],
     queryFn: fetchAllAuthors,
   });
 
   useEffect(() => {
-    if (data) setAuthors(data ?? []);
-  }, [data]);
+    if (authorsData) setAuthors(authorsData.data ?? []);
+  }, [authorsData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  // scroll to top smoothly
+  const scrollToTop = (duration = 1000) => {
+    const start = window.scrollY;
+    const startTime = performance.now();
+
+    const animateScroll = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      window.scrollTo(0, start * (1 - progress));
+
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
+
+    requestAnimationFrame(animateScroll);
+  };
+
+  const handleEditClick = (author: Author) => {
+    //  scroll to top smoothly
+    scrollToTop(500);
+    // set editing author
+    setEditingAuthor(author);
+    setForm({
+      name: author.name,
+      title: author.title,
+      location: author.location,
+    });
+    setPhotoPreview(author.src);
+    setPhotoUrl(author.src);
+    setPhotoLocal(null);
   };
 
   // File selected → show local preview
@@ -126,8 +163,11 @@ const Authors = () => {
     setIsSubmitting(true);
     try {
       // Upload image first, then submit
-      const uploadedUrl = await uploadToCloudinary();
-      const src = uploadedUrl || photoUrl;
+      let src = photoUrl;
+      if (photoLocal) {
+        const uploadedUrl = await uploadToCloudinary();
+        if (uploadedUrl) src = uploadedUrl;
+      }
 
       if (!src) {
         toast({
@@ -138,25 +178,38 @@ const Authors = () => {
         return;
       }
 
-      const res = await api.post("/AddAuthor", { ...form, src });
+      let res;
+      if (editingAuthor) {
+        res = await api.put(`/author/${editingAuthor._id}`, {
+          ...form,
+          src,
+        }); // Adjust /author to /UpdateAuthor if it matches NewPost style
+      } else {
+        res = await api.post("/addAuthor", { ...form, src });
+      }
 
       if (res.status !== 200 && res.status !== 201) {
-        throw new Error("Server failed to create author.");
+        throw new Error(
+          editingAuthor
+            ? "Server failed to update author."
+            : "Server failed to create author.",
+        );
       }
 
       queryClient.invalidateQueries({ queryKey: ["allAuthors"] });
       setForm(EMPTY_FORM);
       removeImage();
+      setEditingAuthor(null);
 
       toast({
-        title: "লেখক যোগ হয়েছে",
-        description: `"${form.name}" সফলভাবে তৈরি হয়েছে।`,
+        title: editingAuthor ? "লেখক আপডেট হয়েছে" : "লেখক যোগ হয়েছে",
+        description: `"${form.name}" সফলভাবে ${editingAuthor ? "আপডেট" : "তৈরি"} হয়েছে।`,
       });
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "Unknown error occurred.";
       toast({
-        title: "লেখক যোগ করা যায়নি",
+        title: editingAuthor ? "লেখক আপডেট করা যায়নি" : "লেখক যোগ করা যায়নি",
         description: message,
         variant: "destructive",
       });
@@ -168,7 +221,7 @@ const Authors = () => {
   const handleDelete = async () => {
     if (!deleteTarget?._id) return;
     try {
-      await api.delete(`/DeleteAuthor/${deleteTarget._id}`);
+      await api.delete(`/author/${deleteTarget._id}`);
       queryClient.invalidateQueries({ queryKey: ["allAuthors"] });
       toast({
         title: "লেখক মুছে ফেলা হয়েছে",
@@ -198,9 +251,10 @@ const Authors = () => {
         <div className="bg-card border border-border rounded-sm p-5">
           <h2 className="text-lg font-bold font-heading text-foreground mb-4 flex items-center gap-2">
             <UserPlus className="h-5 w-5" />
-            Add New Author
+            {editingAuthor ? "Edit Author" : "Add New Author"}
           </h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {/* name */}
             <div className="flex flex-col gap-1.5">
               <Label
                 htmlFor="name"
@@ -217,7 +271,7 @@ const Authors = () => {
                 className="rounded-sm border-border font-body"
               />
             </div>
-
+            {/* title */}
             <div className="flex flex-col gap-1.5">
               <Label
                 htmlFor="title"
@@ -234,7 +288,7 @@ const Authors = () => {
                 className="rounded-sm border-border font-body"
               />
             </div>
-
+            {/* location */}
             <div className="flex flex-col gap-1.5">
               <Label
                 htmlFor="location"
@@ -252,7 +306,7 @@ const Authors = () => {
               />
             </div>
 
-            {/* Photo Upload — matches NewPost.tsx Featured Image pattern */}
+            {/* Photo Upload */}
             <div className="flex flex-col gap-1.5">
               <Label className="font-body text-sm text-muted-foreground">
                 Author Photo
@@ -297,13 +351,34 @@ const Authors = () => {
               </div>
             </div>
 
+            {/* submit button */}
             <Button
               type="submit"
               className="rounded-sm font-body w-full mt-1"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Uploading & Adding..." : "Add Author"}
+              {isSubmitting
+                ? editingAuthor
+                  ? "Updating..."
+                  : "Uploading & Adding..."
+                : editingAuthor
+                  ? "Update Author"
+                  : "Add Author"}
             </Button>
+            {editingAuthor && (
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-sm font-body w-full mt-1"
+                onClick={() => {
+                  setEditingAuthor(null);
+                  setForm(EMPTY_FORM);
+                  removeImage();
+                }}
+              >
+                Cancel Edit
+              </Button>
+            )}
           </form>
         </div>
 
@@ -367,7 +442,15 @@ const Authors = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 rounded-sm text-destructive hover:text-destructive"
+                          className="h-8 w-8 rounded-sm text-primary hover:text-primary hover:bg-primary/10"
+                          onClick={() => handleEditClick(author)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 rounded-sm text-destructive hover:text-destructive hover:bg-destructive/10"
                           onClick={() => setDeleteTarget(author)}
                         >
                           <Trash2 className="h-4 w-4" />
@@ -401,6 +484,7 @@ const Authors = () => {
               <AuthorCard
                 key={author._id}
                 author={author}
+                onEdit={(a) => handleEditClick(a)}
                 onDelete={(a) => setDeleteTarget(a)}
               />
             ))}
