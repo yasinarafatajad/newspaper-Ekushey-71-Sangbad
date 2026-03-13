@@ -1,14 +1,3 @@
-import { Author, Category } from "@/lib/type";
-
-
-export const mockAuthors: Author[] = [
-  {
-    name: "Salim Ahmed Shuvo",
-    title: "Editor",
-    src: "https://res.cloudinary.com/dvzguci6p/image/upload/v1773353725/Ekushey71/News/rap0aqgyll0sl02n4rvh.jpg",
-    location: "Netrokona",
-  },
-];
 
 export const mockUserProfile = {
   name: "মোঃ তানভীর হাসান",

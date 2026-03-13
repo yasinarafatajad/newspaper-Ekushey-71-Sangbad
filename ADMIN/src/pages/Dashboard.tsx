@@ -140,10 +140,10 @@ const Dashboard = () => {
                   </td>
                   <td className="p-3">
                     <Badge
-                      variant={post.status === "published" ? "default" : "secondary"}
+                      variant={post.status === "published" ? "default" : "outline"}
                       className={`rounded-sm text-xs ${post.status === "published"
                         ? "bg-success text-success-foreground"
-                        : ""
+                        : "bg-blue-500 text-success-foreground"
                         }`}
                     >
                       {post.status === "published" ? "Published" : "Draft"}

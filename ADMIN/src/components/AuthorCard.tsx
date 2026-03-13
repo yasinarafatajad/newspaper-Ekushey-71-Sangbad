@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Eye, Trash2, MapPin, BadgeCheck } from "lucide-react";
+import { Eye, Edit, Trash2, MapPin, BadgeCheck } from "lucide-react";
 import { Author } from "@/lib/type";
 
 interface AuthorCardProps {
   author: Author;
+  onEdit: (author: Author) => void;
   onDelete: (author: Author) => void;
 }
 
-const AuthorCard = ({ author, onDelete }: AuthorCardProps) => {
+const AuthorCard = ({ author, onEdit, onDelete }: AuthorCardProps) => {
   return (
     <div className="bg-card border border-border rounded-sm p-4 flex flex-col gap-3 hover:bg-accent/30 transition-colors">
       {/* Avatar + Info */}
@@ -45,6 +46,14 @@ const AuthorCard = ({ author, onDelete }: AuthorCardProps) => {
             <Eye className="h-3 w-3 mr-1" />
             View
           </Link>
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 rounded-sm text-primary hover:text-primary hover:bg-primary/10"
+          onClick={() => onEdit(author)}
+        >
+          <Edit className="h-4 w-4" />
         </Button>
         <Button
           variant="ghost"

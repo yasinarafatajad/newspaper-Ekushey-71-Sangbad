@@ -7,36 +7,45 @@ import api from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { Author, Post } from "@/lib/type";
 import { formatDate } from "@/lib/formats";
+import { log } from "util";
 
+// Fetch Author
 const fetchAuthor = async (id: string): Promise<Author> => {
-  const { data } = await api.get(`/Author/${id}`);
+  const { data } = await api.get(`/author/${id}`);
   return data;
 };
 
-const fetchAuthorPosts = async (id: string): Promise<Post[]> => {
+// Fetch Author Articles
+const fetchAuthorPosts = async (id: string): Promise<{ data: Post[] }> => {
   const { data } = await api.get(`/NewsByAuthor/${id}`);
   return data;
 };
 
 const AuthorDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [news, setNews] = useState<Post[]>([]);
+  const [isAuthor, setIsAuthor] = useState<Author>();
 
+  // Fetch Author
   const { data: author, isLoading: authorLoading } = useQuery({
     queryKey: ["author", id],
     queryFn: () => fetchAuthor(id!),
     enabled: !!id,
   });
 
-  const { data: postsData } = useQuery({
+  useEffect(() => {
+    if (author) setIsAuthor(author);
+  }, [author]);
+
+  // Fetch Author Articles
+  const { data: newsData } = useQuery({
     queryKey: ["authorPosts", id],
     queryFn: () => fetchAuthorPosts(id!),
     enabled: !!id,
   });
-
   useEffect(() => {
-    if (postsData) setPosts(postsData ?? []);
-  }, [postsData]);
+    if (newsData) setNews(newsData?.data ?? []);
+  }, [newsData]);
 
   if (authorLoading) {
     return (
@@ -81,29 +90,29 @@ const AuthorDetails = () => {
       <div className="bg-card border border-border rounded-sm p-6 mb-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
           <img
-            src={author.src}
-            alt={author.name}
+            src={isAuthor?.src}
+            alt={isAuthor?.name}
             className="h-20 w-20 rounded-full object-cover border-2 border-border flex-shrink-0"
           />
           <div className="flex-1">
             <h1 className="text-2xl font-bold font-heading text-foreground">
-              {author.name}
+              {isAuthor?.name}
             </h1>
             <div className="flex flex-wrap items-center gap-3 mt-2">
               <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-body">
                 <BadgeCheck className="h-4 w-4" />
-                <span>{author.title}</span>
+                <span>{isAuthor?.title}</span>
               </div>
               <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-body">
                 <MapPin className="h-4 w-4" />
-                <span>{author.location}</span>
+                <span>{isAuthor?.location}</span>
               </div>
             </div>
           </div>
           {/* Stats */}
           <div className="flex sm:flex-col items-center sm:items-end gap-2 sm:gap-1">
             <p className="text-2xl font-bold font-heading text-foreground">
-              {posts.length}
+              {news.length}
             </p>
             <p className="text-xs text-muted-foreground font-body flex items-center gap-1">
               <Newspaper className="h-3 w-3" /> articles
@@ -132,7 +141,7 @@ const AuthorDetails = () => {
               </tr>
             </thead>
             <tbody>
-              {posts.map((post) => (
+              {news.map((post) => (
                 <tr
                   key={post._id}
                   className="border-b border-border last:border-0 hover:bg-accent/50"
@@ -172,7 +181,7 @@ const AuthorDetails = () => {
                   </td>
                 </tr>
               ))}
-              {posts.length === 0 && (
+              {news.length === 0 && (
                 <tr>
                   <td
                     colSpan={5}
