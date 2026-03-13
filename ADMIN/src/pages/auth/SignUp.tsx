@@ -185,7 +185,7 @@ const SignUp = () => {
                   name="name"
                   value={form.name}
                   onChange={handleChange}
-                  placeholder="Salim Ahmed"
+                  placeholder="e.g. Your Name"
                   required
                 />
               </div>

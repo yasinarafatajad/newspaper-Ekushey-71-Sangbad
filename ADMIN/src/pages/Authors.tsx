@@ -303,7 +303,7 @@ const Authors = () => {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                placeholder="e.g. Salim Ahmed Shuvo"
+                placeholder="e.g. Your Name"
                 className="rounded-sm border-border font-body"
               />
             </div>
