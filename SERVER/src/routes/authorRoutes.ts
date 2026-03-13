@@ -1,11 +1,12 @@
-import express from "express";
-import { AddProduct, DeleteProduct, GetAllProducts, GetProduct } from "../controllers/product.js";
+import express, { Router } from "express";
+import { createAuthor, deleteAuthor, getAllAuthors, getAuthor, updateAuthor } from "../controllers/authorControllers.js";
 
-const router = express.Router();
+const router : Router = express.Router();
 
-router.get('/AllProducts' , GetAllProducts)
-router.get('/Product/:id' , GetProduct)
-router.post('/AddProduct' , AddProduct)
-router.delete('/DeleteProduct/:id' , DeleteProduct)
+router.post("/addAuthor", createAuthor);
+router.get("/getAllAuthor", getAllAuthors);
+router.get("/author/:id", getAuthor);
+router.put("/author/:id", updateAuthor);
+router.delete("/author/:id", deleteAuthor);
 
 export default router;

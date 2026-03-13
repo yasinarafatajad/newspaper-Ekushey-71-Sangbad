@@ -4,6 +4,7 @@ import {
   FileText,
   FolderOpen,
   User,
+  UserRoundPen,
   // Settings,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
@@ -29,6 +30,7 @@ const navItems = [
   { title: "New News", url: "/new-news", icon: FilePlus },
   { title: "All News", url: "/all-news", icon: FileText },
   { title: "Categories", url: "/categories", icon: FolderOpen },
+  { title: "Authors", url: "/authors", icon: UserRoundPen },
   // { title: "Profile", url: "/profile", icon: User },
   // { title: "Settings", url: "/settings", icon: Settings },
 ];

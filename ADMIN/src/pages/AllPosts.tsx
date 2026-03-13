@@ -13,7 +13,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Search, Pencil, Trash2 } from "lucide-react";
+import { Search, Pencil, Trash2, Eye } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import api from "@/lib/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -24,7 +24,9 @@ const fetchAllNews = async (): Promise<Post[]> => {
   const { data } = await api.get("/AllNews");
   return data;
 };
-const deleteNews = async (id: string): Promise<{ success: boolean; deletedPost?: Post }> => {
+const deleteNews = async (
+  id: string,
+): Promise<{ success: boolean; deletedPost?: Post }> => {
   try {
     const { data } = await api.delete(`/DeleteNews/${id}`);
     return data;
@@ -36,12 +38,12 @@ const deleteNews = async (id: string): Promise<{ success: boolean; deletedPost?:
 
 const AllPosts = () => {
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "published" | "draft"
+  >("all");
   const [posts, setPosts] = useState<Post[]>([]);
   const [deleteTarget, setDeleteTarget] = useState<Post | null>(null);
   const queryClient = useQueryClient();
-
-
 
   const { data } = useQuery({
     queryKey: ["allNews"],
@@ -57,7 +59,10 @@ const AllPosts = () => {
       post.enTitle.toLowerCase().includes(search.toLowerCase()) ||
       post.bnTitle.toLowerCase().includes(search) ||
       post.categoryBN.toLowerCase().includes(search.toLowerCase()) ||
-      post.categoryEN.toLowerCase().toLowerCase().includes(search.toLowerCase());
+      post.categoryEN
+        .toLowerCase()
+        .toLowerCase()
+        .includes(search.toLowerCase());
     const matchesStatus =
       statusFilter === "all" || post.status === statusFilter;
     return matchesSearch && matchesStatus;
@@ -68,7 +73,7 @@ const AllPosts = () => {
 
     try {
       // Call API to delete the post
-      const response = await deleteNews(deleteTarget._id || deleteTarget.id!);
+      const response = await deleteNews(deleteTarget._id);
 
       // Refetch all posts after successful deletion
       queryClient.invalidateQueries({ queryKey: ["allNews"] });
@@ -83,7 +88,9 @@ const AllPosts = () => {
       toast({
         title: "পোস্ট মুছে ফেলা যায়নি",
         description:
-          err instanceof Error ? err.message : "অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
+          err instanceof Error
+            ? err.message
+            : "অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
         variant: "destructive",
       });
     } finally {
@@ -130,7 +137,9 @@ const AllPosts = () => {
           <thead className="sticky top-0 bg-card">
             <tr className="border-b border-border text-left text-muted-foreground">
               <th className="p-3 font-semibold">Title</th>
-              <th className="p-3 font-semibold hidden sm:table-cell">Category</th>
+              <th className="p-3 font-semibold hidden sm:table-cell">
+                Category
+              </th>
               <th className="p-3 font-semibold">Status</th>
               <th className="p-3 font-semibold hidden md:table-cell">Date</th>
               <th className="p-3 font-semibold text-right">Actions</th>
@@ -148,11 +157,14 @@ const AllPosts = () => {
                 </td>
                 <td className="p-3">
                   <Badge
-                    variant={post.status === "published" ? "default" : "secondary"}
-                    className={`rounded-sm text-xs ${post.status === "published"
-                      ? "bg-success text-success-foreground"
-                      : ""
-                      }`}
+                    variant={
+                      post.status === "published" ? "default" : "secondary"
+                    }
+                    className={`rounded-sm text-xs ${
+                      post.status === "published"
+                        ? "bg-success text-success-foreground"
+                        : ""
+                    }`}
                   >
                     {post.status === "published" ? "Published" : "Draft"}
                   </Badge>
@@ -162,6 +174,16 @@ const AllPosts = () => {
                 </td>
                 <td className="p-3 text-right">
                   <div className="flex items-center justify-end gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      asChild
+                      className="h-8 w-8 rounded-sm"
+                    >
+                      <Link to={`/news/${post._id}`}>
+                        <Eye className="h-4 w-4" />
+                      </Link>
+                    </Button>
                     <Button
                       variant="ghost"
                       size="icon"
@@ -186,7 +208,10 @@ const AllPosts = () => {
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={5} className="p-8 text-center text-muted-foreground">
+                <td
+                  colSpan={5}
+                  className="p-8 text-center text-muted-foreground"
+                >
                   No posts found.
                 </td>
               </tr>
@@ -196,16 +221,24 @@ const AllPosts = () => {
       </div>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+      <AlertDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+      >
         <AlertDialogContent className="rounded-sm">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-heading">পোস্ট মুছে ফেলুন?</AlertDialogTitle>
+            <AlertDialogTitle className="font-heading">
+              পোস্ট মুছে ফেলুন?
+            </AlertDialogTitle>
             <AlertDialogDescription className="font-body">
-              আপনি কি নিশ্চিত যে আপনি "{deleteTarget?.bnTitle}" মুছে ফেলতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।
+              আপনি কি নিশ্চিত যে আপনি "{deleteTarget?.bnTitle}" মুছে ফেলতে চান?
+              এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="rounded-sm font-body">বাতিল</AlertDialogCancel>
+            <AlertDialogCancel className="rounded-sm font-body">
+              বাতিল
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="rounded-sm bg-destructive text-destructive-foreground hover:bg-destructive/90 font-body"

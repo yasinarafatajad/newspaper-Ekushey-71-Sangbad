@@ -11,6 +11,9 @@ import Categories from "./pages/Categories";
 // import Profile from "./pages/Profile";
 // import SettingsPage from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import Authors from "./pages/Authors";
+import NewsDetails from "./pages/NewsDetails";
+import AuthorDetails from "./pages/AuthorDetails";
 
 const queryClient = new QueryClient();
 
@@ -26,7 +29,10 @@ const App = () => (
             <Route path="/new-news" element={<NewPost />} />
             <Route path="/edit-news/:id" element={<NewPost />} />
             <Route path="/all-news" element={<AllPosts />} />
+            <Route path="/news/:id" element={<NewsDetails />} />
             <Route path="/categories" element={<Categories />} />
+            <Route path="/authors" element={<Authors />} />
+            <Route path="/author/:id" element={<AuthorDetails />} />
             {/* <Route path="/profile" element={<Profile />} /> */}
             {/* <Route path="/settings" element={<SettingsPage />} /> */}
             <Route path="*" element={<NotFound />} />
