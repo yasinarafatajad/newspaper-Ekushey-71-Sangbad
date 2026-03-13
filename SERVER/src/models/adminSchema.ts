@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const Author = new Schema(
+const Admin = new Schema(
   {
     name: {
       type: String,
@@ -26,20 +26,25 @@ const Author = new Schema(
     },
     email: {
       type: String,
+      required: true,
+      unique: true,
       trim: true,
       lowercase: true,
     },
     username: {
       type: String,
+      required: true,
+      unique: true,
       trim: true,
     },
     password: {
       type: String,
+      required: true,
     },
   },
   { timestamps: true, versionKey: false },
 );
 
-const authorSchema = mongoose.model("Author", Author);
+const adminSchema = mongoose.model("Admin", Admin);
 
-export default authorSchema;
+export default adminSchema;

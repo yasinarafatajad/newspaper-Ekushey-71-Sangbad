@@ -23,8 +23,20 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import logo from "../assets/logoLight.png";
 import icon from "../assets/icon.png";
+import { toast } from "@/hooks/use-toast";
 
 const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -91,18 +103,47 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-border p-4 flex flex-col gap-2">
-        <SidebarMenuButton
-          asChild
-          className="text-destructive hover:bg-destructive/10 hover:text-destructive w-full cursor-pointer"
-        >
-          <div
-            onClick={() => console.log("logout")}
-            className="flex items-center gap-3 px-3 py-2 font-body text-sm rounded-sm"
-          >
-            <LogOut className="h-5 w-5 shrink-0" />
-            {!collapsed && <span>Log Out</span>}
-          </div>
-        </SidebarMenuButton>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <SidebarMenuButton
+              asChild
+              className="text-destructive hover:bg-destructive/10 hover:text-destructive w-full cursor-pointer"
+            >
+              <div className="flex items-center gap-3 px-3 py-2 font-body text-sm rounded-sm">
+                <LogOut className="h-5 w-5 shrink-0" />
+                {!collapsed && <span>Log Out</span>}
+              </div>
+            </SidebarMenuButton>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action will log you out of your Admin session. You will
+                need to log back in to access the dashboard.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                onClick={() => {
+                  localStorage.removeItem("adminToken");
+                  sessionStorage.removeItem("adminToken");
+                  localStorage.removeItem("adminUser");
+                  sessionStorage.removeItem("adminUser");
+                  toast({
+                    title: "Logged Out",
+                    description: "You have been successfully logged out.",
+                  });
+                  window.location.href = "/login";
+                }}
+              >
+                Log Out
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
         {!collapsed && (
           <p className="text-xs text-muted-foreground font-body text-center mt-2">
             © {new Date().getFullYear()} Ekushey 71 Sangbad

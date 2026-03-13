@@ -26,7 +26,15 @@ const fetchAllAuthors = async (): Promise<{ data: Author[] }> => {
   return data;
 };
 
-const EMPTY_FORM = { name: "", title: "", location: "" };
+const EMPTY_FORM = {
+  name: "",
+  title: "",
+  location: "",
+  email: "",
+  username: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const Authors = () => {
   const [authors, setAuthors] = useState<Author[]>([]);
@@ -34,6 +42,7 @@ const Authors = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Author | null>(null);
   const [editingAuthor, setEditingAuthor] = useState<Author | null>(null);
+  const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
 
   // Image upload state (mirrors NewPost.tsx pattern)
   const [photoLocal, setPhotoLocal] = useState<File | null>(null); // selected file
@@ -88,6 +97,10 @@ const Authors = () => {
       name: author.name,
       title: author.title,
       location: author.location,
+      email: author.email || "",
+      username: author.username || "",
+      password: "",
+      confirmPassword: "",
     });
     setPhotoPreview(author.src);
     setPhotoUrl(author.src);
@@ -98,6 +111,15 @@ const Authors = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast({
+          title: "ফাইল অনেক বড়",
+          description: "ছবির সাইজ ১০ মেগাবাইটের (10 MB) বেশি হতে পারবে না।",
+          variant: "destructive",
+        });
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
       setPhotoLocal(file);
       const reader = new FileReader();
       reader.onloadend = () => setPhotoPreview(reader.result as string);
@@ -151,6 +173,15 @@ const Authors = () => {
       return;
     }
 
+    if (form.password && form.password !== form.confirmPassword) {
+      toast({
+        title: "Passwords do not match",
+        description: "Please ensure your passwords match.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!photoLocal && !photoUrl) {
       toast({
         title: "ছবি প্রয়োজন",
@@ -160,7 +191,12 @@ const Authors = () => {
       return;
     }
 
-    setIsSubmitting(true);
+    // Validated, open confirm
+    setShowConfirmSubmit(true);
+  };
+
+  const handleConfirmSubmit = async () => {
+    setShowConfirmSubmit(false);
     try {
       // Upload image first, then submit
       let src = photoUrl;
@@ -260,7 +296,7 @@ const Authors = () => {
                 htmlFor="name"
                 className="font-body text-sm text-muted-foreground"
               >
-                Full Name
+                Full Name <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="name"
@@ -277,7 +313,7 @@ const Authors = () => {
                 htmlFor="title"
                 className="font-body text-sm text-muted-foreground"
               >
-                Title / Designation
+                Title / Designation <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="title"
@@ -294,7 +330,7 @@ const Authors = () => {
                 htmlFor="location"
                 className="font-body text-sm text-muted-foreground"
               >
-                Location
+                Location <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="location"
@@ -306,10 +342,88 @@ const Authors = () => {
               />
             </div>
 
+            {/* Email */}
+            <div className="flex flex-col gap-1.5">
+              <Label
+                htmlFor="email"
+                className="font-body text-sm text-muted-foreground"
+              >
+                Email Address <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="author@example.com"
+                className="rounded-sm border-border font-body"
+              />
+            </div>
+
+            {/* Username */}
+            <div className="flex flex-col gap-1.5">
+              <Label
+                htmlFor="username"
+                className="font-body text-sm text-muted-foreground"
+              >
+                Username <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="username"
+                name="username"
+                value={form.username}
+                onChange={handleChange}
+                placeholder="author123"
+                className="rounded-sm border-border font-body"
+              />
+            </div>
+
+            {/* Password */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1.5">
+                <Label
+                  htmlFor="password"
+                  className="font-body text-sm text-muted-foreground"
+                >
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder={
+                    editingAuthor ? "Leave blank to keep same" : "****"
+                  }
+                  className="rounded-sm border-border font-body"
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label
+                  htmlFor="confirmPassword"
+                  className="font-body text-sm text-muted-foreground"
+                >
+                  Confirm Password
+                </Label>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  value={form.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="****"
+                  className="rounded-sm border-border font-body"
+                />
+              </div>
+            </div>
+
             {/* Photo Upload */}
             <div className="flex flex-col gap-1.5">
               <Label className="font-body text-sm text-muted-foreground">
-                Author Photo
+                Author Photo (recommended square size){" "}
+                <span className="text-destructive">*</span>
               </Label>
               <div>
                 {photoPreview ? (
@@ -427,6 +541,16 @@ const Authors = () => {
                     <td className="p-3 hidden lg:table-cell text-muted-foreground">
                       {author.location}
                     </td>
+                    <td className="p-3 hidden xl:table-cell text-muted-foreground text-xs">
+                      {author.email || author.username ? (
+                        <div className="flex flex-col">
+                          {author.email && <span>{author.email}</span>}
+                          {author.username && <span>@{author.username}</span>}
+                        </div>
+                      ) : (
+                        "-"
+                      )}
+                    </td>
                     <td className="p-3 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <Button
@@ -519,6 +643,29 @@ const Authors = () => {
               className="rounded-sm bg-destructive text-destructive-foreground hover:bg-destructive/90 font-body"
             >
               মুছে ফেলুন
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <AlertDialog open={showConfirmSubmit} onOpenChange={setShowConfirmSubmit}>
+        <AlertDialogContent className="rounded-sm">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-heading">
+              {editingAuthor ? "লেখক আপডেট করবেন?" : "লেখক যোগ করবেন?"}
+            </AlertDialogTitle>
+            <AlertDialogDescription className="font-body">
+              আপনি কি নিশ্চিত যে আপনি এই লেখকের তথ্য সংরক্ষণ করতে চান?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-sm font-body">
+              বাতিল
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmSubmit}
+              className="rounded-sm bg-primary text-primary-foreground font-body"
+            >
+              নিশ্চিত করুন
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

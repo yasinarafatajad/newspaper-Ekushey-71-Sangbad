@@ -10,7 +10,15 @@ import api from "@/lib/api";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: "", title: "", location: "" });
+  const [form, setForm] = useState({
+    name: "",
+    title: "",
+    location: "",
+    email: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [photoLocal, setPhotoLocal] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -26,6 +34,15 @@ const SignUp = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast({
+          title: "ফাইল অনেক বড়",
+          description: "ছবির সাইজ ১০ মেগাবাইটের (10 MB) বেশি হতে পারবে না।",
+          variant: "destructive",
+        });
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
       setPhotoLocal(file);
       const reader = new FileReader();
       reader.onloadend = () => setPhotoPreview(reader.result as string);
@@ -60,10 +77,25 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.title.trim() || !form.location.trim()) {
+    if (
+      !form.name.trim() ||
+      !form.title.trim() ||
+      !form.location.trim() ||
+      !form.email.trim() ||
+      !form.username.trim() ||
+      !form.password
+    ) {
       toast({
         title: "তথ্য অসম্পূর্ণ",
-        description: "নাম, পদবী এবং স্থান পূরণ করুন।",
+        description: "All fields are required.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (form.password !== form.confirmPassword) {
+      toast({
+        title: "Passwords do not match",
+        description: "Please ensure your passwords match.",
         variant: "destructive",
       });
       return;
@@ -88,7 +120,15 @@ const SignUp = () => {
         setIsSubmitting(false);
         return;
       }
-      const res = await api.post("/addAuthor", { ...form, src });
+      const res = await api.post("/signup", {
+        name: form.name,
+        title: form.title,
+        location: form.location,
+        email: form.email,
+        username: form.username,
+        password: form.password,
+        src,
+      });
       if (res.status !== 200 && res.status !== 201)
         throw new Error("Server failed");
       toast({
@@ -96,7 +136,15 @@ const SignUp = () => {
         description: `"${form.name}", you can now log in.`,
       });
       // Clear form
-      setForm({ name: "", title: "", location: "" });
+      setForm({
+        name: "",
+        title: "",
+        location: "",
+        email: "",
+        username: "",
+        password: "",
+        confirmPassword: "",
+      });
       removeImage();
       navigate("/login");
     } catch (err: unknown) {
@@ -129,7 +177,9 @@ const SignUp = () => {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="name">
+                  Full Name <span className="text-destructive">*</span>
+                </Label>
                 <Input
                   id="name"
                   name="name"
@@ -140,7 +190,10 @@ const SignUp = () => {
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <Label htmlFor="title">Title / Designation</Label>
+                <Label htmlFor="title">
+                  Title / Designation{" "}
+                  <span className="text-destructive">*</span>
+                </Label>
                 <Input
                   id="title"
                   name="title"
@@ -153,7 +206,9 @@ const SignUp = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="location">
+                Location <span className="text-destructive">*</span>
+              </Label>
               <Input
                 id="location"
                 name="location"
@@ -165,7 +220,25 @@ const SignUp = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label>Author Photo</Label>
+              <Label htmlFor="email">
+                Email Address <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="admin@gmail.com"
+                required
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label>
+                Author Photo (recommended square size){" "}
+                <span className="text-destructive">*</span>
+              </Label>
               {photoPreview ? (
                 <div className="relative border border-border rounded-sm overflow-hidden">
                   <img
@@ -201,6 +274,51 @@ const SignUp = () => {
                 className="hidden"
                 required={!photoPreview}
               />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="username">
+                Username <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="username"
+                name="username"
+                value={form.username}
+                onChange={handleChange}
+                placeholder="admin123"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="password">
+                  Password <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder="****"
+                  required
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="confirmPassword">
+                  Confirm Password <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  value={form.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="****"
+                  required
+                />
+              </div>
             </div>
 
             <Button
