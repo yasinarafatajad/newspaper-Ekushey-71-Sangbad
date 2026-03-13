@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import newsRoutes from "./routes/newsRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import authorRoutes from "./routes/authorRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const port: number = Number(process.env.PORT) || 5000;
 const app: Application = express();
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1", newsRoutes);
 app.use("/api/v1", categoryRoutes);
 app.use("/api/v1", authorRoutes);
+app.use("/api/v1", authRoutes);
 
 // test route
 app.get("/", (req, res) => {

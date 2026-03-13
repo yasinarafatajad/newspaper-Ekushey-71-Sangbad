@@ -15,8 +15,7 @@ const fetchAllNews = async (): Promise<Post[]> => {
 
 const Dashboard = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
-  
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const stats = [
     {
@@ -50,21 +49,21 @@ const Dashboard = () => {
   useEffect(() => {
     if (data) setPosts(data ?? []);
   }, [data]);
-  
+
   // fetch all category
-    const fetchAllCategories = async (): Promise<CategoryResponse> => {
-      const { data } = await api.get("/AllCategory");
-      return data;
-    };
-  
-    const { data: categoryData } = useQuery({
-      queryKey: ["AllCategories"],
-      queryFn: fetchAllCategories,
-    });
-    
-    useEffect(() => {
-      if (categoryData) setCategories(categoryData?.data ?? []);
-    }, [categoryData]);
+  const fetchAllCategories = async (): Promise<CategoryResponse> => {
+    const { data } = await api.get("/AllCategory");
+    return data;
+  };
+
+  const { data: categoryData } = useQuery({
+    queryKey: ["AllCategories"],
+    queryFn: fetchAllCategories,
+  });
+
+  useEffect(() => {
+    if (categoryData) setCategories(categoryData?.data ?? []);
+  }, [categoryData]);
 
   const today = new Date().toISOString();
 
@@ -72,25 +71,20 @@ const Dashboard = () => {
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
         <div>
           <h1 className="text-2xl font-bold font-heading text-foreground">
             Dashboard
           </h1>
           <p className="text-sm text-muted-foreground font-body mt-1 flex items-center gap-1">
-            <span>{formatDate(today)},</span><span>{formatDay(today)}</span>
+            <span>{formatDate(today)},</span>
+            <span>{formatDay(today)}</span>
           </p>
         </div>
-        <Button asChild className="rounded-sm">
-          <Link to="/new-news">
-            <FilePlus className="h-4 w-4 mr-2" />
-            Add News
-          </Link>
-        </Button>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         {stats.map((stat) => (
           <div
             key={stat.label}
@@ -112,7 +106,7 @@ const Dashboard = () => {
       </div>
 
       {/* Recent Posts */}
-      <div className="bg-card border border-border rounded-sm">
+      <div className="bg-card border border-border rounded-sm mb-4">
         <div className="p-4 border-b border-border">
           <h2 className="text-lg font-bold font-heading text-foreground">
             Recent News
@@ -123,7 +117,9 @@ const Dashboard = () => {
             <thead>
               <tr className="border-b border-border text-left text-muted-foreground">
                 <th className="p-3 font-semibold">Title</th>
-                <th className="p-3 font-semibold hidden sm:table-cell">Category</th>
+                <th className="p-3 font-semibold hidden sm:table-cell">
+                  Category
+                </th>
                 <th className="p-3 font-semibold">Status</th>
                 <th className="p-3 font-semibold hidden md:table-cell">Date</th>
               </tr>
@@ -140,11 +136,14 @@ const Dashboard = () => {
                   </td>
                   <td className="p-3">
                     <Badge
-                      variant={post.status === "published" ? "default" : "outline"}
-                      className={`rounded-sm text-xs ${post.status === "published"
-                        ? "bg-success text-success-foreground"
-                        : "bg-blue-500 text-success-foreground"
-                        }`}
+                      variant={
+                        post.status === "published" ? "default" : "outline"
+                      }
+                      className={`rounded-sm text-xs ${
+                        post.status === "published"
+                          ? "bg-success text-success-foreground"
+                          : "bg-blue-500 text-success-foreground"
+                      }`}
                     >
                       {post.status === "published" ? "Published" : "Draft"}
                     </Badge>
@@ -157,6 +156,16 @@ const Dashboard = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Add News Button */}
+      <div className="flex flex-col items-center justify-center">
+        <Button asChild className="rounded-sm w-full">
+          <Link to="/new-news">
+            <FilePlus className="h-4 w-4 mr-2" />
+            Add News
+          </Link>
+        </Button>
       </div>
     </div>
   );

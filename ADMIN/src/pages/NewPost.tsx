@@ -144,6 +144,15 @@ const NewPost = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast({
+          title: "ফাইল অনেক বড়",
+          description: "ছবির সাইজ ১০ মেগাবাইটের (10 MB) বেশি হতে পারবে না।",
+          variant: "destructive",
+        });
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
       setFeaturedImageLocal(file);
       const reader = new FileReader();
       reader.onloadend = () => setImagePreview(reader.result as string);
@@ -340,7 +349,7 @@ const NewPost = () => {
         {/* Bangla Title */}
         <div className={fadeClass(isTyping)}>
           <Label htmlFor="bnTitle" className="font-body text-sm font-semibold">
-            Bangla Title
+            Bangla Title <span className="text-destructive">*</span>
           </Label>
           <Input
             id="bnTitle"
@@ -354,7 +363,7 @@ const NewPost = () => {
         {/* English Title */}
         <div className={fadeClass(isTyping)}>
           <Label htmlFor="enTitle" className="font-body text-sm font-semibold">
-            English Title
+            English Title <span className="text-destructive">*</span>
           </Label>
           <Input
             id="enTitle"
@@ -382,7 +391,7 @@ const NewPost = () => {
         {/* Author Name */}
         <div className={fadeClass(isTyping)}>
           <Label htmlFor="category" className="font-body text-sm font-semibold">
-            Author Name
+            Author Name <span className="text-destructive">*</span>
           </Label>
           <Select value={author?.name} onValueChange={handleAuthor}>
             <SelectTrigger className="mt-1 rounded-sm border-border font-body">
@@ -401,7 +410,7 @@ const NewPost = () => {
         {/* Category */}
         <div className={fadeClass(isTyping)}>
           <Label htmlFor="category" className="font-body text-sm font-semibold">
-            Category
+            Category <span className="text-destructive">*</span>
           </Label>
           <Select value={categoryEN} onValueChange={handleCategoryChange}>
             <SelectTrigger className="mt-1 rounded-sm border-border font-body">
@@ -420,7 +429,7 @@ const NewPost = () => {
         {/* Featured Image */}
         <div className={fadeClass(isTyping)}>
           <Label className="font-body text-sm font-semibold">
-            Featured Image
+            Featured Image <span className="text-destructive">*</span>
           </Label>
           <div className="mt-1">
             {imagePreview ? (
@@ -515,7 +524,7 @@ const NewPost = () => {
         {/* Content */}
         <div>
           <Label htmlFor="content" className="font-body text-sm font-semibold">
-            Content
+            Content <span className="text-destructive">*</span>
           </Label>
           <Textarea
             id="content"

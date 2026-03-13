@@ -93,9 +93,9 @@ const Categories = () => {
       setEditingId(null);
       setEditNameBN("");
       setEditNameEN("");
-
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Unknown error occurred.";
+      const message =
+        err instanceof Error ? err.message : "Unknown error occurred.";
 
       console.error("Update category error:", message);
 
@@ -136,7 +136,6 @@ const Categories = () => {
       const newCategory: Category = res?.data.category;
       console.log(newCategory);
 
-
       toast({
         title: "ক্যাটাগরি যোগ হয়েছে",
         description: `"${newCategory.nameBN}" সফলভাবে তৈরি হয়েছে।`,
@@ -146,11 +145,10 @@ const Categories = () => {
       setNewNameBN("");
       setNewNameEN("");
       setShowAdd(false);
-
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Unknown error occurred.";
+      const message =
+        err instanceof Error ? err.message : "Unknown error occurred.";
       console.error("Add category error:", message);
-
 
       toast({
         title: "ক্যাটাগরি যোগ করা যায়নি",
@@ -162,7 +160,7 @@ const Categories = () => {
 
   // delete category
   const handleDeleteCategory = async () => {
-    if (!deleteTarget?._id) return;    
+    if (!deleteTarget?._id) return;
 
     try {
       const res = await api.delete(`/DeleteCategory/${deleteTarget?._id}`);
@@ -181,9 +179,9 @@ const Categories = () => {
 
       // reset delete state
       setDeleteTarget(null);
-
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Unknown error occurred.";
+      const message =
+        err instanceof Error ? err.message : "Unknown error occurred.";
 
       console.error("Delete category error:", message);
 
@@ -219,19 +217,29 @@ const Categories = () => {
             <Input
               value={newNameBN}
               onChange={(e) => setNewNameBN(e.target.value)}
-              placeholder="বাংলা নাম"
+              placeholder="বাংলা নাম *"
               className="rounded-sm border-border font-body flex-1"
             />
             <Input
               value={newNameEN}
               onChange={(e) => setNewNameEN(e.target.value)}
-              placeholder="English name"
+              placeholder="English name *"
               className="rounded-sm border-border font-body flex-1"
             />
-            <Button size="icon" variant="ghost" onClick={addCategory} className="rounded-sm h-8 w-8">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={addCategory}
+              className="rounded-sm h-8 w-8"
+            >
               <Check className="h-4 w-4 text-success" />
             </Button>
-            <Button size="icon" variant="ghost" onClick={() => setShowAdd(false)} className="rounded-sm h-8 w-8">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setShowAdd(false)}
+              className="rounded-sm h-8 w-8"
+            >
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -254,10 +262,20 @@ const Categories = () => {
                   onChange={(e) => setEditNameEN(e.target.value)}
                   className="rounded-sm border-border font-body flex-1"
                 />
-                <Button size="icon" variant="ghost" onClick={saveEdit} className="rounded-sm h-8 w-8">
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={saveEdit}
+                  className="rounded-sm h-8 w-8"
+                >
                   <Check className="h-4 w-4 text-success" />
                 </Button>
-                <Button size="icon" variant="ghost" onClick={() => setEditingId(null)} className="rounded-sm h-8 w-8">
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => setEditingId(null)}
+                  className="rounded-sm h-8 w-8"
+                >
                   <X className="h-4 w-4" />
                 </Button>
               </div>
@@ -303,16 +321,27 @@ const Categories = () => {
       </div>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+      <AlertDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+      >
         <AlertDialogContent className="rounded-sm">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-heading">পোস্ট মুছে ফেলুন?</AlertDialogTitle>
+            <AlertDialogTitle className="font-heading">
+              পোস্ট মুছে ফেলুন?
+            </AlertDialogTitle>
             <AlertDialogDescription className="font-body">
-              আপনি কি নিশ্চিত যে আপনি <span className="font-bold text-black">{deleteTarget?.nameBN}</span> মুছে ফেলতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।
+              আপনি কি নিশ্চিত যে আপনি{" "}
+              <span className="font-bold text-black">
+                {deleteTarget?.nameBN}
+              </span>{" "}
+              মুছে ফেলতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="rounded-sm font-body">বাতিল</AlertDialogCancel>
+            <AlertDialogCancel className="rounded-sm font-body">
+              বাতিল
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteCategory}
               className="rounded-sm bg-destructive text-destructive-foreground hover:bg-destructive/90 font-body"
