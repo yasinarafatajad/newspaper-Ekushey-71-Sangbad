@@ -1,5 +1,6 @@
 
 export interface Author {
+    _id?: string;
     name: string;
     title: string;
     src: string;
@@ -8,7 +9,6 @@ export interface Author {
 
 export interface Post {
     _id?: string;
-    id?: string;
     bnTitle: string;
     enTitle: string;
     slug: string;
@@ -20,6 +20,7 @@ export interface Post {
     tags?: string[];
     author: Author;
     status: string;
+    views?: number;
     createdAt?: string;
     date?: string;
 }

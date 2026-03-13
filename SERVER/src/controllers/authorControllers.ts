@@ -1,57 +1,138 @@
-import newsSchema from "../models/newsSchema.ts";
+import type { Request, Response } from "express";
+import Author from "../models/authorSchema.js";
 
-export const PostNews = async (req, res) => {
+// CREATE AUTHOR
+export const createAuthor = async (req: Request, res: Response) => {
   try {
-    const { title, url, style, imgUrl } = req.body;
-    const Product = await newsSchema.create({
-      title,
-      url,
-      style,
-      imgUrl,
-    });
-    res.status(200).json(Product);
-  } catch (err) {
-    console.log(err.message);
-  }
-};
+    const author = req.body;
 
-export const GetNews = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await ProductModel.findOne({ _id: id });
-    res.status(200).json(result);
-  } catch (err) {
-    console.log(err.message);
-  }
-};
-
-export const GetAllNews = async (req, res) => {
-  try {
-    const AllProducts = await ProductModel.find();
-    res.status(200).json(AllProducts);
-  } catch (err) {
-    console.log(err.message);
-  }
-};
-
-export const DeleteNews = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await ProductModel.findOneAndDelete({ _id: id });
-    if (!result) {
-      res.status(500).json('Product Doesn\'t exist in Database.')
+    // Guard: check for existing author with same name + title
+    const existingAuthor = await Author.findOne(author);
+    if (existingAuthor) {
+      return res.status(400).json({
+        success: false,
+        message: `This author is already exists`,
+      });
     }
-    res.status(200).json("Deleted..!");
-  } catch (err) {
-    console.log(err.message);
+
+    const newAuthor = new Author(author);
+    const savedAuthor = await newAuthor.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Author created successfully",
+      data: savedAuthor,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to create author",
+      error: err.message,
+    });
   }
 };
 
-export const UpdateNews = async (req, res) =>{
-  const formData = req.body;
+// GET ALL AUTHORS
+export const getAllAuthors = async (req: Request, res: Response) => {
   try {
-    console.log(formData);    
-  } catch (err) {
-    throw new Error('SERVER: couldn\'t update this news.')
+    const authors = await Author.find().sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: authors.length,
+      data: authors,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch authors",
+      error: err.message,
+    });
   }
-}
+};
+
+// GET SINGLE AUTHOR
+export const getAuthor = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const author = await Author.findById(id);
+
+    if (!author) {
+      return res.status(404).json({
+        success: false,
+        message: "Author not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: author,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch author",
+      error: err.message,
+    });
+  }
+};
+
+// UPDATE AUTHOR
+export const updateAuthor = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const updatedAuthor = await Author.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedAuthor) {
+      return res.status(404).json({
+        success: false,
+        message: "Author not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Author updated successfully",
+      data: updatedAuthor,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update author",
+      error: err.message,
+    });
+  }
+};
+
+// DELETE AUTHOR
+export const deleteAuthor = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const deletedAuthor = await Author.findByIdAndDelete(id);
+
+    if (!deletedAuthor) {
+      return res.status(404).json({
+        success: false,
+        message: "Author not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Author deleted successfully",
+      data: deletedAuthor,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete author",
+      error: err.message,
+    });
+  }
+};
