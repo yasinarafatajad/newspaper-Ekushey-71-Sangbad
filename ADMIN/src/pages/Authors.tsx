@@ -427,11 +427,11 @@ const Authors = () => {
               </Label>
               <div>
                 {photoPreview ? (
-                  <div className="relative border border-border rounded-sm overflow-hidden">
+                  <div className="relative border border-border rounded-sm overflow-hidden aspect-square">
                     <img
                       src={photoPreview}
                       alt="Preview"
-                      className="w-full h-48 object-cover"
+                      className="w-full h-full object-cover"
                     />
                     <Button
                       type="button"
@@ -514,6 +514,9 @@ const Authors = () => {
                   <th className="p-3 font-semibold hidden lg:table-cell">
                     Location
                   </th>
+                  <th className="p-3 font-semibold hidden lg:table-cell">
+                    username & Email
+                  </th>
                   <th className="p-3 font-semibold text-right">Actions</th>
                 </tr>
               </thead>
@@ -548,7 +551,7 @@ const Authors = () => {
                           {author.username && <span>@{author.username}</span>}
                         </div>
                       ) : (
-                        "-"
+                        <span className="flex items-center justify-center">-</span>
                       )}
                     </td>
                     <td className="p-3 text-right">
