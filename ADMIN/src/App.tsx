@@ -15,7 +15,7 @@ import Authors from "./pages/Authors";
 import NewsDetails from "./pages/NewsDetails";
 import AuthorDetails from "./pages/AuthorDetails";
 import Login from "./pages/auth/Login";
-import SignUp from "./pages/auth/SignUp";
+// import SignUp from "./pages/auth/SignUp";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Verification from "./pages/auth/Verification";
 
@@ -32,7 +32,7 @@ const App = () => (
         <Routes>
           {/* Auth Routes */}
           <Route path="/login" element={<Login />} />
-          <Route path="/signUp" element={<SignUp />} />
+          {/* <Route path="/signUp" element={<SignUp />} /> */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verification" element={<Verification />} />
 
