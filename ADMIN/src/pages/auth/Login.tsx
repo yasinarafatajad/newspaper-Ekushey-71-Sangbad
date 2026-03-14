@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,21 @@ import logo from "../../assets/logoLight.png";
 import api from "@/lib/api";
 
 const Login = () => {
+  const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
+  const userStr = localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
+  let user = null;
+  if (userStr) {
+    try {
+      user = JSON.parse(userStr);
+    } catch (e) {
+      console.error("Failed to parse user data", e);
+    }
+  }
+
+  if (token) {
+    return <Navigate to="/" replace />;
+  }
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
