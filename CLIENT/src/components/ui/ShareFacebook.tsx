@@ -1,12 +1,4 @@
 "use client";
-
-import { Article } from "@/lib/type";
-
-interface Props {
-    article: Article;
-}
-
-
 export default function ShareFacebook() {
     // share news in facebook
 

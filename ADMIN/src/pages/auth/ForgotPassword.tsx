@@ -7,6 +7,11 @@ import { toast } from "@/hooks/use-toast";
 import logo from "../../assets/logoLight.png";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // check login session
   const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
   const userStr = localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
   let user = null;
@@ -21,10 +26,6 @@ const ForgotPassword = () => {
   if (token) {
     return <Navigate to="/" replace />;
   }
-
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
