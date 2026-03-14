@@ -69,7 +69,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ScrollToTop />
-        <Header />
+        <Header articles={news}/>
         <TitleBar articles={news}/>
         <CategoryBar articles={news} />
         {children}
