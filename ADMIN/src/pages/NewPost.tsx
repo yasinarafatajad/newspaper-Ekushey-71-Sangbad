@@ -124,6 +124,7 @@ const NewPost = () => {
     if (authorsData) setAuthors(authorsData.data ?? []);
   }, [authorsData]);
 
+
   const generateSlug = (text: string) => {
     return text
       .toLowerCase()
@@ -324,7 +325,9 @@ const NewPost = () => {
       }
 
       setPublishState("idle");
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (err: unknown) {
       console.error("Create post error:", err);
       const message = err instanceof Error ? err.message : String(err);
@@ -429,7 +432,7 @@ const NewPost = () => {
         {/* Featured Image */}
         <div className={fadeClass(isTyping)}>
           <Label className="font-body text-sm font-semibold">
-            Featured Image <span className="text-destructive">*</span>
+            Featured Image <span className="text-xs text-muted-foreground">(recommended : 16 * 9)</span> <span className="text-destructive">*</span>
           </Label>
           <div className="mt-1">
             {imagePreview ? (

@@ -1,23 +1,27 @@
 "use client"
-import { articles } from "@/lib/newses";
+import { Article } from "@/lib/type";
+// import { articles } from "@/lib/newses";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type Category = {
+interface CategoryProps {
+    articles: Article[];
+}
+interface CategoryNavLinks {
     label: string;
     href: string;
 };
 
 
 
-export const CategoryBar = () => {
+export const CategoryBar = ({ articles }: CategoryProps) => {
     const pathname = usePathname();
 
     // fetch categories
     const uniqueCategoriesEN = Array.from(new Set(articles.map(a => a.categoryEN)));
     const uniqueCategoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
 
-    const navlinks: Category[] = [
+    const navlinks: CategoryNavLinks[] = [
         { label: 'Home', href: '/' },
         ...uniqueCategoriesEN?.map((catEN, index) => ({
             label: uniqueCategoriesBN[index],

@@ -1,9 +1,12 @@
-import { articles } from '@/lib/newses'
+import { Article } from '@/lib/type';
 import { formatNumber } from '@/lib/utils'
 import { BellRing, ChartNoAxesCombined } from 'lucide-react'
 import Link from 'next/link'
 
-export const Aside = () => {
+interface AsideProps {
+    articles: Article[];
+}
+export const Aside = ({articles}: AsideProps) => {
     return (
         <aside className="lg:col-span-4 py-6 mb-10 flex flex-col gap-y-4">
             {/* recent News  */}
@@ -13,10 +16,10 @@ export const Aside = () => {
                 </div>
                 <ul className="space-y-4">
                     {articles?.reverse().slice(0, 3).map((article) => (
-                        <li key={article?.id} className="border-b border-neutral-muted dark:border-primary/10 pb-4 last:border-0 last:pb-0">
+                        <li key={article?._id} className="border-b border-neutral-muted dark:border-primary/10 pb-4 last:border-0 last:pb-0">
                             <Link className="group" href={`/news/${article.slug}`}>
                                 <span className="text-xs text-primary font-bold block mb-1">{article?.categoryBN}</span>
-                                <p className="text-base font-medium group-hover:text-primary transition-colors">{article?.title}</p>
+                                <p className="text-base font-medium group-hover:text-primary transition-colors">{article?.bnTitle}</p>
                             </Link>
                         </li>
                     ))}
@@ -31,9 +34,9 @@ export const Aside = () => {
                 <h3 className="text-xl font-bold mb-6 flex items-center gap-2"><ChartNoAxesCombined className="text-primary" />জনপ্রিয় সংবাদ</h3>
                 <div className="space-y-6">
                     {articles?.reverse().slice(0, 5).map((article, index) => (
-                        <div key={article?.id} className="flex gap-4 items-start">
+                        <div key={article?._id} className="flex gap-4 items-start">
                             <span className="text-4xl font-bold text-neutral-muted dark:text-primary/20 leading-none">{formatNumber(index + 1)}</span>
-                            <Link href={`/news/${article.slug}`} className="font-bold hover:text-primary cursor-pointer transition-colors">{article?.title}</Link>
+                            <Link href={`/news/${article.slug}`} className="font-bold hover:text-primary cursor-pointer transition-colors">{article?.bnTitle}</Link>
                         </div>
                     ))}
                 </div>

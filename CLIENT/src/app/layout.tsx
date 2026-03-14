@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans_Bengali, Noto_Serif_Bengali } from "next/font/google";
 import "./globals.css";
@@ -6,6 +7,7 @@ import { Footer } from "@/components/Layout/Footer";
 import { CategoryBar } from "@/components/Layout/CategoryBar";
 import { TitleBar } from "@/components/Layout/TitleBar";
 import ScrollToTop from "@/components/Layout/ScrollToTop";
+import { Article } from "@/lib/type";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +39,25 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const getAllNews = async (): Promise<Article[]> => {
+  try {
+    const res = await fetch("http://localhost:5000/api/v1/AllNews");
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch news");
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const news = await getAllNews();
+
+
   return (
     <html lang="en"
       style={{
@@ -50,8 +70,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <ScrollToTop />
         <Header />
-        <TitleBar />
-        <CategoryBar />
+        <TitleBar articles={news}/>
+        <CategoryBar articles={news} />
         {children}
         <Footer />
       </body>

@@ -6,6 +6,7 @@ import type { AUTHOR, NEWS } from "../lib/type.js";
 // Mongoose Author schema
 const authorSchema = new Schema<AUTHOR & Document>({
   name: { type: String, required: true },
+  title: { type: String, required: true },
   src: { type: String, required: true },
   location: { type: String, required: true },
 });
