@@ -102,7 +102,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border p-4 flex flex-col gap-2">
+      <SidebarFooter className="border-t border-border p-4 flex flex-col">
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <SidebarMenuButton
@@ -145,7 +145,7 @@ export function AppSidebar() {
           </AlertDialogContent>
         </AlertDialog>
         {!collapsed && (
-          <p className="text-xs text-muted-foreground font-body text-center mt-2">
+          <p className="text-xs text-muted-foreground font-body ml-3">
             © {new Date().getFullYear()} Ekushey 71 Sangbad
           </p>
         )}

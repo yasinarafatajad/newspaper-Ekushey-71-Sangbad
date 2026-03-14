@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,21 @@ import { toast } from "@/hooks/use-toast";
 import logo from "../../assets/logoLight.png";
 
 const ForgotPassword = () => {
+  const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
+  const userStr = localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
+  let user = null;
+  if (userStr) {
+    try {
+      user = JSON.parse(userStr);
+    } catch (e) {
+      console.error("Failed to parse user data", e);
+    }
+  }
+
+  if (token) {
+    return <Navigate to="/" replace />;
+  }
+
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);

@@ -8,11 +8,8 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const token =
-    localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
-
-  const userStr =
-    localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
+  const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
+  const userStr = localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
   let user = null;
   if (userStr) {
     try {
