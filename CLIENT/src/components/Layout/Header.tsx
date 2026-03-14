@@ -5,11 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import logo from '@/assets/logoLight.png'
-import { articles } from "@/lib/newses";
+import { Article } from "@/lib/type";
 
 type NavLinks = { label: string; href: string }
-
-export const Header = () => {
+interface CategoryProps {
+    articles: Article[];
+}
+export const Header = ({ articles }: CategoryProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const today: string = new Date().toISOString();
 
