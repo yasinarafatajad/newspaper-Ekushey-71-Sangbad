@@ -2,26 +2,20 @@ import Link from 'next/link'
 import logo from '@/assets/logoDark.png'
 import Image from 'next/image';
 import { formatNumber } from '@/lib/utils';
+import { Article } from '@/lib/type';
 
 type SubNavLink = {
     label: string;
     href: string;
 };
 
-const subNavLinks: SubNavLink[] = [
-    { label: 'রাজনীতি', href: 'category/politics' },
-    { label: 'আন্তর্জাতিক', href: 'category/international' },
-    { label: 'অর্থনীতি', href: 'category/economy' },
-    { label: 'খেলাধুলা', href: 'category/sports' },
-    { label: 'বিনোদন', href: 'category/entertainment' },
-    { label: 'বিজ্ঞান ও প্রযুক্তি', href: 'category/science-technology' },
-];
-
-// const infoLinks: SubNavLink[] = [
-//     { label: 'আমাদের সম্পর্কে', href: '/about' },
-//     { label: 'যোগাযোগ', href: '/contact' },
-//     { label: 'গোপনীয়তা নীতি', href: '/privacy-policy' },
-//     { label: 'বিজ্ঞাপন', href: '/advertise' },
+// const subNavLinks: SubNavLink[] = [
+//     { label: 'রাজনীতি', href: 'category/politics' },
+//     { label: 'আন্তর্জাতিক', href: 'category/international' },
+//     { label: 'অর্থনীতি', href: 'category/economy' },
+//     { label: 'খেলাধুলা', href: 'category/sports' },
+//     { label: 'বিনোদন', href: 'category/entertainment' },
+//     { label: 'বিজ্ঞান ও প্রযুক্তি', href: 'category/science-technology' },
 // ];
 
 const footerLinks: SubNavLink[] = [
@@ -31,7 +25,24 @@ const footerLinks: SubNavLink[] = [
 
 const currentYear = formatNumber(new Date().getFullYear());
 
-export const Footer = () => {
+interface FooterProps {
+    articles: Article[];
+}
+interface FooterNavLinks {
+    label: string;
+    href: string;
+};
+export const Footer = ({ articles }: FooterProps) => {
+        // fetch categories
+    const uniqueCategoriesEN = Array.from(new Set(articles.map(a => a.categoryEN)));
+    const uniqueCategoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
+
+    const subNavLinks: FooterNavLinks[] = [
+        ...uniqueCategoriesEN?.map((catEN, index) => ({
+            label: uniqueCategoriesBN[index],
+            href: `/category/${catEN.toLowerCase().replace(/\s+/g, '-')}`
+        }))
+    ];
     return (
         <footer className="bg-background-dark text-slate-300 pt-8 pb-16 mt-20 border-t border-primary/20">
             <div className="container">
@@ -45,7 +56,7 @@ export const Footer = () => {
                             </Link>
                         </div>
                         <p className="text-sm leading-relaxed text-center lg:text-left mb-6">
-                            সবার আগে সঠিক ও বস্তুনিষ্ঠ সংবাদ পৌঁছে দিতে আমরা অঙ্গীকারবদ্ধ। আমাদের সাথেই থাকুন।
+                            খবর যা সত্যের সঙ্গে দাঁড়ায় — একুশে ৭১ সংবাদ। আপডেট, বিশ্লেষণ আর দ্রুত সংবাদ সব এক জায়গায়। আপনার বিশ্বাসযোগ্য সংবাদ সঙ্গী — সবসময় একুশে ৭১ সংবাদ এ
                         </p>
                     </div>
                     {/* <div className="hidden lg:block col-span-1" /> */}

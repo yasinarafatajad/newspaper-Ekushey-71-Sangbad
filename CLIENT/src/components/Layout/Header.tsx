@@ -20,7 +20,7 @@ export const Header = ({ articles }: CategoryProps) => {
   const uniqueCategoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
 
   const navlinks: NavLinks[] = [
-    { label: 'Home', href: '/' },
+    { label: 'হোম', href: '/' },
     ...uniqueCategoriesEN?.map((catEN, index) => ({
       label: uniqueCategoriesBN[index],
       href: `/category/${catEN.toLowerCase().replace(/\s+/g, '-')}`
