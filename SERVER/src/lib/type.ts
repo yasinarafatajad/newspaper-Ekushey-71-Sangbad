@@ -20,6 +20,7 @@ export interface NEWS {
 }
 export interface AUTHOR {
     name: string
+    title: string
     src: string 
     location: string
 }

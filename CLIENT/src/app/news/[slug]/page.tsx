@@ -6,9 +6,10 @@ import Image from "next/image"
 import Link from "next/link"
 import { Author } from "@/components/ui/Author"
 import authorSrc from '@/assets/icon.png'
-import { articles } from "@/lib/newses"
 import { Article } from "@/lib/type"
 import { Activity } from "lucide-react"
+import ShareFacebook from "@/components/ui/ShareFacebook"
+import CopyFacebookCaption from "@/components/ui/CopyFacebookCaption"
 
 interface PageProps {
     params: {
@@ -16,12 +17,43 @@ interface PageProps {
     }
 }
 
-// **Server Component**
-const Page = async (props: PageProps) => {
-    const { slug } = await props.params 
+// fetch articles
+const getAllNews = async (): Promise<Article[]> => {
+    try {
+        const res = await fetch("http://localhost:5000/api/v1/AllNews");
 
-    // Find the article
-    const article: Article | undefined = await articles.find(a => a.slug === slug)
+        if (!res.ok) {
+            throw new Error("Failed to fetch news");
+        }
+
+        return res.json();
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+
+const Page = async (props: PageProps) => {
+    const { slug } = await props.params
+
+    // fetch all articles
+    const articles = await getAllNews();
+    // fetch article
+    const getNews = async (): Promise<Article | null> => {
+        try {
+            const res = await fetch(`http://localhost:5000/api/v1/news/${slug}`);
+
+            if (!res.ok) {
+                throw new Error("Failed to fetch news");
+            }
+
+            return res.json();
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+    const article = await getNews();
 
     if (!article) {
         return (
@@ -31,7 +63,7 @@ const Page = async (props: PageProps) => {
         )
     }
 
-    // Related articles (same category, exclude current article)
+    // Related articles (same category, without current article)
     const related: Article[] = articles.filter(
         a => a.categoryEN === article.categoryEN && a.slug !== slug
     )
@@ -46,28 +78,28 @@ const Page = async (props: PageProps) => {
                     {article.categoryBN}
                 </Link>
                 <span className="material-symbols-outlined text-xs">/</span>
-                <span className="text-primary font-medium">{article.title}</span>
+                <span className="text-primary font-medium">{article.bnTitle}</span>
             </div>
 
             <MainLayout>
                 <main className="lg:col-span-8">
                     <article>
                         <h1 className="md:text-5xl font-bold leading-tight mb-6 text-slate-900 dark:text-slate-50 text-2xl">
-                            {article.title}
+                            {article.bnTitle}
                         </h1>
 
                         <div className="flex flex-wrap items-center justify-between border-y border-primary/10 py-6 mb-8 gap-4">
                             <Author
-                                name={article.author.title}
-                                src={authorSrc}
-                                location={article.author.location}
-                                publishedAt={article.publishedAt}
+                                name={article?.author?.name}
+                                title={article?.author?.title}
+                                src={article?.author?.src}
+                                publishedAt={article?.createdAt}
+                                location={article?.author?.location}
                             />
                             <div className="flex items-center gap-2">
-                                <span className="text-nowrap text-xl">click to share:</span>
-                                <button className="bg-primary/90 hover:bg-primary/75 rounded px-4 py-2 text-neutral-subtle text-nowrap transition-colors">
-                                    ফেসবুক
-                                </button>
+                                <span className="text-nowrap text-xl">Share:</span>
+                                <CopyFacebookCaption article={article} />
+                                <ShareFacebook />
                             </div>
                         </div>
 
@@ -75,7 +107,7 @@ const Page = async (props: PageProps) => {
                             <div className="relative rounded-xl overflow-hidden aspect-video bg-slate-200">
                                 <Image
                                     fill
-                                    alt={article.title}
+                                    alt={article.bnTitle}
                                     className="w-full h-full object-cover pointer-events-none"
                                     src={article.featuredImage}
                                 />
@@ -100,7 +132,7 @@ const Page = async (props: PageProps) => {
                         </div>
                     </article>
                 </main>
-                <Aside />
+                <Aside articles={articles} />
             </MainLayout>
 
             {related?.length > 0 && (
@@ -110,7 +142,7 @@ const Page = async (props: PageProps) => {
                         সম্পর্কিত খবর
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 grid-cols-1">
-                        {related.map(a => <ArticleCard key={a.id} props={a} />)}
+                        {related.map(a => <ArticleCard key={a._id} props={a} />)}
                     </div>
                 </section>
             )}

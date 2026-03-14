@@ -1,20 +1,21 @@
-import { articles } from "@/lib/newses";
 import Image from "next/image";
 import Link from "next/link"
 import logo from '@/assets/logoLight.png'
-import authorSrc from '@/assets/icon.png'
 import { Author } from "@/components/ui/Author";
+import { Article } from '../../../lib/type';
 
-
-export const Hero = () => {
-    const latest = articles[articles.length - 1]
+interface HeroProps {
+    latest: Article;
+}
+export const Hero = ({ latest }: HeroProps) => {
+    // const latest = articles[articles.length - 1]
 
     return (
         <article className="mb-2 group cursor-pointer py-6">
             {/* thumbnail */}
             <div className="relative overflow-hidden rounded-xl mb-4 aspect-video">
-                <Image className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-500"
-                    alt="Modern government building in Dhaka under clear blue sky"
+                <Image className="h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-500"
+                    alt={latest?.bnTitle}
                     src={latest?.featuredImage}
                     fill
                     loading="lazy"
@@ -34,19 +35,20 @@ export const Hero = () => {
             {/* headline */}
             <Link href={`news/${latest?.slug}`}>
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold font-display leading-tight mb-3 group-hover:text-primary transition-colors">
-                    {latest?.title}
+                    {latest?.bnTitle}
                 </h2>
             </Link>
             {/* time and author */}
             <Author
-                name={latest?.author?.title}
-                src={authorSrc}
-                publishedAt={latest?.publishedAt}
-                location={latest?.author.location}
+                name={latest?.author?.name}
+                title={latest?.author?.title}
+                src={latest?.author?.src}
+                publishedAt={latest?.createdAt}
+                location={latest?.author?.location}
             />
             {/* content (short) */}
             <div className="">
-                <p className="text-slate-600 text-base md:text-lg leading-relaxed mb-4 line-clamp-4 md:line-clamp-none">
+                <p className="text-slate-600 text-base md:text-lg leading-relaxed mb-4 line-clamp-4">
                     {latest?.content}
                 </p>
                 <Link href={`news/${latest?.slug}`} className="bg-primary/90 hover:bg-primary/75 rounded px-4 py-2 text-neutral-subtle text-nowrap transition-colors">See More</Link>

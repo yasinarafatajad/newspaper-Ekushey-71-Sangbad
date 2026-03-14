@@ -1,18 +1,20 @@
 import { StaticImageData } from "next/image"
 
 export interface Article {
-    id: string
-    title: string
+    _id: string
+    bnTitle: string
+    enTitle: string
     slug: string
     content: string
     categoryEN: string
     categoryBN: string
     author: {
+        name: string
         title: string
         src: string
         location: string
     },
-    publishedAt: string
+    createdAt: string
     updatedAt: string | null
     featuredImage: string
     imageCaption: string
@@ -22,6 +24,7 @@ export interface Article {
 }
 export interface AUTHOR {
     name: string
+    title: string
     src: string | StaticImageData
     location: string
     publishedAt: string

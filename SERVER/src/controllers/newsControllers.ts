@@ -22,7 +22,7 @@ export const PostNews = async (req: Request, res: Response) => {
 export const GetNews = async (req : Request, res : Response) => {
   try {
     const { id } = req.params;
-    const result = await newsSchema.findOne({ _id: id });
+    const result = await newsSchema.findOne({ slug: id });
     res.status(200).json(result);
   } catch (err) {
     throw new Error('SERVER: couldn\'t get this news');

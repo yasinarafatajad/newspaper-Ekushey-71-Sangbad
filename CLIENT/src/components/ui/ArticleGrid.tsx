@@ -10,7 +10,7 @@ export const ArticleGrid = ({ article }: { article: Article }) => {
             <div className="relative w-1/3 h-48">
                 <Image
                     src={article.featuredImage}
-                    alt={article.title}
+                    alt={article.bnTitle}
                     fill
                     className="w-full h-full object-cover"
                 />
@@ -19,16 +19,16 @@ export const ArticleGrid = ({ article }: { article: Article }) => {
             {/* Right Content */}
             <div className="w-2/3 p-4 flex flex-col justify-between">
                 <h2 className="font-bold text-xl mb-2 text-text-main">
-                    {article.title}
+                    {article.bnTitle}
                 </h2>
 
-                <p className="text-gray-700 line-clamp-2 mb-2">
+                <p className="text-gray-700 text-sm line-clamp-3 mb-2">
                     {article.content}
                 </p>
 
                 <p className="text-sm text-primary flex items-center gap-2 ">
-                    <span>{formatDate(article.publishedAt)},</span>
-                    <span>{formatDay(article.publishedAt)}</span>
+                    <span>{formatDate(article.createdAt)},</span>
+                    <span>{formatDay(article.createdAt)}</span>
                 </p>
             </div>
         </div>
