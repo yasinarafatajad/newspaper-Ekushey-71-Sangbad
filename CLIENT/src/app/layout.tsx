@@ -8,6 +8,7 @@ import { CategoryBar } from "@/components/Layout/CategoryBar";
 import { TitleBar } from "@/components/Layout/TitleBar";
 import ScrollToTop from "@/components/Layout/ScrollToTop";
 import { Article } from "@/lib/type";
+import { api } from "@/lib/useApi/api";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
 
 const getAllNews = async (): Promise<Article[]> => {
   try {
-    const res = await fetch("http://localhost:5000/api/v1/AllNews");
+    const res = await fetch(`${api}/AllNews`);
 
     if (!res.ok) {
       throw new Error("Failed to fetch news");

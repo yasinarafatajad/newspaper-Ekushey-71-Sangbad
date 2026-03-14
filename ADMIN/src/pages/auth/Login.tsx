@@ -18,8 +18,10 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // check login session
-  const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
-  const userStr = localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
+  const token =
+    localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
+  const userStr =
+    localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
   let user = null;
   if (userStr) {
     try {
@@ -46,8 +48,8 @@ const Login = () => {
     setIsLoading(true);
     try {
       const res = await api.post("/login", {
-        username: formData.username,
-        password: formData.password,
+        username: formData.username.trim(),
+        password: formData.password.trim(),
       });
 
       if (res.status === 200) {

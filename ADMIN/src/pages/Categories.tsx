@@ -134,7 +134,6 @@ const Categories = () => {
       queryClient.invalidateQueries({ queryKey: ["AllCategories"] });
 
       const newCategory: Category = res?.data.category;
-      console.log(newCategory);
 
       toast({
         title: "ক্যাটাগরি যোগ হয়েছে",
@@ -193,7 +192,6 @@ const Categories = () => {
     }
   };
 
-  // console.log(categories);
 
   return (
     <div>

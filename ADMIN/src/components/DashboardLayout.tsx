@@ -8,8 +8,10 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
-  const userStr = localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
+  const token =
+    localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
+  const userStr =
+    localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
   let user = null;
   if (userStr) {
     try {
@@ -28,11 +30,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="h-12 flex items-center justify-between border-b border-border bg-background sticky top-0 z-10 pr-4">
+          <header className="h-20 flex items-center justify-between border-b border-border bg-background sticky top-0 z-10 pr-4">
             <div className="flex items-center">
               <SidebarTrigger className="ml-3" />
-              <span className="ml-3 font-heading text-sm font-bold flex items-center gap-0.5 text-primary">
-                <Shield size={18} /> Admin
+              <span className="ml-3 font-heading font-extrabold flex items-center gap-1 text-primary text-xl">
+                <Shield size={28} /> Admin
               </span>
             </div>
 
@@ -52,11 +54,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   <img
                     src={user.src}
                     alt={user.name}
-                    className="h-8 w-8 rounded-full object-cover border border-border"
+                    className="h-12  w-12   rounded-full object-cover border border-border"
                   />
                 ) : (
-                  <div className="h-8 w-8 rounded-full bg-accent flex items-center justify-center">
-                    <User size={16} className="text-muted-foreground" />
+                  <div className="h-12 w-12 rounded-full bg-accent flex items-center justify-center">
+                    <User size={20} className="text-muted-foreground" />
                   </div>
                 )}
               </div>

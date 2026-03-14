@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   LayoutDashboard,
   FilePlus,
@@ -35,7 +36,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import logo from "../assets/logoLight.png";
-import icon from "../assets/icon.png";
+// import icon from "../assets/icon.png";
 import { toast } from "@/hooks/use-toast";
 
 const navItems = [
@@ -49,15 +50,26 @@ const navItems = [
 ];
 
 export function AppSidebar() {
-  const { state } = useSidebar();
+  const { state, setOpen, setOpenMobile } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
   const currentPath = location.pathname;
 
+  // Auto collapse sidebar on navigation
+  React.useEffect(() => {
+    setOpen(false);
+    setOpenMobile(false);
+  }, [location.pathname]);
+
   return (
     <Sidebar collapsible="icon" className="border-r border-border">
-      <SidebarHeader className="border-b border-border ">
-        {!collapsed ? (
+      <SidebarHeader className="border-b border-border h-20">
+        <img
+          src={logo}
+          alt="Ekushey 71 Sangbad Logo"
+          className="h-full w-full"
+        />
+        {/* {!collapsed ? (
           <img src={logo} alt="Ekushey 71 Sangbad Logo" />
         ) : (
           <img
@@ -65,7 +77,7 @@ export function AppSidebar() {
             alt="Ekushey 71 Sangbad icon"
             className="w-full h-full scale-150"
           />
-        )}
+        )} */}
       </SidebarHeader>
 
       <SidebarContent>
@@ -83,14 +95,14 @@ export function AppSidebar() {
                       <NavLink
                         to={item.url}
                         end
-                        className={`flex items-center gap-3 px-3 py-2 font-body text-sm transition-colors border-l-[3px] ${
+                        className={`flex items-center gap-4 px-4 py-3 font-body text-xl transition-colors border-l-[4px] ${
                           isActive
-                            ? "border-primary text-primary font-semibold bg-accent"
+                            ? "border-primary text-primary font-bold bg-accent"
                             : "border-transparent text-foreground hover:bg-accent hover:text-foreground"
                         }`}
                         activeClassName=""
                       >
-                        <item.icon className="h-5 w-5 shrink-0" />
+                        <item.icon className="h-7 w-7 shrink-0" />
                         {!collapsed && <span>{item.title}</span>}
                       </NavLink>
                     </SidebarMenuButton>
@@ -109,8 +121,8 @@ export function AppSidebar() {
               asChild
               className="text-destructive hover:bg-destructive/10 hover:text-destructive w-full cursor-pointer"
             >
-              <div className="flex items-center gap-3 px-3 py-2 font-body text-sm rounded-sm">
-                <LogOut className="h-5 w-5 shrink-0" />
+              <div className="flex items-center gap-4 px-4 py-3 font-body text-lg rounded-sm">
+                <LogOut className="h-6 w-6 shrink-0" />
                 {!collapsed && <span>Log Out</span>}
               </div>
             </SidebarMenuButton>
