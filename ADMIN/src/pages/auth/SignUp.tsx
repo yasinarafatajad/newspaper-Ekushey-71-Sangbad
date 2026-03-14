@@ -28,8 +28,10 @@ const SignUp = () => {
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
   // check login session
-  const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
-  const userStr = localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
+  const token =
+    localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
+  const userStr =
+    localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
   let user = null;
   if (userStr) {
     try {
@@ -137,11 +139,11 @@ const SignUp = () => {
         return;
       }
       const res = await api.post("/signup", {
-        name: form.name,
-        title: form.title,
-        location: form.location,
-        email: form.email,
-        username: form.username,
+        name: form.name.trim(),
+        title: form.title.trim(),
+        location: form.location.trim(),
+        email: form.email.trim(),
+        username: form.username.trim(),
         password: form.password,
         src,
       });

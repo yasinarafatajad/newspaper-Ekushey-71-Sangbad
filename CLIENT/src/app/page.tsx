@@ -4,16 +4,16 @@ import { Category } from "@/components/Sections/Home/Category";
 import { Hero } from "@/components/Sections/Home/Hero";
 import { Lifestyle } from "@/components/Sections/Home/Lifestyle";
 import { Article } from "@/lib/type";
+import { api } from "@/lib/useApi/api";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Ekushey 71 Sangbad",
   description: "All News",
 };
-
 const getAllNews = async (): Promise<Article[]> => {
   try {
-    const res = await fetch("http://localhost:5000/api/v1/AllNews");
+    const res = await fetch(`${api}/AllNews`);
 
     if (!res.ok) {
       throw new Error("Failed to fetch news");
@@ -25,6 +25,7 @@ const getAllNews = async (): Promise<Article[]> => {
     return [];
   }
 }
+console.log('layout: ')
 
 export default async function Home() {
   const news = await getAllNews();

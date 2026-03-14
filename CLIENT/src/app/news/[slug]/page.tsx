@@ -9,6 +9,7 @@ import { Article } from "@/lib/type"
 import { Activity } from "lucide-react"
 import ShareFacebook from "@/components/ui/ShareFacebook"
 import CopyFacebookCaption from "@/components/ui/CopyFacebookCaption"
+import { api } from "@/lib/useApi/api"
 
 interface PageProps {
     params: {
@@ -19,7 +20,7 @@ interface PageProps {
 // fetch articles
 const getAllNews = async (): Promise<Article[]> => {
     try {
-        const res = await fetch("http://localhost:5000/api/v1/AllNews");
+        const res = await fetch(`${api}/AllNews`);
 
         if (!res.ok) {
             throw new Error("Failed to fetch news");
@@ -40,7 +41,7 @@ const Page = async (props: PageProps) => {
     // fetch article
     const getNews = async (): Promise<Article | null> => {
         try {
-            const res = await fetch(`http://localhost:5000/api/v1/news/${slug}`);
+            const res = await fetch(`${api}/news/${slug}`);
 
             if (!res.ok) {
                 throw new Error("Failed to fetch news");

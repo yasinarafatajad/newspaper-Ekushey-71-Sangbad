@@ -8,8 +8,6 @@ interface HeroProps {
     latest: Article;
 }
 export const Hero = ({ latest }: HeroProps) => {
-    // const latest = articles[articles.length - 1]
-
     return (
         <article className="mb-2 group cursor-pointer py-6">
             {/* thumbnail */}

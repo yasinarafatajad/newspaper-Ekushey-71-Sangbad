@@ -1,13 +1,11 @@
 import { ArticleGrid } from "@/components/ui/ArticleGrid"
 import { Article } from "@/lib/type";
+import { api } from "@/lib/useApi/api";
 import Link from "next/link"
 
-// interface CategoryProps {
-//     articles: Article[];
-// }
 const getAllNews = async (): Promise<Article[]> => {
   try {
-    const res = await fetch("http://localhost:5000/api/v1/AllNews");
+    const res = await fetch(`${api}/AllNews`);
 
     if (!res.ok) {
       throw new Error("Failed to fetch news");

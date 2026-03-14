@@ -124,7 +124,6 @@ const NewPost = () => {
     if (authorsData) setAuthors(authorsData.data ?? []);
   }, [authorsData]);
 
-
   const generateSlug = (text: string) => {
     return text
       .toLowerCase()
@@ -246,29 +245,35 @@ const NewPost = () => {
   };
 
   // Create a new post
-  const createPost = async (formData: Post) => {
+  const createPost = async (formData: Post): Promise<boolean> => {
     try {
       const res = await api.post("/newPost", formData);
-      if (res.status === 200) {
+      if (res.status === 200 || res.status === 201) {
         toast({
           title: "পোস্ট প্রকাশিত হয়েছে",
           description: `"${formData.bnTitle}" সফলভাবে প্রকাশিত হয়েছে।`,
         });
         queryClient.invalidateQueries({ queryKey: ["allNews"] });
+        return true;
       }
+      return false;
     } catch (err: unknown) {
       console.error("Create post error:", err);
-      const message = err instanceof Error ? err.message : String(err);
+      const errResponse = err as { response?: { data?: { message?: string } } };
+      const message =
+        errResponse.response?.data?.message ||
+        (err instanceof Error ? err.message : String(err));
       toast({
         title: "পোস্ট প্রকাশ করা যায়নি",
         description: message || "অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
         variant: "destructive",
       });
+      return false;
     }
   };
 
   // Update an existing post
-  const updatePost = async (id: string, formData: Post) => {
+  const updatePost = async (id: string, formData: Post): Promise<boolean> => {
     try {
       const res = await api.put(`/UpdateNews/${id}`, formData);
       if (res.status === 200) {
@@ -277,15 +282,21 @@ const NewPost = () => {
           description: `"${formData.bnTitle}" সফলভাবে আপডেট করা হয়েছে।`,
         });
         queryClient.invalidateQueries({ queryKey: ["allNews"] });
+        return true;
       }
+      return false;
     } catch (err: unknown) {
       console.error("Update post error:", err);
-      const message = err instanceof Error ? err.message : String(err);
+      const errResponse = err as { response?: { data?: { message?: string } } };
+      const message =
+        errResponse.response?.data?.message ||
+        (err instanceof Error ? err.message : String(err));
       toast({
         title: "পোস্ট আপডেট করা যায়নি",
         description: message || "অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
         variant: "destructive",
       });
+      return false;
     }
   };
 
@@ -305,35 +316,44 @@ const NewPost = () => {
     try {
       const uploadImg = await handleImgUpload();
       const formData: Post = {
-        bnTitle,
-        enTitle,
-        slug,
-        content,
+        bnTitle: bnTitle.trim(),
+        enTitle: enTitle.trim(),
+        slug: slug.trim(),
+        content: content.trim(),
         categoryBN,
         categoryEN,
         author,
         featuredImage: uploadImg || featuredImage,
-        imageCaption,
+        imageCaption: imageCaption.trim(),
         tags,
         status,
       };
 
+      let success = false;
       if (editingPost?._id) {
-        await updatePost(editingPost._id, formData);
+        success = await updatePost(editingPost._id, formData);
       } else {
-        await createPost(formData);
+        success = await createPost(formData);
       }
 
-      setPublishState("idle");
-      setTimeout(() => {
-        navigate("/");
-      }, 3000);
+      if (success) {
+        setPublishState("success");
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      } else {
+        setPublishState("idle");
+      }
     } catch (err: unknown) {
-      console.error("Create post error:", err);
-      const message = err instanceof Error ? err.message : String(err);
+      console.error("Error in handleSubmit:", err);
+      setPublishState("idle");
+      const errResponse = err as { response?: { data?: { message?: string } } };
+      const message =
+        errResponse.response?.data?.message ||
+        (err instanceof Error ? err.message : String(err));
       toast({
-        title: "পোস্ট প্রকাশ করা যায়নি",
-        description: message || "Last: অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
+        title: "সমস্যা হয়েছে",
+        description: message || "অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
         variant: "destructive",
       });
     }
@@ -432,7 +452,11 @@ const NewPost = () => {
         {/* Featured Image */}
         <div className={fadeClass(isTyping)}>
           <Label className="font-body text-sm font-semibold">
-            Featured Image <span className="text-xs text-muted-foreground">(recommended : 16 * 9)</span> <span className="text-destructive">*</span>
+            Featured Image{" "}
+            <span className="text-xs text-muted-foreground">
+              (recommended : 16 * 9)
+            </span>{" "}
+            <span className="text-destructive">*</span>
           </Label>
           <div className="mt-1">
             {imagePreview ? (

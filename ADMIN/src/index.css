@@ -45,6 +45,9 @@
 
     --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
+
+    --sidebar-width: 320px;
+    --sidebar-width-icon: 80px;
   }
 }
 
@@ -55,10 +58,16 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Source Sans 3', sans-serif;
+    font-family: "Source Sans 3", sans-serif;
+    font-size: 17px;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Roboto Slab', serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Roboto Slab", serif;
   }
 }
