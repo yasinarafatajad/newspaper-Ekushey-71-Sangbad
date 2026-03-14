@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Eye, Edit, Trash2, MapPin, BadgeCheck } from "lucide-react";
+import { Eye, Edit, Trash2, MapPin, BadgeCheck, Mail, User2 } from "lucide-react";
 import { Author } from "@/lib/type";
 
 interface AuthorCardProps {
@@ -31,6 +31,24 @@ const AuthorCard = ({ author, onEdit, onDelete }: AuthorCardProps) => {
             <MapPin className="h-3 w-3 flex-shrink-0" />
             <span className="truncate">{author.location}</span>
           </div>
+          {author.email || author.username ? (
+            <div className="flex flex-col items-start text-xs text-muted-foreground font-body mt-0.5">
+              {author.email && (
+                <div className="flex items-center gap-1 text-xs text-muted-foreground font-body mt-0.5">
+                  <Mail className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate">{author.email}</span>
+                </div>
+              )}
+              {author.username && (
+                <div className="flex items-center gap-1 text-xs text-muted-foreground font-body mt-0.5">
+                  <User2 className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate">@{author.username}</span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <span className="flex items-center justify-center">-</span>
+          )}
         </div>
       </div>
 

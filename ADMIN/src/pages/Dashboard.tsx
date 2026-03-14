@@ -6,7 +6,7 @@ import { Category, CategoryResponse, Post } from "@/lib/type";
 import api from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { formatDate, formatDay } from "@/lib/formats";
+import { formatDate, formatDay, formatNumber } from "@/lib/formats";
 
 const fetchAllNews = async (): Promise<Post[]> => {
   const { data } = await api.get("/AllNews");
@@ -19,22 +19,22 @@ const Dashboard = () => {
 
   const stats = [
     {
-      label: "Total News",
+      label: "মোট সংবাদ",
       value: posts.length,
       icon: FileText,
     },
     {
-      label: "Published",
+      label: "প্রকাশিত",
       value: posts.filter((p) => p.status === "published").length,
       icon: Eye,
     },
     {
-      label: "Drafts",
+      label: "খসড়া",
       value: posts.filter((p) => p.status === "draft").length,
       icon: FilePlus,
     },
     {
-      label: "Categories",
+      label: "বিভাগসমূহ",
       value: categories.length,
       icon: FolderOpen,
     },
@@ -94,7 +94,7 @@ const Dashboard = () => {
               <stat.icon className="h-5 w-5 text-muted-foreground" />
               <div>
                 <p className="text-2xl font-bold font-heading text-foreground">
-                  {stat.value}
+                  {formatNumber(stat.value)}
                 </p>
                 <p className="text-xs text-muted-foreground font-body">
                   {stat.label}
@@ -139,11 +139,10 @@ const Dashboard = () => {
                       variant={
                         post.status === "published" ? "default" : "outline"
                       }
-                      className={`rounded-sm text-xs ${
-                        post.status === "published"
+                      className={`rounded-sm text-xs ${post.status === "published"
                           ? "bg-success text-success-foreground"
                           : "bg-blue-500 text-success-foreground"
-                      }`}
+                        }`}
                     >
                       {post.status === "published" ? "Published" : "Draft"}
                     </Badge>
