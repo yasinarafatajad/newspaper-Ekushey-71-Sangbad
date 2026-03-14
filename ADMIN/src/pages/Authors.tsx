@@ -427,7 +427,7 @@ const Authors = () => {
               </Label>
               <div>
                 {photoPreview ? (
-                  <div className="relative border border-border rounded-sm overflow-hidden aspect-square rounded-full max-w-72">
+                  <div className="relative border border-border overflow-hidden aspect-square rounded-full max-w-72">
                     <img
                       src={photoPreview}
                       alt="Preview"
