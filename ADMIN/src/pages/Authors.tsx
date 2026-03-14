@@ -427,11 +427,11 @@ const Authors = () => {
               </Label>
               <div>
                 {photoPreview ? (
-                  <div className="relative border border-border rounded-sm overflow-hidden aspect-square">
+                  <div className="relative border border-border rounded-sm overflow-hidden aspect-square rounded-full max-w-72">
                     <img
                       src={photoPreview}
                       alt="Preview"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover aspect-square rounded-full"
                     />
                     <Button
                       type="button"
@@ -531,7 +531,7 @@ const Authors = () => {
                         <img
                           src={author.src}
                           alt={author.name}
-                          className="h-8 w-8 rounded-full object-cover border border-border"
+                          className="h-8 w-8 rounded-full object-cover border border-border aspect-square"
                         />
                         <span className="font-semibold text-foreground">
                           {author.name}

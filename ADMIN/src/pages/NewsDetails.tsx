@@ -64,7 +64,7 @@ const NewsDetails = () => {
                     size="sm"
                     className="rounded-sm font-body"
                 >
-                    <Link to={`/edit-news/${post._id}`}>
+                    <Link to={`/edit-news/${post.slug}`}>
                         <Pencil className="h-4 w-4 mr-2" />
                         Edit
                     </Link>
