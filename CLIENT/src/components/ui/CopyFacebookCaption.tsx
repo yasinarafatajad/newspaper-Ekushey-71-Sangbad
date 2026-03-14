@@ -22,7 +22,7 @@ ${articleUrl}
 
 💬 আপনার মতামত কী? কমেন্টে জানান এবং বন্ধুদের সঙ্গে শেয়ার করুন।
 
-#সংবাদ #বাংলাদেশ #${article.categoryBN}`;
+#সংবাদ #বাংলাদেশ #Ekushey71Sangbad #${article.categoryBN}`;
 
     try {
       await navigator.clipboard.writeText(caption);

@@ -11,7 +11,7 @@ export const Author = ({ name, src, title, location, publishedAt }: AUTHOR) => {
                     alt={name}
                     width={56}
                     height={56}
-                    className="w-full h-full object-cover rounded-full pointer-events-none"
+                    className="w-full h-full object-cover aspect-square rounded-full pointer-events-none"
                 />
             </div>
             <div className="flex flex-col items-start">
