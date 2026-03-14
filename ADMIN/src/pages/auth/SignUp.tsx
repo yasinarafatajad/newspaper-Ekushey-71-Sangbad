@@ -9,21 +9,6 @@ import logo from "../../assets/logoLight.png";
 import api from "@/lib/api";
 
 const SignUp = () => {
-  const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
-  const userStr = localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
-  let user = null;
-  if (userStr) {
-    try {
-      user = JSON.parse(userStr);
-    } catch (e) {
-      console.error("Failed to parse user data", e);
-    }
-  }
-
-  if (token) {
-    return <Navigate to="/" replace />;
-  }
-
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
@@ -41,6 +26,22 @@ const SignUp = () => {
 
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+
+  // check login session
+  const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
+  const userStr = localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
+  let user = null;
+  if (userStr) {
+    try {
+      user = JSON.parse(userStr);
+    } catch (e) {
+      console.error("Failed to parse user data", e);
+    }
+  }
+
+  if (token) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));

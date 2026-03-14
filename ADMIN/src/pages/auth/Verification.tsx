@@ -8,6 +8,18 @@ import api from "@/lib/api";
 import logo from "../../assets/logoLight.png";
 
 const Verification = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state?.email;
+  const [securityCode, setSecurityCode] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+  const [passwords, setPasswords] = useState({
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+
+  // check login session
   const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
   const userStr = localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
   let user = null;
@@ -22,17 +34,6 @@ const Verification = () => {
   if (token) {
     return <Navigate to="/" replace />;
   }
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  const email = location.state?.email;
-  const [securityCode, setSecurityCode] = useState("");
-  const [isVerified, setIsVerified] = useState(false);
-  const [passwords, setPasswords] = useState({
-    newPassword: "",
-    confirmPassword: "",
-  });
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();

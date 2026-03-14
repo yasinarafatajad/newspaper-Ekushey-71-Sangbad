@@ -5,7 +5,6 @@ import { ArticleCard } from "@/components/ui/ArticleCard"
 import Image from "next/image"
 import Link from "next/link"
 import { Author } from "@/components/ui/Author"
-import authorSrc from '@/assets/icon.png'
 import { Article } from "@/lib/type"
 import { Activity } from "lucide-react"
 import ShareFacebook from "@/components/ui/ShareFacebook"

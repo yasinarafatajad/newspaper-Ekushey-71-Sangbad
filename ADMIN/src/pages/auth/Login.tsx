@@ -9,6 +9,15 @@ import logo from "../../assets/logoLight.png";
 import api from "@/lib/api";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    rememberMe: false,
+  });
+  const [isLoading, setIsLoading] = useState(false);
+
+  // check login session
   const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
   const userStr = localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser");
   let user = null;
@@ -23,14 +32,6 @@ const Login = () => {
   if (token) {
     return <Navigate to="/" replace />;
   }
-
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    rememberMe: false,
-  });
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
