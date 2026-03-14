@@ -73,7 +73,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <TitleBar articles={news}/>
         <CategoryBar articles={news} />
         {children}
-        <Footer />
+        <Footer articles={news} />
       </body>
     </html>
   );

@@ -22,7 +22,7 @@ export const CategoryBar = ({ articles }: CategoryProps) => {
     const uniqueCategoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
 
     const navlinks: CategoryNavLinks[] = [
-        { label: 'Home', href: '/' },
+        { label: 'হোম', href: '/' },
         ...uniqueCategoriesEN?.map((catEN, index) => ({
             label: uniqueCategoriesBN[index],
             href: `/category/${catEN.toLowerCase().replace(/\s+/g, '-')}`
