@@ -180,7 +180,7 @@ const AllPosts = () => {
                       asChild
                       className="h-8 w-8 rounded-sm"
                     >
-                      <Link to={`/news/${post._id}`}>
+                      <Link to={`/news/${post.slug}`}>
                         <Eye className="h-4 w-4" />
                       </Link>
                     </Button>
@@ -190,7 +190,7 @@ const AllPosts = () => {
                       asChild
                       className="h-8 w-8 rounded-sm"
                     >
-                      <Link to={`/edit-news/${post._id}`}>
+                      <Link to={`/edit-news/${post.slug}`}>
                         <Pencil className="h-4 w-4" />
                       </Link>
                     </Button>

@@ -1,0 +1,5 @@
+
+firstly analyze the project then work here:
+keep the existing color and style pattern .
+
+1. re write the root readme documentation properly like as a senior developer . merge three readme file into one . keep existing pattern and style .
