@@ -104,6 +104,7 @@ export function AppSidebar() {
                       >
                         <item.icon className="h-7 w-7 shrink-0" />
                         {!collapsed && <span>{item.title}</span>}
+                        {collapsed && <span>{item.title}</span>}
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

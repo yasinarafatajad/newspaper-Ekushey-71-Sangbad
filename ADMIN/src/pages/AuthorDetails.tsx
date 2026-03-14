@@ -174,7 +174,7 @@ const AuthorDetails = () => {
                       asChild
                       className="h-8 w-8 rounded-sm"
                     >
-                      <Link to={`/news/${post._id}`}>
+                      <Link to={`/news/${post.slug}`}>
                         <Newspaper className="h-4 w-4" />
                       </Link>
                     </Button>

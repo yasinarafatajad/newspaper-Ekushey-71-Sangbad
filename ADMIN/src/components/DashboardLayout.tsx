@@ -33,9 +33,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <header className="h-20 flex items-center justify-between border-b border-border bg-background sticky top-0 z-10 pr-4">
             <div className="flex items-center">
               <SidebarTrigger className="ml-3" />
-              <span className="ml-3 font-heading font-extrabold flex items-center gap-1 text-primary text-xl">
-                <Shield size={28} /> Admin
-              </span>
             </div>
 
             {user && (

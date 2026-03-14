@@ -258,11 +258,11 @@ const SignUp = () => {
                 <span className="text-destructive">*</span>
               </Label>
               {photoPreview ? (
-                <div className="relative border border-border rounded-sm overflow-hidden">
+                <div className="relative w-48 h-48 border border-border rounded-sm overflow-hidden">
                   <img
                     src={photoPreview}
                     alt="Preview"
-                    className="w-full h-48 object-cover"
+                    className="w-48 h-48 object-cover"
                   />
                   <Button
                     type="button"

@@ -57,7 +57,7 @@ const Page = async (props: PageProps) => {
 
     if (!article) {
         return (
-            <main className="container py-8">
+            <main className="py-8">
                 <h1 className="text-3xl font-bold">Article not found</h1>
             </main>
         )
@@ -69,20 +69,21 @@ const Page = async (props: PageProps) => {
     )
 
     return (
-        <main className="container py-8">
-            {/* Breadcrumb */}
-            <div className="flex items-center gap-2 text-sm text-slate-500 mb-6">
-                <Link className="hover:text-primary" href="/">Home</Link>
-                <span className="material-symbols-outlined text-xs">/</span>
-                <Link className="hover:text-primary" href={`/category/${article.categoryEN}`}>
-                    {article.categoryBN}
-                </Link>
-                <span className="material-symbols-outlined text-xs">/</span>
-                <span className="text-primary font-medium">{article.bnTitle}</span>
-            </div>
-
+        <main className="py-8">
             <MainLayout>
                 <main className="lg:col-span-8">
+                    {/* Breadcrumb */}
+                    <div className="flex items-center gap-2 text-sm text-slate-500 mb-6">
+                        <Link className="hover:text-primary" href="/">হোম</Link>
+                        <span className="material-symbols-outlined text-xs">/</span>
+                        <Link className="hover:text-primary" href={`/category/${article.categoryEN}`}>
+                            {article.categoryBN}
+                        </Link>
+                        <span className="material-symbols-outlined text-xs">/</span>
+                        <span className="text-primary font-medium">{article.bnTitle}</span>
+                    </div>
+
+                    {/* article */}
                     <article>
                         <h1 className="md:text-5xl font-bold leading-tight mb-6 text-slate-900 dark:text-slate-50 text-2xl">
                             {article.bnTitle}
@@ -96,11 +97,6 @@ const Page = async (props: PageProps) => {
                                 publishedAt={article?.createdAt}
                                 location={article?.author?.location}
                             />
-                            <div className="flex items-center gap-2">
-                                <span className="text-nowrap text-xl">Share:</span>
-                                <CopyFacebookCaption article={article} />
-                                <ShareFacebook />
-                            </div>
                         </div>
 
                         <figure className="mb-8">
@@ -130,13 +126,18 @@ const Page = async (props: PageProps) => {
                                 </span>
                             ))}
                         </div>
+                        <div className="flex items-center gap-2">
+                            <span className="text-nowrap text-xl">Share:</span>
+                            <CopyFacebookCaption article={article} />
+                            <ShareFacebook />
+                        </div>
                     </article>
                 </main>
                 <Aside articles={articles} />
             </MainLayout>
 
             {related?.length > 0 && (
-                <section className="mt-20">
+                <section className="container mt-20">
                     <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
                         <Activity className="text-primary" />
                         সম্পর্কিত খবর

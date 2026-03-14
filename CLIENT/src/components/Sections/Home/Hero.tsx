@@ -18,17 +18,16 @@ export const Hero = ({ latest }: HeroProps) => {
                     fill
                     loading="lazy"
                 />
-                <div className=" flex justify-between items-start absolute top-4 px-4 w-full">
-                    <Image
-                        src={logo}
-                        alt="Ekushey 71 Sangbad"
-                        width={230}
-                        height={48}
-                        loading="lazy"
-                        className="h-12 w-auto pointer-events-none"
-                    />
-                    <span className="bg-primary text-white px-3 py-1 mt-2.5 lg:mt-3 rounded-lg text-sm font-bold text-nowrap">শীর্ষ সংবাদ</span>
-                </div>
+                    <div className="h-6 w-auto absolute bottom-2 lg:bottom-4 left-2 lg:left-4">
+                        <Image
+                            src={logo}
+                            alt="Ekushey 71 Sangbad"
+                            width={139}
+                            height={29}
+                            loading="lazy"
+                            className="object-cover pointer-events-none"
+                        />
+                    </div>
             </div>
             {/* headline */}
             <Link href={`news/${latest?.slug}`}>
