@@ -427,7 +427,7 @@ const Authors = () => {
               </Label>
               <div>
                 {photoPreview ? (
-                  <div className="relative border border-border overflow-hidden aspect-square rounded-full max-w-72">
+                  <div className="relative border border-border overflow-hidden aspect-square max-w-72">
                     <img
                       src={photoPreview}
                       alt="Preview"
@@ -440,7 +440,7 @@ const Authors = () => {
                       onClick={removeImage}
                       className="absolute top-2 right-2 h-7 w-7 rounded-sm bg-background/80 hover:bg-background"
                     >
-                      <X className="h-4 w-4" />
+                      <X className="h-8  w-8 " />
                     </Button>
                   </div>
                 ) : (
