@@ -13,6 +13,7 @@ import { api } from "@/lib/useApi/api"
 import ShareMessenger from "@/components/ui/ShareMessenger"
 import type { Metadata } from "next";
 import ShareWhatsApp from "@/components/ui/ShareWhatsApp"
+import { DownloadPdfButton } from "@/components/ui/DownloadPdfButton"
 
 interface PageProps {
     params: {
@@ -174,7 +175,7 @@ const Page = async ({ params }: PageProps) => {
                                 </span>
                             ))}
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 mt-4">
                             {/* <span className="text-nowrap text-xl">Share:</span> */}
                             <Share2 />
                             <CopyFacebookCaption article={article} />
@@ -186,6 +187,8 @@ const Page = async ({ params }: PageProps) => {
                         <figcaption className="text-sm text-slate-500 italic border-l-2 border-primary pl-2 mt-4">
                             সহজে শেয়ার করতে প্রথমে <span className="font-bold">কপি করুন</span>, তারপর Facebook বাটনে ক্লিক করে <span className="font-bold"> পেস্ট করুন।</span>
                         </figcaption>
+                        {/* working on it */}
+                        {/* <DownloadPdfButton className="mt-6" slug={slug} /> */}
                     </article>
                 </main>
                 <Aside articles={articles} />

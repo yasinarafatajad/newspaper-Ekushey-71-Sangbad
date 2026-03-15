@@ -3,7 +3,7 @@ import { formatDate, formatDay } from "@/lib/utils";
 import { Logs, X } from "lucide-react"
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from '@/assets/logoLight.png'
 import { Category } from "@/lib/type";
 import { api } from "@/lib/useApi/api";
@@ -11,25 +11,41 @@ import { api } from "@/lib/useApi/api";
 type NavLinks = { label: string; href: string }
 
 // fetch all categories
-const getAllCategories = async (): Promise<Category[]> => {
-  try {
-    const res = await fetch(`${api}/AllCategory`);
-    if (!res.ok) throw new Error("Failed to fetch categories");
+// const getAllCategories = async (): Promise<Category[]> => {
+//   try {
+//     const res = await fetch(`${api}/AllCategory`);
+//     if (!res.ok) throw new Error("Failed to fetch categories");
 
-    const json = await res.json();
-    return json.data;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-}
+//     const json = await res.json();
+//     return json.data;
+//   } catch (error) {
+//     console.error(error);
+//     return [];
+//   }
+// }
 
-export const Header = async () => {
+export const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+
   const today: string = new Date().toISOString();
 
   // fetch categories from API
-  const categories = await getAllCategories();
+  // const categories = await getAllCategories();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(`${api}/AllCategory`);
+        const json = await res.json();
+        setCategories(json.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const navlinks: NavLinks[] = [
     { label: 'হোম', href: '/' },
