@@ -21,7 +21,7 @@ export const Hero = ({ latest }: HeroProps) => {
                     />
                 </div>
                 {/* logo after main image */}
-                <div className="w-auto mb-4 rounded-b-xl bg-amber-300 flex items-center justify-center py-1">
+                <div className="w-auto mb-4 rounded-b-xl bg-amber-300 flex items-center justify-center py-1 lg:py-6">
                     <Image
                         src={logo}
                         alt="Ekushey 71 Sangbad"

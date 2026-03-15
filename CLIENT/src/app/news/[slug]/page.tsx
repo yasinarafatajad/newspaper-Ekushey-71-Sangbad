@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     return {
         title: news.bnTitle,
-        description: "📢 গুরুত্বপূর্ণ এই সংবাদটি এখনই পড়ুন। বিস্তারিত জানতে ক্লিক করুন।",
+        description: news.content,
 
         alternates: {
             canonical: newsUrl,
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
         openGraph: {
             title: news.bnTitle,
-            description: "📢 গুরুত্বপূর্ণ এই সংবাদটি এখনই পড়ুন। বিস্তারিত জানতে ক্লিক করুন।",
+            description: news.content.slice(0, 160) + (news.content.length > 160 ? "…" : ""),
             url: newsUrl,
             type: "article",
             publishedTime: news.createdAt,
@@ -51,6 +51,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
                     url: news.featuredImage,
                     width: 1200,
                     height: 630,
+                    alt: news.bnTitle
                 },
             ],
         },
@@ -58,12 +59,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         twitter: {
             card: "summary_large_image",
             title: news.bnTitle,
-            description: "📢 গুরুত্বপূর্ণ এই সংবাদটি এখনই পড়ুন। বিস্তারিত জানতে ক্লিক করুন।",
+            description: news.content.slice(0, 160) + (news.content.length > 160 ? "…" : ""),
             images: [news.featuredImage],
         },
     };
 }
-
 
 // fetch all articles
 const getAllNews = async (): Promise<Article[]> => {
