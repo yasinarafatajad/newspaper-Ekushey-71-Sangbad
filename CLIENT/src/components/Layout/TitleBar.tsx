@@ -8,7 +8,7 @@ interface TitleBarProps {
 export const TitleBar = ({articles} : TitleBarProps) => {
     
     return (
-        <div className="bg-neutral-subtle dark:bg-primary/5 py-2 border-b border-neutral-muted dark:border-primary/10">
+        <div className="bg-neutral-subtle py-2 border-b border-neutral-muted">
             <div className="container flex items-center overflow-hidden">
                 <div className="bg-primary text-white text-xs font-bold px-3 py-1 rounded mr-4 shrink-0 flex items-center gap-1 z-30">
                     <Zap /> ব্রেকিং নিউজ

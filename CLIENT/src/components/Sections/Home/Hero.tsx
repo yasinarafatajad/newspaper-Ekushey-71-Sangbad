@@ -44,7 +44,7 @@ export const Hero = ({ latest }: HeroProps) => {
                 location={latest?.author?.location}
             />
             {/* content (short) */}
-            <div className="">
+            <div className="mt-3">
                 <p className="text-slate-600 text-base md:text-lg leading-relaxed mb-4 line-clamp-4">
                     {latest?.content}
                 </p>

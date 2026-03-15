@@ -4,7 +4,7 @@ import Image from "next/image"
 
 export const Author = ({ name, src, title, location, publishedAt }: AUTHOR) => {
     return (
-        <div className="flex items-start gap-3 mb-4">
+        <div className="flex items-start gap-3">
             <div className="overflow-hidden h-14 w-14 aspect-square border-2 rounded-full border-primary">
                 <Image
                     src={src}

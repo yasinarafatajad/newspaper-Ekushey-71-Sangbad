@@ -37,9 +37,12 @@ const Page = async (props: PageProps) => {
     if (!categoryArticle)
         return 'no article here'
 
+    console.log(categoryArticle);
+    
+
     return (
         <main className="container py-8">
-            <h1 className="text-3xl font-bold mb-6 uppercase">{slug}</h1>
+            <h1 className="text-3xl font-bold mb-6 uppercase">{categoryArticle.length > 0 ? categoryArticle[0]?.categoryBN : slug}</h1>
             <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
                 {categoryArticle?.map(news => (
                     <Link key={news._id} href={`/news/${news.slug}`}>

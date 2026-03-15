@@ -2,45 +2,47 @@ import Link from 'next/link'
 import logo from '@/assets/logoDark.png'
 import Image from 'next/image';
 import { formatNumber } from '@/lib/utils';
-import { Article } from '@/lib/type';
+import { api } from '@/lib/useApi/api';
+import { Category } from '@/lib/type';
 
 type SubNavLink = {
     label: string;
     href: string;
 };
-
-// const subNavLinks: SubNavLink[] = [
-//     { label: 'রাজনীতি', href: 'category/politics' },
-//     { label: 'আন্তর্জাতিক', href: 'category/international' },
-//     { label: 'অর্থনীতি', href: 'category/economy' },
-//     { label: 'খেলাধুলা', href: 'category/sports' },
-//     { label: 'বিনোদন', href: 'category/entertainment' },
-//     { label: 'বিজ্ঞান ও প্রযুক্তি', href: 'category/science-technology' },
-// ];
+interface FooterNavLinks {
+    label: string;
+    href: string;
+};
 
 const footerLinks: SubNavLink[] = [
     { label: "শর্তাবলী", href: "/terms" },
     { label: "কুকি পলিসি", href: "/cookie-policy" },
 ];
 
+// fetch all categories
+const getAllCategories = async (): Promise<Category[]> => {
+    try {
+        const res = await fetch(`${api}/AllCategory`);
+        if (!res.ok) throw new Error("Failed to fetch categories");
+
+        const json = await res.json();
+        return json.data; // <-- extract the array from {count, data}
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+
 const currentYear = formatNumber(new Date().getFullYear());
 
-interface FooterProps {
-    articles: Article[];
-}
-interface FooterNavLinks {
-    label: string;
-    href: string;
-};
-export const Footer = ({ articles }: FooterProps) => {
-        // fetch categories
-    const uniqueCategoriesEN = Array.from(new Set(articles.map(a => a.categoryEN)));
-    const uniqueCategoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
+export const Footer = async () => {
+    // fetch categories from API
+    const categories = await getAllCategories();
 
     const subNavLinks: FooterNavLinks[] = [
-        ...uniqueCategoriesEN?.map((catEN, index) => ({
-            label: uniqueCategoriesBN[index],
-            href: `/category/${catEN.toLowerCase().replace(/\s+/g, '-')}`
+        ...categories.map(cat => ({
+            label: cat.nameBN, // show Bangla name
+            href: `/category/${cat.nameEN.toLowerCase().replace(/\s+/g, '-')}`
         }))
     ];
     return (

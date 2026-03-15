@@ -5,25 +5,37 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import logo from '@/assets/logoLight.png'
-import { Article } from "@/lib/type";
+import { Category } from "@/lib/type";
+import { api } from "@/lib/useApi/api";
 
 type NavLinks = { label: string; href: string }
-interface CategoryProps {
-    articles: Article[];
+
+// fetch all categories
+const getAllCategories = async (): Promise<Category[]> => {
+  try {
+    const res = await fetch(`${api}/AllCategory`);
+    if (!res.ok) throw new Error("Failed to fetch categories");
+
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 }
-export const Header = ({ articles }: CategoryProps) => {
+
+export const Header = async () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const today: string = new Date().toISOString();
 
-  // fetch categories
-  const uniqueCategoriesEN = Array.from(new Set(articles.map(a => a.categoryEN)));
-  const uniqueCategoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
+  // fetch categories from API
+  const categories = await getAllCategories();
 
   const navlinks: NavLinks[] = [
     { label: 'হোম', href: '/' },
-    ...uniqueCategoriesEN?.map((catEN, index) => ({
-      label: uniqueCategoriesBN[index],
-      href: `/category/${catEN.toLowerCase().replace(/\s+/g, '-')}`
+    ...categories.map(cat => ({
+      label: cat.nameBN, // show Bangla name
+      href: `/category/${cat.nameEN.toLowerCase().replace(/\s+/g, '-')}`
     }))
   ];
 
