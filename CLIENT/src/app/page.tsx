@@ -6,11 +6,59 @@ import { Lifestyle } from "@/components/Sections/Home/Lifestyle";
 import { Article } from "@/lib/type";
 import { api } from "@/lib/useApi/api";
 import { Metadata } from "next";
+import logo from '@/assets/logoDark.png';
 
-export const metadata: Metadata = {
-  title: "Ekushey 71 Sangbad",
-  description: "All News",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const siteName = "একুশে ৭১ সংবাদ";
+  const siteUrl = "https://ekushey71sangbad.vercel.app";
+
+  return {
+    title: siteName,
+    description: "বাংলাদেশের সর্বশেষ খবর, রাজনীতি, অর্থনীতি, অপরাধ, লাইফস্টাইল এবং আরও অনেক গুরুত্বপূর্ণ খবর এখানে পড়ুন।",
+
+    // Canonical URL
+    alternates: {
+      canonical: siteUrl,
+    },
+
+    // Open Graph (Facebook, Messenger, LinkedIn)
+    openGraph: {
+      title: siteName,
+      description: "বাংলাদেশের সর্বশেষ খবর, রাজনীতি, অর্থনীতি, অপরাধ, লাইফস্টাইল এবং আরও অনেক গুরুত্বপূর্ণ খবর এখানে পড়ুন।",
+      url: siteUrl,
+      type: "website",
+      images: [
+        {
+          url: logo.src, // Next.js Image import
+          width: 307,    // তোমার logo এর width
+          height: 64,    // তোমার logo এর height
+          alt: siteName,
+        },
+      ],
+    },
+
+    // Twitter Card
+    twitter: {
+      card: "summary_large_image",
+      title: siteName,
+      description: "বাংলাদেশের সর্বশেষ খবর, রাজনীতি, অর্থনীতি, অপরাধ, লাইফস্টাইল এবং আরও অনেক গুরুত্বপূর্ণ খবর এখানে পড়ুন।",
+      images: [
+        {
+          url: logo.src,
+          width: 307,
+          height: 64,
+        },
+      ],
+    },
+
+    // Optional: Robots
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
+
 const getAllNews = async (): Promise<Article[]> => {
   try {
     const res = await fetch(`${api}/AllNews`);
