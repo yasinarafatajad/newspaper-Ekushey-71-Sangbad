@@ -1,16 +1,14 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
-
-export default function ShareMessenger({ message = "📢 গুরুত্বপূর্ণ সংবাদটি পড়ুন: " }) {
+export default function ShareMessenger() {
     const handleShareMessenger = () => {
         const url = encodeURIComponent(window.location.href);
-        const encodedMessage = encodeURIComponent(message + " " + url);
+        // const encodedMessage = encodeURIComponent(message + " " + url);
 
         const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
         const shareUrl = isMobile
-            ? `fb-messenger://share/?link=${url}` // Mobile opens Messenger app
+            ? `fb-messenger://share/?link=${url}` 
             : `https://www.facebook.com/dialog/send?link=${url}&app_id=${process.env.NEXT_PUBLIC_APP_ID_}&redirect_uri=${url}`;
 
         window.open(shareUrl, "_blank", "width=600,height=600");

@@ -1,4 +1,3 @@
-// /app/news/[slug]/page.tsx
 import { Aside } from "@/components/Layout/Aside"
 import { MainLayout } from "@/components/Layout/MainLayout"
 import { ArticleCard } from "@/components/ui/ArticleCard"
@@ -13,7 +12,7 @@ import { api } from "@/lib/useApi/api"
 import ShareMessenger from "@/components/ui/ShareMessenger"
 import type { Metadata } from "next";
 import ShareWhatsApp from "@/components/ui/ShareWhatsApp"
-import { DownloadPdfButton } from "@/components/ui/DownloadPdfButton"
+// import { DownloadPdfButton } from "@/components/ui/DownloadPdfButton"
 
 interface PageProps {
     params: {
@@ -30,7 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         };
     }
 
-    const newsUrl = `https://ekushey71sangbad.vercel.app/news/${params.slug}`;
+    const newsUrl = `https://ekushey71sangbad.vercel.app/news/${slug}`;
 
     return {
         title: news.bnTitle,
@@ -138,16 +137,6 @@ const Page = async ({ params }: PageProps) => {
                             {article.bnTitle}
                         </h1>
 
-                        <div className="flex flex-wrap items-center justify-between border-y border-primary/10 py-2 mb-3 gap-4">
-                            <Author
-                                name={article?.author?.name}
-                                title={article?.author?.title}
-                                src={article?.author?.src}
-                                publishedAt={article?.createdAt}
-                                location={article?.author?.location}
-                            />
-                        </div>
-
                         <figure className="mb-3">
                             <div className="relative overflow-hidden aspect-video">
                                 <Image
@@ -161,6 +150,16 @@ const Page = async ({ params }: PageProps) => {
                                 {article.imageCaption}
                             </figcaption>
                         </figure>
+
+                        <div className="flex flex-wrap items-center justify-between border-y border-primary/10 py-2 mb-3 gap-4">
+                            <Author
+                                name={article?.author?.name}
+                                title={article?.author?.title}
+                                src={article?.author?.src}
+                                publishedAt={article?.createdAt}
+                                location={article?.author?.location}
+                            />
+                        </div>
 
                         <div className="serif-font md:text-xl leading-relaxed text-slate-800 text-base">
                             {article.content.split("\n\n").map((p, i) => (
