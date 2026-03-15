@@ -1,31 +1,35 @@
-"use client"
-import { Article } from "@/lib/type";
-// import { articles } from "@/lib/newses";
+import { Category } from "@/lib/type";
+import { api } from "@/lib/useApi/api";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-interface CategoryProps {
-    articles: Article[];
-}
 interface CategoryNavLinks {
     label: string;
     href: string;
-};
+}
 
+// fetch all categories
+const getAllCategories = async (): Promise<Category[]> => {
+    try {
+        const res = await fetch(`${api}/AllCategory`);
+        if (!res.ok) throw new Error("Failed to fetch categories");
 
+        const json = await res.json();
+        return json.data; // <-- extract the array from {count, data}
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
 
-export const CategoryBar = ({ articles }: CategoryProps) => {
-    const pathname = usePathname();
-
-    // fetch categories
-    const uniqueCategoriesEN = Array.from(new Set(articles.map(a => a.categoryEN)));
-    const uniqueCategoriesBN = Array.from(new Set(articles.map(a => a.categoryBN)));
+export const CategoryBar = async () => {
+    // fetch categories from API
+    const categories = await getAllCategories();
 
     const navlinks: CategoryNavLinks[] = [
         { label: 'হোম', href: '/' },
-        ...uniqueCategoriesEN?.map((catEN, index) => ({
-            label: uniqueCategoriesBN[index],
-            href: `/category/${catEN.toLowerCase().replace(/\s+/g, '-')}`
+        ...categories.map(cat => ({
+            label: cat.nameBN, // show Bangla name
+            href: `/category/${cat.nameEN.toLowerCase().replace(/\s+/g, '-')}`
         }))
     ];
 
@@ -39,7 +43,9 @@ export const CategoryBar = ({ articles }: CategoryProps) => {
                             href={cat.href}
                             className={`${idx === navlinks.length - 1 ? 'border-r-0' : 'border-r'}`}
                         >
-                            <span className={`hover:bg-primary/20 px-3 py-1 mx-2.5 text-nowrap text-center transition-colors ${pathname === cat.href ? "border-b-2 border-primary" : ""}`} >{cat.label}</span>
+                            <span className='hover:bg-primary/20 px-3 py-1 mx-2.5 text-nowrap text-center transition-colors'>
+                                {cat.label}
+                            </span>
                         </Link>
                     ))}
                 </nav>

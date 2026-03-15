@@ -29,3 +29,9 @@ export interface AUTHOR {
     location: string
     publishedAt: string
 }
+export interface Category {
+  _id: string;
+  nameEN: string;
+  nameBN: string;
+  postCount?: number;
+}

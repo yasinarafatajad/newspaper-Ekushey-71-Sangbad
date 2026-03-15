@@ -4,7 +4,7 @@ import { Article } from '@/lib/type';
 
 export const ArticleGrid = ({ article }: { article: Article }) => {
     return (
-        <div className="flex border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-300 bg--background-light">
+        <div className="flex border border-primary rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-300 bg--background-light h-48">
 
             {/* Left Image */}
             <div className="relative w-1/3 h-48">

@@ -127,10 +127,11 @@ const NewPost = () => {
   const generateSlug = (text: string) => {
     return text
       .toLowerCase()
-      .replace(/[^\w\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-")
-      .trim();
+      .replace(/[^\w\s-]/g, "")      // remove special chars
+      .replace(/\s+/g, "-")          // spaces → dash
+      .replace(/-+/g, "-")           // multiple dashes → single dash
+      .replace(/^-+/, "")            // remove starting dash
+      .replace(/-+$/, "");           // remove trailing dash
   };
 
   const handleEnTitleChange = (value: string) => {
@@ -166,13 +167,13 @@ const NewPost = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const addTag = () => {
-    const trimmed = tagInput.trim();
-    if (trimmed && !tags.includes(trimmed)) {
-      setTags([...tags, trimmed]);
-    }
-    setTagInput("");
-  };
+  // const addTag = () => {
+  //   const trimmed = tagInput.trim();
+  //   if (trimmed && !tags.includes(trimmed)) {
+  //     setTags([...tags, trimmed]);
+  //   }
+  //   setTagInput("");
+  // };
 
   const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
