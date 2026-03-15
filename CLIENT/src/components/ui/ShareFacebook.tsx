@@ -1,6 +1,5 @@
 "use client";
 
-import { Facebook } from "lucide-react";
 
 export default function ShareFacebook() {
     // share news in facebook

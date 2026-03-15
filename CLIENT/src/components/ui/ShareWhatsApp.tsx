@@ -1,9 +1,5 @@
 "use client";
 
-interface ShareWhatsAppProps {
-    message?: string; // optional custom message
-}
-
 export default function ShareWhatsApp({ message = `📢 গুরুত্বপূর্ণ সংবাদটি পড়ুন: ` }) {
     const handleShareWhatsApp = () => {
         const url = window.location.href;

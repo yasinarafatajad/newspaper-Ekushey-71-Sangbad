@@ -25,7 +25,6 @@ const getAllNews = async (): Promise<Article[]> => {
     return [];
   }
 }
-console.log('layout: ')
 
 export default async function Home() {
   const news = await getAllNews();

@@ -11,23 +11,26 @@ export const Hero = ({ latest }: HeroProps) => {
     return (
         <article className="mb-2 group cursor-pointer py-6">
             {/* thumbnail */}
-            <div className="relative overflow-hidden rounded-xl mb-4 aspect-video">
-                <Image className="h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-500"
-                    alt={latest?.bnTitle}
-                    src={latest?.featuredImage}
-                    fill
-                    loading="lazy"
-                />
-                    <div className="h-6 w-auto absolute bottom-2 lg:bottom-4 left-2 lg:left-4">
-                        <Image
-                            src={logo}
-                            alt="Ekushey 71 Sangbad"
-                            width={139}
-                            height={29}
-                            loading="lazy"
-                            className="object-cover pointer-events-none"
-                        />
-                    </div>
+            <div className="wrapper w-full overflow-hidden rounded-t-xl">
+                <div className="relative w-full  aspect-video">
+                    <Image className="object-cover pointer-events-none group-hover:scale-105 transition-transform duration-500"
+                        alt={latest?.bnTitle}
+                        src={latest?.featuredImage}
+                        fill
+                        loading="lazy"
+                    />
+                </div>
+                {/* logo after main image */}
+                <div className="w-auto mb-4 rounded-b-xl bg-amber-300 flex items-center justify-center py-1">
+                    <Image
+                        src={logo}
+                        alt="Ekushey 71 Sangbad"
+                        width={139}
+                        height={29}
+                        loading="lazy"
+                        className="object-cover pointer-events-none"
+                    />
+                </div>
             </div>
             {/* headline */}
             <Link href={`news/${latest?.slug}`}>

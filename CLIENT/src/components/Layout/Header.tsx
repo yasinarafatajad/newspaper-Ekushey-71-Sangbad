@@ -4,34 +4,17 @@ import { Logs, X } from "lucide-react"
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import logo from '@/assets/logoLight.png'
+import logo from '@/assets/logoDark.png'
 import { Category } from "@/lib/type";
 import { api } from "@/lib/useApi/api";
 
 type NavLinks = { label: string; href: string }
-
-// fetch all categories
-// const getAllCategories = async (): Promise<Category[]> => {
-//   try {
-//     const res = await fetch(`${api}/AllCategory`);
-//     if (!res.ok) throw new Error("Failed to fetch categories");
-
-//     const json = await res.json();
-//     return json.data;
-//   } catch (error) {
-//     console.error(error);
-//     return [];
-//   }
-// }
 
 export const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
 
   const today: string = new Date().toISOString();
-
-  // fetch categories from API
-  // const categories = await getAllCategories();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -56,7 +39,7 @@ export const Header = () => {
   ];
 
   return (
-    <header className="border-b border-neutral-muted bg-background-light">
+    <header className="border-b border-neutral-muted bg-black/80">
       <div className="container">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo  */}
@@ -75,14 +58,14 @@ export const Header = () => {
           {/* Right Actions  */}
           <div className="flex items-center gap-4">
             <div className="hidden md:flex flex-col text-right">
-              <span className="text-xs text-slate-500 uppercase">{formatDay(today)}</span>
-              <span className="text-sm font-bold">{formatDate(today)} খ্রিষ্টাব্দ</span>
+              <span className="text-xs text-green-400 uppercase">{formatDay(today)}</span>
+              <span className="text-sm text-neutral-muted font-bold">{formatDate(today)} খ্রিষ্টাব্দ</span>
             </div>
             {/* <div className="relative hidden sm:block">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Search /></span>
               <input className="pl-10 pr-4 py-2 bg-neutral-subtle border-none rounded-full text-sm focus:ring-2 focus:ring-primary w-40 lg:w-60 transition-all" placeholder="অনুসন্ধান করুন..." type="text" />
             </div> */}
-            <button onClick={() => setMobileOpen(true)} className="lg:hidden p-2 rounded-lg hover:bg-neutral-subtle flex items-center justify-center">
+            <button onClick={() => setMobileOpen(true)} className="lg:hidden p-2 rounded-lg text-neutral-muted hover:bg-neutral-subtle flex items-center justify-center">
               <Logs />
             </button>
           </div>

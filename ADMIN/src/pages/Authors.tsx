@@ -440,7 +440,7 @@ const Authors = () => {
                       onClick={removeImage}
                       className="absolute top-2 right-2 h-7 w-7 rounded-sm bg-background/80 hover:bg-background"
                     >
-                      <X className="h-8  w-8 " />
+                      <X className="h-8 w-8" />
                     </Button>
                   </div>
                 ) : (

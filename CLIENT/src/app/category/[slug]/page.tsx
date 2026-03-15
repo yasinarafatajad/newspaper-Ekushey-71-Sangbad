@@ -34,11 +34,8 @@ const Page = async (props: PageProps) => {
         e => e?.categoryEN?.toLowerCase() === slug?.toLowerCase()
     );
 
-    if (!categoryArticle)
-        return 'no article here'
-
-    console.log(categoryArticle);
-    
+    if (!categoryArticle || categoryArticle.length <= 0)
+        return <div className="container flex items-center justify-center mt-20 text-background-dark text-xl uppercase">দুঃখিত! এখনো কোনো সংবাদ প্রকাশিত হয়নি।</div>
 
     return (
         <main className="container py-8">
