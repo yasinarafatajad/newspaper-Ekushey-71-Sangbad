@@ -54,7 +54,7 @@ const NewPost = () => {
   const [imageCaption, setImageCaption] = useState(""); // image caption
   const [tags, setTags] = useState<string[]>([]); // tag list
   const [tagInput, setTagInput] = useState(""); // tag input field
-  const [status, setStatus] = useState<string>("draft"); // draft/published
+  const [status, setStatus] = useState<string>("published"); // draft/published
   const [isTyping, setIsTyping] = useState(false); // content editor typing state
   const [publishState, setPublishState] = useState<
     "idle" | "publishing" | "success"
@@ -166,14 +166,6 @@ const NewPost = () => {
     setImagePreview(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
-
-  // const addTag = () => {
-  //   const trimmed = tagInput.trim();
-  //   if (trimmed && !tags.includes(trimmed)) {
-  //     setTags([...tags, trimmed]);
-  //   }
-  //   setTagInput("");
-  // };
 
   const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -575,7 +567,7 @@ const NewPost = () => {
               <SelectValue placeholder="News Status..." />
             </SelectTrigger>
             <SelectContent>
-              {["published", "draft"].map((e, index) => (
+              {["published"].map((e, index) => (
                 <SelectItem key={index} value={e}>
                   {e}
                 </SelectItem>
