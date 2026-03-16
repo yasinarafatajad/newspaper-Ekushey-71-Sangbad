@@ -100,9 +100,9 @@ export default async function Home() {
             <Hero latest={news[news.length - 1]} />
           }
           {/* ad section */}
-          <div className="hidden lg:grid place-content-center mb-2 bg-slate-100 h-50 w-full rounded-xl border border-dashed border-slate-300 mt-6">
+          {/* <div className="hidden lg:grid place-content-center mb-2 bg-slate-100 h-50 w-full rounded-xl border border-dashed border-slate-300 mt-6">
             <span className="text-slate-400 text-sm self-middle">বিজ্ঞাপন</span>
-          </div>
+          </div> */}
         </main>
 
         {/* right */}

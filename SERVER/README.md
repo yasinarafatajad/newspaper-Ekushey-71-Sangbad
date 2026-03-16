@@ -132,7 +132,7 @@ graph TD;
 ## 👷 Author
 
 **Yasin Arafat Ajad**  
-_Full-Stack Solutions Architect_
+_Mern-Stack Developer_
 
 ---
 

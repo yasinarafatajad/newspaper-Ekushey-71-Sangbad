@@ -177,7 +177,7 @@ const Page = async ({ params }: PageProps) => {
                         <div className="flex items-center gap-2 mt-4">
                             {/* <span className="text-nowrap text-xl">Share:</span> */}
                             <Share2 />
-                            <CopyFacebookCaption article={article} />
+                            <CopyFacebookCaption />
                             <ShareFacebook />
                             <ShareMessenger />
                             <ShareWhatsApp message={`📢 গুরুত্বপূর্ণ খবর: ${article.bnTitle}`} />

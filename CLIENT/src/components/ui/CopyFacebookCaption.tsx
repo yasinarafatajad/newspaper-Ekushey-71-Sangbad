@@ -1,31 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Article } from "@/lib/type";
 
-interface Props {
-  article: Article;
-}
-
-export default function CopyFacebookCaption({ article }: Props) {
+export default function CopyFacebookCaption() {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
     const articleUrl = window.location.href;
 
-    const caption = `🔥 গুরুত্বপূর্ণ খবর!
-📢 ${article.bnTitle}
-এই বিষয়টি নিয়ে এখন আলোচনা চলছে সর্বত্র। বিস্তারিত জানতে পুরো খবরটি পড়ুন।
-
-👉 সম্পূর্ণ সংবাদ পড়ুন:
-${articleUrl}
-
-💬 আপনার মতামত কী? কমেন্টে জানান এবং বন্ধুদের সঙ্গে শেয়ার করুন।
-
-#সংবাদ #বাংলাদেশ #Ekushey71Sangbad #${article.categoryBN}`;
-
     try {
-      await navigator.clipboard.writeText(caption);
+      await navigator.clipboard.writeText(articleUrl);
       setCopied(true);
 
       setTimeout(() => setCopied(false), 2000);
