@@ -26,9 +26,9 @@ export const Aside = ({articles}: AsideProps) => {
                 </ul>
             </div>
             {/* Ad Section */}
-            <div className="bg-slate-100 h-64 rounded-xl flex items-center justify-center border border-dashed border-slate-300">
+            {/* <div className="bg-slate-100 h-64 rounded-xl flex items-center justify-center border border-dashed border-slate-300">
                 <span className="text-slate-400 text-sm">বিজ্ঞাপন</span>
-            </div>
+            </div> */}
             {/* Popular News || Most Read  */}
             <div className="">
                 <h3 className="text-xl font-bold mb-6 flex items-center gap-2"><ChartNoAxesCombined className="text-primary" />জনপ্রিয় সংবাদ</h3>

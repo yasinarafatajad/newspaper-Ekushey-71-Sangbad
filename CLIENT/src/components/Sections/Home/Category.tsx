@@ -29,7 +29,7 @@ export const Category = ({  categories }: CategoryProps) => {
                                         {/* image */}
                                         <div className="relative w-24 h-24 shrink-0 rounded-lg overflow-hidden">
                                             <Image
-                                                className="w-full h-full object-cover pointer-events-none group-hover:scale-110 transition-transform"
+                                                className="w-full h-full object-cover pointer-events-none transition-transform"
                                                 alt={article.bnTitle}
                                                 src={article.featuredImage}
                                                 fill

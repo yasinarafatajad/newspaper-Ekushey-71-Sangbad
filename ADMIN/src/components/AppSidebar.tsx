@@ -4,7 +4,7 @@ import {
   FilePlus,
   FileText,
   FolderOpen,
-  User,
+  // User,
   UserRoundPen,
   LogOut,
   // Settings,
@@ -36,7 +36,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import logo from "../assets/logoLight.png";
-// import icon from "../assets/icon.png";
+import icon from "../assets/icon.png";
 import { toast } from "@/hooks/use-toast";
 
 const navItems = [
@@ -57,27 +57,22 @@ export function AppSidebar() {
 
   // Auto collapse sidebar on navigation
   React.useEffect(() => {
-    setOpen(false);
+    // setOpen(false);
     setOpenMobile(false);
-  }, [location.pathname]);
+  }, [location.pathname, setOpenMobile]);
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border">
-      <SidebarHeader className="border-b border-border h-20">
-        <img
-          src={logo}
-          alt="Ekushey 71 Sangbad Logo"
-          className="h-full w-full"
-        />
-        {/* {!collapsed ? (
+      <SidebarHeader className="border-b border-border h-20 flex items-center justify-center">
+        {!collapsed ? (
           <img src={logo} alt="Ekushey 71 Sangbad Logo" />
         ) : (
           <img
             src={icon}
             alt="Ekushey 71 Sangbad icon"
-            className="w-full h-full scale-150"
+            className="w-full object-cover"
           />
-        )} */}
+        )}
       </SidebarHeader>
 
       <SidebarContent>

@@ -13,7 +13,7 @@ export const Hero = ({ latest }: HeroProps) => {
             {/* thumbnail */}
             <div className="wrapper w-full overflow-hidden rounded-t-xl">
                 <div className="relative w-full  aspect-video">
-                    <Image className="object-cover pointer-events-none group-hover:scale-105 transition-transform duration-500"
+                    <Image className="object-cover pointer-events-none transition-transform duration-500"
                         alt={latest?.bnTitle}
                         src={latest?.featuredImage}
                         fill

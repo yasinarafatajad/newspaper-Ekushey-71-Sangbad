@@ -4,7 +4,7 @@ import { Logs, X } from "lucide-react"
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import logo from '@/assets/logoDark.png'
+import logo from '@/assets/logoLight.png'
 import { Category } from "@/lib/type";
 import { api } from "@/lib/useApi/api";
 
@@ -39,7 +39,7 @@ export const Header = () => {
   ];
 
   return (
-    <header className="border-b border-neutral-muted bg-black/80">
+    <header className="border-b border-neutral-muted bg-white">
       <div className="container">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo  */}
@@ -58,8 +58,8 @@ export const Header = () => {
           {/* Right Actions  */}
           <div className="flex items-center gap-4">
             <div className="hidden md:flex flex-col text-right">
-              <span className="text-xs text-green-400 uppercase">{formatDay(today)}</span>
-              <span className="text-sm text-neutral-muted font-bold">{formatDate(today)} খ্রিষ্টাব্দ</span>
+              <span className="text-xs text-black uppercase">{formatDay(today)}</span>
+              <span className="text-sm text-slate-700 font-bold">{formatDate(today)} খ্রিষ্টাব্দ</span>
             </div>
             {/* <div className="relative hidden sm:block">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Search /></span>

@@ -10,10 +10,10 @@ This is the public-facing news portal for **Ekushey 71 Sangbad**. Built with **N
 
 ## Time
 
-- **Completed Duration**: 10 days
+- **Completed Duration**: 12 days
 - **Dead Line**: 04 March 2026 - 03 April 2026
 - **Status**: Production Ready
-- **Last Updated**: 14 March 2026
+- **Last Updated**: 16 March 2026
 
 ---
 
@@ -143,7 +143,7 @@ pnpm start
 ## Author
 
 **Yasin Arafat Azad**  
-_Senior Full-Stack Developer_
+_Mern-Stack Developer_
 
 ---
 

@@ -152,7 +152,7 @@ pnpm preview
 ## Author
 
 **Yasin Arafat Azad**  
-_Senior Full-Stack Developer_
+_Mern-Stack Developer_
 
 ---
 

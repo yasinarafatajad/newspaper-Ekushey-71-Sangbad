@@ -7,7 +7,7 @@ export const ArticleCard = ({ props }: {props : Article}) => {
     return (
         <Link href={`/news/${props.slug}`} className="group cursor-pointer">
             <div className="border border-primary aspect-square overflow-hidden rounded-lg mb-3">
-                <Image className=" w-full h-full object-cover pointer-events-none group-hover:scale-110 transition-transform"
+                <Image className=" w-full h-full object-cover pointer-events-none transition-transform"
                     alt={props.bnTitle}
                     src={props.featuredImage}
                     height={400}
