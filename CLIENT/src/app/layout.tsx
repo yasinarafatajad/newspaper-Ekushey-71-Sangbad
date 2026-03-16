@@ -33,11 +33,24 @@ const notoSansBengali = Noto_Sans_Bengali({
 });
 
 export const metadata: Metadata = {
-  title: "Ekushey 71 Sangbad",
-  description: "A NewsPaper",
+  title: {
+    default: "একুশে ৭১ সংবাদ",
+    template: "%s | একুশে ৭১ সংবাদ",
+  },
+  description:
+    "বাংলাদেশের সর্বশেষ খবর, রাজনীতি, অর্থনীতি, অপরাধ, লাইফস্টাইলসহ সব খবর পড়ুন একুশে ৭১ সংবাদে।",
+
+  metadataBase: new URL("https://ekushey71sangbad.vercel.app"),
+
+  openGraph: {
+    siteName: "একুশে ৭১ সংবাদ",
+    type: "website",
+    locale: "bn_BD",
+  },
+
   verification: {
-    google: "zM88wOzTVkD5ZWHiOEjquywBRnz9UF0ZMRjqbaB9qmc"
-  }
+    google: "zM88wOzTVkD5ZWHiOEjquywBRnz9UF0ZMRjqbaB9qmc",
+  },
 };
 
 const getAllNews = async (): Promise<Article[]> => {
