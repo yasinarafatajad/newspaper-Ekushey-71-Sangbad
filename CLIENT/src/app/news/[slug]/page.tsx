@@ -168,7 +168,7 @@ const Page = async ({ params }: PageProps) => {
                         </div>
 
                         <div className="mt-12 flex flex-wrap gap-2">
-                            {article.tags.map((tag, i) => (
+                            {article.tags?.map((tag, i) => (
                                 <span key={i} className="text-sm font-medium px-3 py-1 rounded bg-primary/10 text-primary">
                                     {tag}
                                 </span>
