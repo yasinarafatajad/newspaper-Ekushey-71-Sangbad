@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ---------------- THEME VARIABLES ---------------- */
-:root {
+@theme {
     /* Colors */
     --color-primary: #d41111;
     --color-text-main: #221010;
