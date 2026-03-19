@@ -65,7 +65,7 @@ export const Header = () => {
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Search /></span>
               <input className="pl-10 pr-4 py-2 bg-neutral-subtle border-none rounded-full text-sm focus:ring-2 focus:ring-primary w-40 lg:w-60 transition-all" placeholder="অনুসন্ধান করুন..." type="text" />
             </div> */}
-            <button onClick={() => setMobileOpen(true)} className="lg:hidden p-2 rounded-lg text-neutral-muted hover:bg-neutral-subtle flex items-center justify-center">
+            <button onClick={() => setMobileOpen(true)} className="lg:hidden p-2 rounded-lg text-text-main flex items-center justify-center">
               <Logs />
             </button>
           </div>
