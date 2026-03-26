@@ -214,6 +214,7 @@ const NewPost = () => {
     data.append("file", featuredImageLocal);
     data.append("upload_preset", uploadPreset);
     data.append("folder", "Ekushey71/News");
+    data.append("transformation", JSON.stringify([{ quality: "auto", fetch_format: "auto" }]));
 
     try {
       const res = await fetch(
