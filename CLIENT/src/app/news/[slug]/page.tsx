@@ -19,6 +19,17 @@ interface PageProps {
         slug: string
     }
 }
+function getBrandedImage(url: string) {
+    if (!url) return "";
+
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const logoPublicId = "logos:logo"; // your uploaded logo    
+
+    const parts = url.split("/upload/");
+    if (parts.length < 2) return url;
+
+    return `https://res.cloudinary.com/${cloudName}/image/upload/l_${logoPublicId},w_180,g_south_east,x_20,y_20,fl_relative/${parts[1]}`;
+}
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params;
     const news = await getNews(slug);
@@ -30,6 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
 
     const newsUrl = `https://ekushey71sangbad.vercel.app/news/${slug}`;
+    const brandedImage = getBrandedImage(news.featuredImage);
 
     return {
         title: news.bnTitle,
@@ -48,7 +60,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             authors: [news.author?.name],
             images: [
                 {
-                    url: news.featuredImage,
+                    url: brandedImage || news.featuredImage,
                     width: 1200,
                     height: 630,
                     alt: news.bnTitle
@@ -60,7 +72,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             card: "summary_large_image",
             title: news.bnTitle,
             description: news.content.slice(0, 160) + (news.content.length > 160 ? "…" : ""),
-            images: [news.featuredImage],
+            images: [brandedImage || news.featuredImage],
         },
     };
 }
