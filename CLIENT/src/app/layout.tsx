@@ -85,8 +85,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       >
         <ScrollToTop />
         <Header/>
-        {/* <TitleBar articles={news}/> */}
-        {/* <CategoryBar /> */}
+        <TitleBar articles={news}/>
+        <CategoryBar />
         {children}
         <Footer/>
       </body>
