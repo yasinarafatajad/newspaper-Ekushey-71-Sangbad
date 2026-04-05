@@ -214,8 +214,9 @@ const NewPost = () => {
     data.append("file", featuredImageLocal);
     data.append("upload_preset", uploadPreset);
     data.append("folder", "Ekushey71/News");
-    data.append("transformation", "q_auto,f_auto");
-      
+    data.append("quality", "auto");
+    data.append("fetch_format", "auto");
+
     try {
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
