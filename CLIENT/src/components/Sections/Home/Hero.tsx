@@ -11,24 +11,13 @@ export const Hero = ({ latest }: HeroProps) => {
     return (
         <article className="mb-2 group cursor-pointer py-6">
             {/* thumbnail */}
-            <div className="wrapper w-full overflow-hidden rounded-t-xl">
-                <div className="relative w-full  aspect-video">
-                    <Image className="object-cover pointer-events-none transition-transform duration-500"
+            <div className="wrapper w-full overflow-hidden rounded-t-xl pb-6 rounded-lg">
+                <div className="relative w-full  aspect-video ">
+                    <Image className="rounded-lg object-cover pointer-events-none transition-transform duration-500"
                         alt={latest?.bnTitle}
                         src={latest?.featuredImage}
                         fill
                         loading="lazy"
-                    />
-                </div>
-                {/* logo after main image */}
-                <div className="w-auto mb-4 rounded-b-xl bg-amber-300 flex items-center justify-center py-1 lg:py-6">
-                    <Image
-                        src={logo}
-                        alt="Ekushey 71 Sangbad"
-                        width={139}
-                        height={29}
-                        loading="lazy"
-                        className="object-cover pointer-events-none"
                     />
                 </div>
             </div>
