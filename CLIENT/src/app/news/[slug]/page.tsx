@@ -28,7 +28,7 @@ function getBrandedImage(url: string) {
     const parts = url.split("/upload/");
     if (parts.length < 2) return url;
 
-    return `https://res.cloudinary.com/${cloudName}/image/upload/l_${logoPublicId},w_180,g_south_east,x_20,y_20,fl_relative/${parts[1]}`;
+    return `https://res.cloudinary.com/${cloudName}/image/upload/l_${logoPublicId},w_180,g_south,x_20,y_20,fl_relative/${parts[1]}`;
 }
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params;
@@ -42,10 +42,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const newsUrl = `https://ekushey71sangbad.vercel.app/news/${slug}`;
     const brandedImage = getBrandedImage(news.featuredImage);
+    const shortDesc = news.content.slice(0, 155).replace(/\n/g, " ") + (news.content.length > 155 ? "…" : "");
+    const imageUrl = brandedImage || news.featuredImage || "/logoLight.png";
 
     return {
         title: news.bnTitle,
-        description: news.content,
+        description: shortDesc,
+        keywords: news.tags?.join(", "),
+        metadataBase: new URL("https://ekushey71sangbad.vercel.app"),
 
         alternates: {
             canonical: newsUrl,
@@ -53,17 +57,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
         openGraph: {
             title: news.bnTitle,
-            description: news.content.slice(0, 160) + (news.content.length > 160 ? "…" : ""),
+            description: shortDesc,
             url: newsUrl,
             type: "article",
+            siteName: "একুশে ৭১ সংবাদ",
+            locale: "bn_BD",
             publishedTime: news.createdAt,
-            authors: [news.author?.name],
+            authors: news.author?.name ? [news.author.name] : [],
             images: [
                 {
-                    url: brandedImage || news.featuredImage,
+                    url: imageUrl,
                     width: 1200,
                     height: 630,
-                    alt: news.bnTitle
+                    alt: news.bnTitle,
                 },
             ],
         },
@@ -71,8 +77,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         twitter: {
             card: "summary_large_image",
             title: news.bnTitle,
-            description: news.content.slice(0, 160) + (news.content.length > 160 ? "…" : ""),
-            images: [brandedImage || news.featuredImage],
+            description: shortDesc,
+            images: [imageUrl],
+        },
+        robots: {
+            index: true,
+            follow: true,
         },
     };
 }
