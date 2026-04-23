@@ -19,7 +19,7 @@ export const Category = ({  categories }: CategoryProps) => {
 
                     <div className="flex flex-col gap-3">
 
-                        {news?.reverse().slice(0, 2).map((article) => {
+                        {news?.reverse().slice(0, 4).map((article) => {
                             const date: string = new Date(article.createdAt).toISOString()
 
                             return (
@@ -27,7 +27,7 @@ export const Category = ({  categories }: CategoryProps) => {
                                     <div className="flex gap-4 group cursor-pointer">
 
                                         {/* image */}
-                                        <div className="relative w-24 h-24 shrink-0 rounded-lg overflow-hidden">
+                                        <div className="relative w-36 h-36 shrink-0 rounded-lg overflow-hidden">
                                             <Image
                                                 className="w-full h-full object-cover pointer-events-none transition-transform"
                                                 alt={article.bnTitle}
