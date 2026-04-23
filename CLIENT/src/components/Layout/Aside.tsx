@@ -10,7 +10,7 @@ export const Aside = ({articles}: AsideProps) => {
     return (
         <aside className="lg:col-span-4 py-6 mb-10 flex flex-col gap-y-4">
             {/* recent News  */}
-            <div className="bg-neutral-subtle p-6 rounded-xl border border-neutral-muted">
+            {/* <div className="bg-neutral-subtle p-6 rounded-xl border border-neutral-muted">
                 <div className="flex items-center justify-between mb-6">
                     <h3 className="text-xl font-bold flex items-center gap-2"><BellRing className="text-primary" />সাম্প্রতিক খবর</h3>
                 </div>
@@ -24,16 +24,16 @@ export const Aside = ({articles}: AsideProps) => {
                         </li>
                     ))}
                 </ul>
-            </div>
+            </div> */}
             {/* Ad Section */}
             <div className="bg-slate-100 h-64 rounded-xl flex items-center justify-center border border-dashed border-slate-300">
                 <span className="text-slate-400 text-sm">বিজ্ঞাপন</span>
             </div>
             {/* Popular News || Most Read  */}
             <div className="">
-                <h3 className="text-xl font-bold mb-6 flex items-center gap-2"><ChartNoAxesCombined className="text-primary" />জনপ্রিয় সংবাদ</h3>
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-2"><ChartNoAxesCombined className="text-primary" />সাম্প্রতিক খবর</h3>
                 <div className="space-y-6">
-                    {articles?.slice(0, 5).map((article, index) => (
+                    {articles?.reverse().slice(0, 5).map((article, index) => (
                         <div key={article?._id} className="flex gap-4 items-start">
                             <span className="text-4xl font-bold text-neutral-muted leading-none">{formatNumber(index + 1)}</span>
                             <Link href={`/news/${article.slug}`} className="font-bold hover:text-primary cursor-pointer transition-colors">{article?.bnTitle}</Link>
@@ -41,6 +41,11 @@ export const Aside = ({articles}: AsideProps) => {
                     ))}
                 </div>
             </div>
+            {/* Ad Section */}
+            <div className="bg-slate-100 h-64 rounded-xl flex items-center justify-center border border-dashed border-slate-300">
+                <span className="text-slate-400 text-sm">বিজ্ঞাপন</span>
+            </div>
+            
             {/* Newsletter  */}
             {/* <div className="bg-primary text-white p-6 rounded-xl">
             <span className="material-symbols-outlined text-4xl mb-4">mail</span>
