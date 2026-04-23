@@ -32,6 +32,7 @@ export const Header = () => {
 
   const navlinks: NavLinks[] = [
     { label: 'হোম', href: '/' },
+    { label: 'সব সংবাদ', href: '/news' },
     ...categories.map(cat => ({
       label: cat.nameBN, // show Bangla name
       href: `/category/${cat.nameEN.toLowerCase().replace(/\s+/g, '-')}`
