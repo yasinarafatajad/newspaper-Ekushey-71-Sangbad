@@ -30,7 +30,7 @@ function getBrandedImage(url: string) {
     const parts = url.split("/upload/");
     if (parts.length < 2) return url;
 
-    return `https://res.cloudinary.com/${cloudName}/image/upload/l_${logoPublicId},w_1.0,g_south,x_20,y_40,fl_relative/${parts[1]}`;
+    return `https://res.cloudinary.com/${cloudName}/image/upload/l_${logoPublicId},w_1.0,g_south,y_30,fl_relative/${parts[1]}`;
 }
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params;
