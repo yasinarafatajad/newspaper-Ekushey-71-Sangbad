@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Aside } from "@/components/Layout/Aside"
 import { MainLayout } from "@/components/Layout/MainLayout"
 import { ArticleCard } from "@/components/ui/ArticleCard"
@@ -23,12 +25,12 @@ function getBrandedImage(url: string) {
     if (!url) return "";
 
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-    const logoPublicId = "logos:logo"; // your uploaded logo    
+    const logoPublicId = process.env.NEXT_PUBLIC_CLOUDINARY_LOGO_PUBLIC_ID;
 
     const parts = url.split("/upload/");
     if (parts.length < 2) return url;
 
-    return `https://res.cloudinary.com/${cloudName}/image/upload/l_${logoPublicId},w_180,g_south,x_20,y_20,fl_relative/${parts[1]}`;
+    return `https://res.cloudinary.com/${cloudName}/image/upload/l_${logoPublicId},w_1.0,g_south,x_20,y_40,fl_relative/${parts[1]}`;
 }
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params;
