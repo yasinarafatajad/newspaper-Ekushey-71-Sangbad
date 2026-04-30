@@ -7,7 +7,15 @@ import api from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { formatDate, formatDay, formatNumber } from "@/lib/formats";
-
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 const fetchAllNews = async (): Promise<Post[]> => {
   const { data } = await api.get("/AllNews");
   return data;
@@ -16,6 +24,7 @@ const fetchAllNews = async (): Promise<Post[]> => {
 const Dashboard = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [chartRange, setChartRange] = useState<7 | 30 | 90>(7);
 
   const stats = [
     {
@@ -69,6 +78,24 @@ const Dashboard = () => {
 
   const recentPosts = posts?.reverse().slice(0, 5);
 
+  // Generate chart data based on selected range
+  const dateList = Array.from({ length: chartRange }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    return d;
+  }).reverse();
+
+  const chartData = dateList.map((date) => {
+    const dateStr = date.toISOString().split("T")[0];
+    const count = posts.filter(
+      (p) => p.createdAt && p.createdAt.startsWith(dateStr)
+    ).length;
+    return {
+      name: date.toLocaleDateString("bn-BD", { day: "2-digit", month: "short" }),
+      সংবাদ: count,
+    };
+  });
+
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
@@ -103,6 +130,77 @@ const Dashboard = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Chart Overview */}
+      <div className="bg-card border border-border rounded-sm mb-4 p-4">
+        <h2 className="text-lg font-bold font-heading text-foreground mb-4">
+          সংবাদ ওভারভিউ (গত {chartRange === 90 ? "৩ মাস" : `${formatNumber(chartRange)} দিন`})
+        </h2>
+        <div className="h-[300px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+              <XAxis 
+                dataKey="name" 
+                stroke="hsl(var(--muted-foreground))" 
+                fontSize={12} 
+                tickLine={false}
+                axisLine={false}
+                minTickGap={20}
+              />
+              <YAxis 
+                stroke="hsl(var(--muted-foreground))" 
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(value) => formatNumber(value as number)}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: 'hsl(var(--card))', 
+                  borderColor: 'hsl(var(--border))',
+                  borderRadius: '2px',
+                  color: 'hsl(var(--foreground))'
+                }}
+                itemStyle={{ color: 'hsl(var(--primary))' }}
+              />
+              <Line
+                type="monotone"
+                dataKey="সংবাদ"
+                stroke="hsl(var(--primary))"
+                strokeWidth={2}
+                dot={chartRange <= 30 ? { r: 4, fill: "hsl(var(--card))", strokeWidth: 2 } : false}
+                activeDot={{ r: 6 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Toggler */}
+        <div className="flex justify-center items-center mt-6 gap-3">
+          <Button 
+            variant={chartRange === 7 ? "default" : "outline"} 
+            size="sm" 
+            onClick={() => setChartRange(7)}
+          >
+            ৭ দিন
+          </Button>
+          <Button 
+            variant={chartRange === 30 ? "default" : "outline"} 
+            size="sm" 
+            onClick={() => setChartRange(30)}
+          >
+            ৩০ দিন
+          </Button>
+          <Button 
+            variant={chartRange === 90 ? "default" : "outline"} 
+            size="sm" 
+            onClick={() => setChartRange(90)}
+          >
+            ৩ মাস
+          </Button>
+        </div>
       </div>
 
       {/* Recent Posts */}
