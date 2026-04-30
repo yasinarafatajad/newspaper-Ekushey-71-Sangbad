@@ -55,6 +55,7 @@ A robust, premium-grade administrative dashboard designed for the **Ekushey 71 S
 
 **Premium UI/UX**:
 
+- **Overview Chart**: Shows latest news count with a 7, 30, 90 days toggle.
 - **Responsive Sidebar**: Intelligent navigation with auto-collapse logic and enhanced iconography.
 - **Stateful Feedback**: Real-time toast notifications for all system events and errors.
 - **Accessibility**: Scaled typography and interactive elements for a better workspace experience.

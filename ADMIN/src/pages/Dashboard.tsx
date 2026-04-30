@@ -76,8 +76,6 @@ const Dashboard = () => {
 
   const today = new Date().toISOString();
 
-  const recentPosts = posts?.reverse().slice(0, 5);
-
   // Generate chart data based on selected range
   const dateList = Array.from({ length: chartRange }, (_, i) => {
     const d = new Date();
@@ -223,7 +221,10 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {recentPosts.map((post) => (
+              {[...posts]
+              .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+              .slice(0, 10)
+              .map((post) => (
                 <tr
                   key={post._id}
                   className="border-b border-border last:border-0 hover:bg-accent/50"
