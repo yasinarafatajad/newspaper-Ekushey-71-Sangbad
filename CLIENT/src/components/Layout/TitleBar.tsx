@@ -15,7 +15,7 @@ export const TitleBar = ({articles} : TitleBarProps) => {
                 </div>
                 <div className="z-20 overflow-hidden border-l-3 py-1.5 border-primary/40 w-full">
                     <div className="flex items-center animate-marquee lg:animate-marquee-lg">
-                        {articles?.reverse().map((article, idx) => (
+                        {[...(articles || [])].sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()).map((article, idx) => (
                             <p key={idx} className={`text-sm font-medium whitespace-nowrap px-2 flex items-center gap-1.5 `}>
                                 <span className="bg-primary p-1 rounded-full" />
                                 <span>

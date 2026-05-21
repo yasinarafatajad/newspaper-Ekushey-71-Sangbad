@@ -19,7 +19,7 @@ export const Category = ({  categories }: CategoryProps) => {
 
                     <div className="flex flex-col gap-3">
 
-                        {news?.reverse().slice(0, 4).map((article) => {
+                        {[...(news || [])].sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()).slice(0, 4).map((article) => {
                             const date: string = new Date(article.createdAt).toISOString()
 
                             return (
