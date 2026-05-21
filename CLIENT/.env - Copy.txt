@@ -1,0 +1,8 @@
+NEXT_PUBLIC_API_URL=http://localhost:5000
+# NEXT_PUBLIC_API_URL=https://server-ekushey71sangbad.onrender.com
+NEXT_PUBLIC_APP_ID=1264909728754685
+
+# ☁️ Cloudinary (safe for frontend)
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dqkqcydn9
+# NEXT_PUBLIC_CLOUDINARY_LOGO_PUBLIC_ID=logos:logo
+NEXT_PUBLIC_CLOUDINARY_LOGO_PUBLIC_ID=overlay_v2

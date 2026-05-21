@@ -15,7 +15,7 @@ export const Lifestyle = ({ articles }: AsideProps) => {
                 <section className="container mt-16 border-t border-neutral-muted pt-10">
                     <h3 className="text-2xl font-bold flex items-center gap-2 mb-8"><Gamepad2 className="text-primary" />খেলাধুলা</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-                        {lifeS?.reverse().slice(0, 8).map((e) => (
+                        {[...(lifeS || [])].sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()).slice(0, 8).map((e) => (
                             <ArticleCard key={e._id} props={e} />
                         ))}
                     </div>

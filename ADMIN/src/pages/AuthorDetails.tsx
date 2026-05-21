@@ -7,8 +7,6 @@ import api from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { Author, Post } from "@/lib/type";
 import { formatDate } from "@/lib/formats";
-import { log } from "util";
-
 // Fetch Author
 const fetchAuthor = async (id: string): Promise<Author> => {
   const { data } = await api.get(`/author/${id}`);
