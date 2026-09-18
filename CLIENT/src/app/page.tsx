@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: siteName,
-    description: "বাংলাদেশের সর্বশেষ খবর, রাজনীতি, অর্থনীতি, অপরাধ, লাইফস্টাইল এবং আরও অনেক গুরুত্বপূর্ণ খবর এখানে পড়ুন।",
+    description: "বাংলাদেশের সর্বশেষ খবর, রাজনীতি, অর্থনীতি, অপরাধ, লাইফস্টাইল এবং আরও অনেক গুরুত্বপূর্ণ খবর এখানে পড়ুন।",
 
     // Canonical URL
     alternates: {
@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Open Graph (Facebook, Messenger, LinkedIn)
     openGraph: {
       title: siteName,
-      description: "বাংলাদেশের সর্বশেষ খবর, রাজনীতি, অর্থনীতি, অপরাধ, লাইফস্টাইল এবং আরও অনেক গুরুত্বপূর্ণ খবর এখানে পড়ুন।",
+      description: "বাংলাদেশের সর্বশেষ খবর, রাজনীতি, অর্থনীতি, অপরাধ, লাইফস্টাইল এবং আরও অনেক গুরুত্বপূর্ণ খবর এখানে পড়ুন।",
       url: siteUrl,
       type: "website",
       images: [
@@ -41,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: siteName,
-      description: "বাংলাদেশের সর্বশেষ খবর, রাজনীতি, অর্থনীতি, অপরাধ, লাইফস্টাইল এবং আরও অনেক গুরুত্বপূর্ণ খবর এখানে পড়ুন।",
+      description: "বাংলাদেশের সর্বশেষ খবর, রাজনীতি, অর্থনীতি, অপরাধ, লাইফস্টাইল এবং আরও অনেক গুরুত্বপূর্ণ খবর এখানে পড়ুন।",
       images: [
         {
           url: logo.src,
@@ -78,7 +78,7 @@ export default async function Home() {
   const news = await getAllNews();
 
   const groupedArticles: Record<string, Article[]> = news.reduce(
-    (acc, article) => {
+    (acc: Record<string, Article[]>, article: Article) => {
       const category = article.categoryBN;
       if (!acc[category]) {
         acc[category] = [];

@@ -24,7 +24,7 @@ const getAllNews = async (): Promise<Article[]> => {
     return [];
   }
 }
-const page = async () => {
+const Page = async () => {
   const articles = await getAllNews();
   return (
     <main className="container py-8">
@@ -40,4 +40,4 @@ const page = async () => {
   )
 }
 
-export default page
+export default Page

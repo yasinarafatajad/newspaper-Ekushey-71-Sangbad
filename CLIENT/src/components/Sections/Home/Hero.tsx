@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link"
-import logo from '@/assets/logoLight.png'
 import { Author } from "@/components/ui/Author";
 import { Article } from '../../../lib/type';
 
@@ -22,7 +21,7 @@ export const Hero = ({ latest }: HeroProps) => {
                 </div>
             </div>
             {/* headline */}
-            <Link href={`news/${latest?.slug}`}>
+            <Link href={`/news/${latest?.slug}`}>
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold font-display leading-tight mb-3 group-hover:text-primary transition-colors">
                     {latest?.bnTitle}
                 </h2>
@@ -40,7 +39,7 @@ export const Hero = ({ latest }: HeroProps) => {
                 <p className="text-slate-600 text-base md:text-lg leading-relaxed mb-4 line-clamp-4">
                     {latest?.content}
                 </p>
-                <Link href={`news/${latest?.slug}`} className="bg-primary/90 hover:bg-primary/75 rounded px-4 py-2 text-neutral-subtle text-nowrap transition-colors">See More</Link>
+                <Link href={`/news/${latest?.slug}`} className="bg-primary/90 hover:bg-primary/75 rounded px-4 py-2 text-neutral-subtle text-nowrap transition-colors">See More</Link>
             </div>
         </article>
     )

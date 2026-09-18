@@ -9,10 +9,6 @@ type SubNavLink = {
     label: string;
     href: string;
 };
-interface FooterNavLinks {
-    label: string;
-    href: string;
-};
 
 const footerLinks: SubNavLink[] = [
     { label: "শর্তাবলী", href: "/terms" },
@@ -39,7 +35,7 @@ export const Footer = async () => {
     // fetch categories from API
     const categories = await getAllCategories();
 
-    const subNavLinks: FooterNavLinks[] = [
+    const subNavLinks: SubNavLink[] = [
         ...categories.map(cat => ({
             label: cat.nameBN, // show Bangla name
             href: `/category/${cat.nameEN.toLowerCase().replace(/\s+/g, '-')}`
