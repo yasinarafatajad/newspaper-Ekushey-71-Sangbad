@@ -77,7 +77,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 
   return (
-    <html lang="en"
+    <html lang="bn"
       style={{
         '--font-display': notoSerifBengali.style.fontFamily,
         '--font-sans': notoSansBengali.style.fontFamily,

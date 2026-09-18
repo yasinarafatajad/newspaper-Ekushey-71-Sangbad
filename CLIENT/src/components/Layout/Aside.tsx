@@ -1,6 +1,6 @@
 import { Article } from '@/lib/type';
 import { formatNumber } from '@/lib/utils'
-import { BellRing, ChartNoAxesCombined } from 'lucide-react'
+import { ChartNoAxesCombined } from 'lucide-react'
 import Link from 'next/link'
 
 interface AsideProps {

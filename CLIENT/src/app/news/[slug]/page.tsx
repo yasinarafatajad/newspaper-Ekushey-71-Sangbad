@@ -33,7 +33,7 @@ function getBrandedImage(url: string) {
     return `https://res.cloudinary.com/${cloudName}/image/upload/l_${logoPublicId},w_1.0,g_south,y_30,fl_relative/${parts[1]}`;
 }
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { slug } = await params;
+    const { slug } = params;
     const news = await getNews(slug);
 
     if (!news) {
@@ -120,7 +120,7 @@ const getNews = async (slug: string): Promise<Article | null> => {
 };
 
 const Page = async ({ params }: PageProps) => {
-    const { slug } = await params;
+    const { slug } = params;
 
     // fetch all articles
     const articles = await getAllNews();
@@ -186,14 +186,14 @@ const Page = async ({ params }: PageProps) => {
                         </div>
 
                         <div className="serif-font md:text-xl leading-relaxed text-slate-800 text-base">
-                            {article.content.split("\n\n").map((p, i) => (
-                                <p key={i} className="mb-8">{p}</p>
+                            {article.content.split("\n\n").map((p) => (
+                                <p key={p.slice(0, 40)} className="mb-8">{p}</p>
                             ))}
                         </div>
 
                         <div className="mt-12 flex flex-wrap gap-2">
-                            {article.tags?.map((tag, i) => (
-                                <span key={i} className="text-sm font-medium px-3 py-1 rounded bg-primary/10 text-primary">
+                            {article.tags?.map((tag) => (
+                                <span key={tag} className="text-sm font-medium px-3 py-1 rounded bg-primary/10 text-primary">
                                     {tag}
                                 </span>
                             ))}
