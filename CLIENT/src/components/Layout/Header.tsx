@@ -10,25 +10,34 @@ import { api } from "@/lib/useApi/api";
 
 type NavLinks = { label: string; href: string }
 
-export const Header = () => {
+interface HeaderProps {
+  categories?: Category[];
+}
+
+export const Header = ({ categories: initialCategories = [] }: HeaderProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(initialCategories);
 
   const today: string = new Date().toISOString();
 
   useEffect(() => {
+    if (initialCategories && initialCategories.length > 0) {
+      setCategories(initialCategories);
+      return;
+    }
+
     const fetchCategories = async () => {
       try {
         const res = await fetch(`${api}/AllCategory`);
         const json = await res.json();
-        setCategories(json.data);
+        setCategories(json.data || []);
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchCategories();
-  }, []);
+  }, [initialCategories]);
 
   const navlinks: NavLinks[] = [
     { label: 'হোম', href: '/' },

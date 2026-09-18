@@ -1,5 +1,5 @@
 import { Category } from "@/lib/type";
-import { api } from "@/lib/useApi/api";
+import { getAllCategories } from "@/lib/useApi/api";
 import Link from "next/link";
 
 interface CategoryNavLinks {
@@ -7,23 +7,13 @@ interface CategoryNavLinks {
     href: string;
 }
 
-// fetch all categories
-const getAllCategories = async (): Promise<Category[]> => {
-    try {
-        const res = await fetch(`${api}/AllCategory`);
-        if (!res.ok) throw new Error("Failed to fetch categories");
-
-        const json = await res.json();
-        return json.data; // <-- extract the array from {count, data}
-    } catch (error) {
-        console.error(error);
-        return [];
-    }
+interface CategoryBarProps {
+    categories?: Category[];
 }
 
-export const CategoryBar = async () => {
-    // fetch categories from API
-    const categories = await getAllCategories();
+export const CategoryBar = async ({ categories: initialCategories }: CategoryBarProps = {}) => {
+    // fetch categories from API if not passed
+    const categories = initialCategories || (await getAllCategories());
 
     const navlinks: CategoryNavLinks[] = [
         { label: 'হোম', href: '/' },

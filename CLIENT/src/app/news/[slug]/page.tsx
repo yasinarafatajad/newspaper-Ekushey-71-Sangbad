@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { Aside } from "@/components/Layout/Aside"
 import { MainLayout } from "@/components/Layout/MainLayout"
 import { ArticleCard } from "@/components/ui/ArticleCard"
@@ -10,7 +8,7 @@ import { Article } from "@/lib/type"
 import { Activity, Share2 } from "lucide-react"
 import ShareFacebook from "@/components/ui/ShareFacebook"
 import CopyFacebookCaption from "@/components/ui/CopyFacebookCaption"
-import { api } from "@/lib/useApi/api"
+import { getAllNews, getNews } from "@/lib/useApi/api"
 import ShareMessenger from "@/components/ui/ShareMessenger"
 import type { Metadata } from "next";
 import ShareWhatsApp from "@/components/ui/ShareWhatsApp"
@@ -33,7 +31,7 @@ function getBrandedImage(url: string) {
     return `https://res.cloudinary.com/${cloudName}/image/upload/l_${logoPublicId},w_1.0,g_south,y_30,fl_relative/${parts[1]}`;
 }
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { slug } = params;
+    const { slug } = await params;
     const news = await getNews(slug);
 
     if (!news) {
@@ -89,38 +87,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
 }
 
-// fetch all articles
-const getAllNews = async (): Promise<Article[]> => {
-    try {
-        const res = await fetch(`${api}/AllNews`);
-
-        if (!res.ok) {
-            throw new Error("Failed to fetch news");
-        }
-
-        return res.json();
-    } catch (error) {
-        console.error(error);
-        return [];
-    }
-}
-// fetch current article
-const getNews = async (slug: string): Promise<Article | null> => {
-    try {
-        const res = await fetch(`${api}/news/${slug}`, {
-            next: { revalidate: 60 },
-        });
-
-        if (!res.ok) return null;
-
-        return res.json();
-    } catch {
-        return null;
-    }
-};
-
 const Page = async ({ params }: PageProps) => {
-    const { slug } = params;
+    const { slug } = await params;
 
     // fetch all articles
     const articles = await getAllNews();

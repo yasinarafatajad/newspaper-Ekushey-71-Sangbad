@@ -1,6 +1,5 @@
 import { ArticleGrid } from "@/components/ui/ArticleGrid";
-import { Article } from "@/lib/type";
-import { api } from "@/lib/useApi/api";
+import { getAllNews } from "@/lib/useApi/api";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -9,21 +8,6 @@ export const metadata: Metadata = {
   description: "All News",
 };
 
-// fetch articles
-const getAllNews = async (): Promise<Article[]> => {
-  try {
-    const res = await fetch(`${api}/AllNews`);
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch news");
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-}
 const Page = async () => {
   const articles = await getAllNews();
   return (
