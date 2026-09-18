@@ -1,12 +1,9 @@
-import { api } from "@/lib/useApi/api";
-import { Article } from "@/lib/type";
+import { getAllNews } from "@/lib/useApi/api";
 import type { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
-    const res = await fetch(`${api}/AllNews`);
-    if (!res.ok) throw new Error("Failed to fetch news for sitemap");
-    const news: Article[] = await res.json();
+    const news = await getAllNews();
 
     const articles = news.map((item) => ({
       url: `https://ekushey71sangbad.vercel.app/news/${item.slug}`,

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import logo from '@/assets/logoDark.png'
 import Image from 'next/image';
 import { formatNumber } from '@/lib/utils';
-import { api } from '@/lib/useApi/api';
+import { getAllCategories } from '@/lib/useApi/api';
 import { Category } from '@/lib/type';
 
 type SubNavLink = {
@@ -15,25 +15,15 @@ const footerLinks: SubNavLink[] = [
     { label: "কুকি পলিসি", href: "/cookie-policy" },
 ];
 
-// fetch all categories
-const getAllCategories = async (): Promise<Category[]> => {
-    try {
-        const res = await fetch(`${api}/AllCategory`);
-        if (!res.ok) throw new Error("Failed to fetch categories");
-
-        const json = await res.json();
-        return json.data; // <-- extract the array from {count, data}
-    } catch (error) {
-        console.error(error);
-        return [];
-    }
-}
-
 const currentYear = formatNumber(new Date().getFullYear());
 
-export const Footer = async () => {
-    // fetch categories from API
-    const categories = await getAllCategories();
+interface FooterProps {
+    categories?: Category[];
+}
+
+export const Footer = async ({ categories: initialCategories }: FooterProps = {}) => {
+    // fetch categories from API if not passed
+    const categories = initialCategories || (await getAllCategories());
 
     const subNavLinks: SubNavLink[] = [
         ...categories.map(cat => ({

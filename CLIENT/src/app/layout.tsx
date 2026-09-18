@@ -7,8 +7,7 @@ import { Footer } from "@/components/Layout/Footer";
 import { CategoryBar } from "@/components/Layout/CategoryBar";
 import { TitleBar } from "@/components/Layout/TitleBar";
 import ScrollToTop from "@/components/Layout/ScrollToTop";
-import { Article } from "@/lib/type";
-import { api } from "@/lib/useApi/api";
+import { getAllCategories, getAllNews } from "@/lib/useApi/api";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,24 +56,9 @@ export const viewport = {
   initialScale: 1,
 };
 
-const getAllNews = async (): Promise<Article[]> => {
-  try {
-    const res = await fetch(`${api}/AllNews`);
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch news");
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-}
-
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const news = await getAllNews();
-
+  const categories = await getAllCategories();
 
   return (
     <html lang="bn"
@@ -87,11 +71,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ScrollToTop />
-        <Header/>
+        <Header categories={categories} />
         <TitleBar articles={news}/>
-        <CategoryBar />
+        <CategoryBar categories={categories} />
         {children}
-        <Footer/>
+        <Footer categories={categories} />
       </body>
     </html>
   );

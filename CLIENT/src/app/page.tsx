@@ -4,7 +4,7 @@ import { Category } from "@/components/Sections/Home/Category";
 import { Hero } from "@/components/Sections/Home/Hero";
 import { Lifestyle } from "@/components/Sections/Home/Lifestyle";
 import { Article } from "@/lib/type";
-import { api } from "@/lib/useApi/api";
+import { getAllNews } from "@/lib/useApi/api";
 import { Metadata } from "next";
 import logo from '@/assets/logoDark.png';
 
@@ -57,21 +57,6 @@ export async function generateMetadata(): Promise<Metadata> {
       follow: true,
     },
   };
-}
-
-const getAllNews = async (): Promise<Article[]> => {
-  try {
-    const res = await fetch(`${api}/AllNews`);
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch news");
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
 }
 
 export default async function Home() {

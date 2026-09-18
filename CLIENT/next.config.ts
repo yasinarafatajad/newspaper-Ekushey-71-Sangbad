@@ -1,12 +1,15 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  turbopack: {
+    root: path.resolve(__dirname, ".."),
+  },
   images: {
-    domains: [
-      "lh3.googleusercontent.com",
-      "images.unsplash.com",
-      "res.cloudinary.com",
+    remotePatterns: [
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
     ],
   },
 };
