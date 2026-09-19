@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   description:
     "বাংলাদেশের সর্বশেষ খবর, রাজনীতি, অর্থনীতি, অপরাধ, লাইফস্টাইলসহ সব খবর পড়ুন একুশে ৭১ সংবাদে।",
 
-  metadataBase: new URL("https://ekushey71sangbad.vercel.app"),
+  metadataBase: new URL("https://ekushey71sangbad.ami.bd"),
 
   openGraph: {
     siteName: "একুশে ৭১ সংবাদ",

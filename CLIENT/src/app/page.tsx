@@ -10,7 +10,7 @@ import logo from '@/assets/logoDark.png';
 
 export async function generateMetadata(): Promise<Metadata> {
   const siteName = "একুশে ৭১ সংবাদ";
-  const siteUrl = "https://ekushey71sangbad.vercel.app";
+  const siteUrl = "https://ekushey71sangbad.ami.bd";
 
   return {
     title: siteName,
