@@ -6,13 +6,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const news = await getAllNews();
 
     const articles = news.map((item) => ({
-      url: `https://ekushey71sangbad.vercel.app/news/${item.slug}`,
+      url: `https://ekushey71sangbad.ami.bd/news/${item.slug}`,
       lastModified: new Date(item.createdAt),
     }));
 
     return [
       {
-        url: "https://ekushey71sangbad.vercel.app",
+        url: "https://ekushey71sangbad.ami.bd",
         lastModified: new Date(),
       },
       ...articles,
@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("Sitemap generation error:", error);
     return [
       {
-        url: "https://ekushey71sangbad.vercel.app",
+        url: "https://ekushey71sangbad.ami.bd",
         lastModified: new Date(),
       },
     ];

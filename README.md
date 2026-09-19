@@ -124,9 +124,10 @@ Newspaper/
 
 | Platform   | View        | Preview                                              |
 | ---------- | ----------- | ---------------------------------------------------- |
-| **CLIENT** | Portal Home | ![Portal](CLIENT/public/screenshots/home.png)        |
+| **CLIENT** | Homepage | ![Portal](screenshots/home.png)        |
+| **CLIENT** | News | ![Portal](screenshots/details.png)        |
+| **CLIENT** | All News | ![Portal](screenshots/allNews.png)        |
 | **ADMIN**  | Dashboard   | ![Dashboard](ADMIN/public/screenshots/dashboard.png) |
-| **ADMIN**  | News        | ![News](ADMIN/public/screenshots/news.png)           |
 
 ---
 

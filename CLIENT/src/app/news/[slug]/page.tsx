@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         };
     }
 
-    const newsUrl = `https://ekushey71sangbad.vercel.app/news/${slug}`;
+    const newsUrl = `https://ekushey71sangbad.ami.bd/news/${slug}`;
     const brandedImage = getBrandedImage(news.featuredImage);
     const shortDesc = news.content.slice(0, 155).replace(/\n/g, " ") + (news.content.length > 155 ? "…" : "");
     const imageUrl = brandedImage || news.featuredImage || "/logoLight.png";
@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: news.bnTitle,
         description: shortDesc,
         keywords: news.tags?.join(", "),
-        metadataBase: new URL("https://ekushey71sangbad.vercel.app"),
+        metadataBase: new URL("https://ekushey71sangbad.ami.bd"),
 
         alternates: {
             canonical: newsUrl,
