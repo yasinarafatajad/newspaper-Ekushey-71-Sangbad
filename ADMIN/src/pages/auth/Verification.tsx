@@ -35,27 +35,47 @@ const Verification = () => {
     return <Navigate to="/" replace />;
   }
 
-  const handleVerify = (e: React.FormEvent) => {
+  const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    // Requirement 5: verified = true (mock for now) console.log(securityCode)
-    console.log("Verification Code:", securityCode);
-
-    if (securityCode.length === 6) {
-      setIsVerified(true);
+    if (!email) {
       toast({
-        title: "Code Verified",
-        description: "Now you can set your new password.",
+        title: "Error",
+        description: "Email is missing. Please start the process again.",
+        variant: "destructive",
       });
-    } else {
+      navigate("/forgot-password");
+      return;
+    }
+
+    if (securityCode.length !== 6) {
       toast({
         title: "Invalid Code",
         description: "Please enter a 6-digit code.",
         variant: "destructive",
       });
+      return;
     }
-    setIsLoading(false);
+
+    setIsLoading(true);
+    try {
+      await api.post("/verify-reset-code", { email, code: securityCode });
+
+      setIsVerified(true);
+      toast({
+        title: "Code Verified",
+        description: "Now you can set your new password.",
+      });
+    } catch (error) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast({
+        title: "Verification Failed",
+        description: err.response?.data?.message || "Invalid or expired code.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
@@ -81,8 +101,9 @@ const Verification = () => {
 
     setIsLoading(true);
     try {
-      await api.post("/reset-password", {
+      await api.post("/reset-password-by-code", {
         email,
+        code: securityCode,
         newPassword: passwords.newPassword,
       });
 
@@ -92,10 +113,10 @@ const Verification = () => {
       });
       navigate("/login");
     } catch (error) {
+      const err = error as { response?: { data?: { message?: string } } };
       toast({
         title: "Update Failed",
-        description:
-          error.response?.data?.message || "Failed to update password.",
+        description: err.response?.data?.message || "Failed to update password.",
         variant: "destructive",
       });
     } finally {

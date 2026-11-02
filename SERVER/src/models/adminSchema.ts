@@ -41,6 +41,21 @@ const Admin = new Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    passwordResetToken: {
+      type: String,
+      default: null,
+      sparse: true,
+    },
+    passwordResetExpires: {
+      type: Number,
+      default: null,
+      sparse: true,
+    },
   },
   { timestamps: true, versionKey: false },
 );
