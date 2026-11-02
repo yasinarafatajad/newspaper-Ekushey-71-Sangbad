@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
+import api from "@/lib/api";
 import logo from "../../assets/logoLight.png";
 
 const ForgotPassword = () => {
@@ -31,16 +32,30 @@ const ForgotPassword = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Requirement 4: console.log(email)
-    console.log("Forgot Password Email:", email);
+    try {
+      // Ask the server whether this email / phone exists, then send a code.
+      const res = await api.post("/forgot-password", { email: email.trim() });
 
-    toast({
-      title: "Verification code sent",
-      description: "Please check your email for the verification code.",
-    });
+      toast({
+        title: "Verification code sent",
+        description:
+          res.data?.message ||
+          "Please check your email for the verification code.",
+      });
 
-    setIsLoading(false);
-    navigate("/verification", { state: { email } });
+      navigate("/verification", { state: { email: email.trim() } });
+    } catch (error) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast({
+        title: "Unable to send code",
+        description:
+          err.response?.data?.message ||
+          "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -57,19 +72,19 @@ const ForgotPassword = () => {
               Forgot Password
             </h1>
             <p className="text-sm text-muted-foreground text-center">
-              Enter your email to receive a verification code.
+              Enter your email or phone number to receive a verification code.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
               <Label htmlFor="email">
-                Email Address <span className="text-destructive">*</span>
+                Email or Phone Number <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="email"
-                type="email"
-                placeholder="admin@example.com"
+                type="text"
+                placeholder="admin@example.com or 01XXXXXXXXX"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

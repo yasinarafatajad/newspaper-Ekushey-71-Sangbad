@@ -1,0 +1,7 @@
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/dbName
+API_URL=
+
+// -------------- # nodemail
+EMAIL_USER=yasinarafatazad173@gmail.com
+EMAIL_PASS=ymbu qwio yddk tqzp
