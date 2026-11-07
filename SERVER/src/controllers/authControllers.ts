@@ -24,7 +24,10 @@ const normalizeIdentifier = (value: unknown): string => {
   return identifier.includes("@") ? identifier.toLowerCase() : identifier;
 };
 
-// Find an account by email or phone number in Admin first, then Author.
+const escapeRegex = (value: string) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// Find an account by email, phone number or username in Admin first, then Author.
 const findAccount = async (
   identifier: string,
 ): Promise<{ user: AccountDoc; isAdmin: boolean } | null> => {
@@ -37,6 +40,17 @@ const findAccount = async (
 
   const authorUser = await Author.findOne(query).lean();
   if (authorUser) return { user: authorUser as AccountDoc, isAdmin: false };
+
+  // Fall back to the username: login accepts it, so people often reset with it.
+  const usernameQuery = {
+    username: new RegExp(`^${escapeRegex(identifier)}$`, "i"),
+  };
+
+  const adminByName = await adminSchema.findOne(usernameQuery).lean();
+  if (adminByName) return { user: adminByName as AccountDoc, isAdmin: true };
+
+  const authorByName = await Author.findOne(usernameQuery).lean();
+  if (authorByName) return { user: authorByName as AccountDoc, isAdmin: false };
 
   return null;
 };
@@ -173,7 +187,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     if (!account) {
       return res
         .status(404)
-        .json({ message: "No account found with this email or phone number" });
+        .json({ message: "No account found with this email, phone number or username" });
     }
 
     // The code is always delivered by email, even when the user typed a phone number.
@@ -238,7 +252,7 @@ export const verifyResetCode = async (req: Request, res: Response) => {
     if (!account) {
       return res
         .status(404)
-        .json({ message: "No account found with this email or phone number" });
+        .json({ message: "No account found with this email, phone number or username" });
     }
 
     const valid = await isCodeValid(account.user, String(code));
@@ -270,7 +284,7 @@ export const resetPasswordByCode = async (req: Request, res: Response) => {
     if (!account) {
       return res
         .status(404)
-        .json({ message: "No account found with this email or phone number" });
+        .json({ message: "No account found with this email, phone number or username" });
     }
 
     const valid = await isCodeValid(account.user, String(code));

@@ -11,6 +11,7 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // check login session
   const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
@@ -31,6 +32,7 @@ const ForgotPassword = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage("");
 
     try {
       const identifier = email.trim();
@@ -50,11 +52,14 @@ const ForgotPassword = () => {
       navigate("/verification", { state: { email: identifier } });
     } catch (error) {
       const err = error as { response?: { data?: { message?: string } } };
+      const message =
+        err.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      // Show it next to the field as well, so a failed request is never silent.
+      setErrorMessage(message);
       toast({
         title: "Unable to send code",
-        description:
-          err.response?.data?.message ||
-          "Something went wrong. Please try again.",
+        description: message,
         variant: "destructive",
       });
     } finally {
@@ -76,23 +81,27 @@ const ForgotPassword = () => {
               Forgot Password
             </h1>
             <p className="text-sm text-muted-foreground text-center">
-              Enter your email or phone number to receive a verification code.
+              Enter your email, phone number or username to receive a verification code.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
               <Label htmlFor="email">
-                Email or Phone Number <span className="text-destructive">*</span>
+                Email, Phone Number or Username{" "}
+                <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="email"
                 type="text"
-                placeholder="admin@example.com or 01XXXXXXXXX"
+                placeholder="admin@example.com, 01XXXXXXXXX or username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
+              {errorMessage && (
+                <p className="text-sm text-destructive">{errorMessage}</p>
+              )}
             </div>
 
             <Button type="submit" className="w-full mt-2" disabled={isLoading}>
