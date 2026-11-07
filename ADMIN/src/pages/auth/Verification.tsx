@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const RESEND_COOLDOWN_SECONDS = 30;
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,6 +20,15 @@ const Verification = () => {
     confirmPassword: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  // A code was just sent from the previous step, so the cooldown starts on load.
+  const [resendCooldown, setResendCooldown] = useState(RESEND_COOLDOWN_SECONDS);
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = setTimeout(() => setResendCooldown((value) => value - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [resendCooldown]);
 
   // check login session
   const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
@@ -124,6 +135,48 @@ const Verification = () => {
     }
   };
 
+  const handleResend = async () => {
+    if (!email) {
+      toast({
+        title: "Error",
+        description: "Email is missing. Please start the process again.",
+        variant: "destructive",
+      });
+      navigate("/forgot-password");
+      return;
+    }
+
+    setIsResending(true);
+    try {
+      const identifier = String(email).trim();
+      // The server checks by email or phone and always sends the code by email.
+      const res = await api.post(
+        "/forgot-password",
+        identifier.includes("@") ? { email: identifier } : { phone: identifier },
+      );
+
+      setSecurityCode("");
+      setResendCooldown(RESEND_COOLDOWN_SECONDS);
+      toast({
+        title: "New code sent",
+        description:
+          res.data?.message ||
+          "Please check your email for the new verification code.",
+      });
+    } catch (error) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast({
+        title: "Unable to resend code",
+        description:
+          err.response?.data?.message ||
+          "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center bg-background lg:p-4">
       <div className="min-h-screen flex items-center justify-center w-full max-w-md bg-card border border-border rounded-lg shadow-lg overflow-hidden">
@@ -168,6 +221,22 @@ const Verification = () => {
               >
                 {isLoading ? "Verifying..." : "Verify Code"}
               </Button>
+
+              <div className="text-center text-sm text-muted-foreground">
+                Didn't receive the code?{" "}
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={isLoading || isResending || resendCooldown > 0}
+                  className="text-primary hover:underline font-semibold disabled:opacity-60 disabled:no-underline"
+                >
+                  {resendCooldown > 0
+                    ? `Resend code in ${resendCooldown}s`
+                    : isResending
+                      ? "Resending..."
+                      : "Resend code"}
+                </button>
+              </div>
             </form>
           ) : (
             <form

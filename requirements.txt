@@ -1,6 +1,0 @@
-see the forget api in /SERVER. when user request forget password. in forget-page of /ADMIN, firstly check the email or phone number if account exit. if exist , genarate a code. then sent to the email using node mail. then verify code. if verified reset new password.
-
-.env:
-// -------------- # nodemail
-EMAIL_USER=yasinarafatazad173@gmail.com
-EMAIL_PASS=ymbu qwio yddk tqzp

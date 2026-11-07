@@ -33,8 +33,12 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      // Ask the server whether this email / phone exists, then send a code.
-      const res = await api.post("/forgot-password", { email: email.trim() });
+      const identifier = email.trim();
+      // The server checks the account by email or phone, then emails the code.
+      const res = await api.post(
+        "/forgot-password",
+        identifier.includes("@") ? { email: identifier } : { phone: identifier },
+      );
 
       toast({
         title: "Verification code sent",
@@ -43,7 +47,7 @@ const ForgotPassword = () => {
           "Please check your email for the verification code.",
       });
 
-      navigate("/verification", { state: { email: email.trim() } });
+      navigate("/verification", { state: { email: identifier } });
     } catch (error) {
       const err = error as { response?: { data?: { message?: string } } };
       toast({

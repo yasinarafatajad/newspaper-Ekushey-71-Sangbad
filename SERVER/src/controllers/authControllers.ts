@@ -8,7 +8,7 @@ import { sendVerificationEmail } from "../lib/mailer.js";
 const JWT_SECRET =
   process.env.JWT_SECRET || "your_super_secret_key_which_should_be_in_env";
 
-const RESET_CODE_TTL_MS = 10 * 60 * 1000;
+const RESET_CODE_TTL_MS = 5 * 60 * 1000;  //5 munites
 
 type AccountDoc = {
   _id: unknown;
@@ -16,6 +16,12 @@ type AccountDoc = {
   phone?: string | null;
   passwordResetToken?: string | null;
   passwordResetExpires?: number | null;
+};
+
+// Emails are stored lowercase, so normalise them before querying.
+const normalizeIdentifier = (value: unknown): string => {
+  const identifier = String(value ?? "").trim();
+  return identifier.includes("@") ? identifier.toLowerCase() : identifier;
 };
 
 // Find an account by email or phone number in Admin first, then Author.
@@ -155,7 +161,7 @@ export const login = async (req: Request, res: Response) => {
 export const forgotPassword = async (req: Request, res: Response) => {
   try {
     const { email, phone } = req.body;
-    const identifier = String(email || phone || "").trim();
+    const identifier = normalizeIdentifier(email || phone);
 
     if (!identifier) {
       return res
@@ -168,6 +174,17 @@ export const forgotPassword = async (req: Request, res: Response) => {
       return res
         .status(404)
         .json({ message: "No account found with this email or phone number" });
+    }
+
+    // The code is always delivered by email, even when the user typed a phone number.
+    const targetEmail = String(account.user.email || (identifier.includes("@") ? identifier : ""))
+      .trim()
+      .toLowerCase();
+
+    if (!targetEmail) {
+      return res.status(400).json({
+        message: "This account has no email address, so a reset code cannot be sent",
+      });
     }
 
     const code = String(Math.floor(100000 + Math.random() * 900000));
@@ -185,7 +202,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     );
 
     const sent = await sendVerificationEmail({
-      email: identifier,
+      email: targetEmail,
       code,
       type: "reset",
     });
@@ -197,7 +214,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({
-      message: "Verification code sent to your email",
+      message: `Verification code sent to ${targetEmail}`,
       email: identifier,
     });
   } catch (error) {
@@ -209,7 +226,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 export const verifyResetCode = async (req: Request, res: Response) => {
   try {
     const { email, phone, code } = req.body;
-    const identifier = String(email || phone || "").trim();
+    const identifier = normalizeIdentifier(email || phone);
 
     if (!identifier || !code) {
       return res
@@ -241,7 +258,7 @@ export const verifyResetCode = async (req: Request, res: Response) => {
 export const resetPasswordByCode = async (req: Request, res: Response) => {
   try {
     const { email, phone, code, newPassword } = req.body;
-    const identifier = String(email || phone || "").trim();
+    const identifier = normalizeIdentifier(email || phone);
 
     if (!identifier || !code || !newPassword) {
       return res

@@ -6,7 +6,7 @@ import newsRoutes from "./routes/newsRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import authorRoutes from "./routes/authorRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
-import pdfRoutes from "./routes/newsPdfRoutes.js";
+// import pdfRoutes from "./routes/newsPdfRoutes.js";
 
 const port: number = Number(process.env.PORT) || 5000;
 const app: Application = express();
