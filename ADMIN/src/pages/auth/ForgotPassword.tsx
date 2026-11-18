@@ -81,20 +81,20 @@ const ForgotPassword = () => {
               Forgot Password
             </h1>
             <p className="text-sm text-muted-foreground text-center">
-              Enter your email, phone number or username to receive a verification code.
+              Enter your email or phone number to receive a verification code.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
               <Label htmlFor="email">
-                Email, Phone Number or Username{" "}
+                Email or Phone Number {" "}
                 <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="email"
                 type="text"
-                placeholder="admin@example.com, 01XXXXXXXXX or username"
+                placeholder="email or phone"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

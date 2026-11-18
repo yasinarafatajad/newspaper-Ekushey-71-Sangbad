@@ -17,6 +17,16 @@ export const formatDay = (dateString: string): string => {
   })
 }
 
+// Canonical slug for a category name. Use it both when building
+// /category/<slug> links and when matching a slug back to a category.
+export const categorySlug = (name: string): string =>
+  (name || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+
 // Format Number
 export const formatNumber = (num: number): string => {
   return num

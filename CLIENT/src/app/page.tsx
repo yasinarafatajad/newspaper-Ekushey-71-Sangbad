@@ -62,7 +62,13 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Home() {
   const news = await getAllNews();
 
-  const groupedArticles: Record<string, Article[]> = news.reduce(
+  // Newest first. Never rely on the order the API happens to return.
+  const sortedNews = [...news].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+  const [latest, secondLatest] = sortedNews;
+
+  const groupedArticles: Record<string, Article[]> = sortedNews.reduce(
     (acc: Record<string, Article[]>, article: Article) => {
       const category = article.categoryBN;
       if (!acc[category]) {
@@ -81,24 +87,24 @@ export default async function Home() {
       <MainLayout>
         {/* left */}
         <main className="lg:col-span-8">
-          {news.length > 0 && (
+          {latest && (
             <>
-              <Hero latest={news[news.length - 1]} />
+              <Hero latest={latest} />
               {/* ad section */}
               <div className="grid place-content-center mb-2 bg-slate-100 h-50 w-full rounded-xl border border-dashed border-slate-300 mt-6">
                 <span className="text-slate-400 text-sm self-middle">বিজ্ঞাপন</span>
               </div>
-              <Hero latest={news[news.length - 2]} />
+              {secondLatest && <Hero latest={secondLatest} />}
             </>
           )}
         </main>
 
         {/* right */}
-        <Aside articles={news} />
+        <Aside articles={sortedNews} />
       </MainLayout>
 
       <Category categories={groupedArticles} />
-      <Lifestyle articles={news} />
+      <Lifestyle articles={sortedNews} />
     </>
   );
 }

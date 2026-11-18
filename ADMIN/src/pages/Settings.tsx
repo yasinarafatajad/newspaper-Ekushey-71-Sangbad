@@ -4,11 +4,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { mockSettings } from "@/data/mockData";
 import { toast } from "sonner";
 
+const defaultSettings = {
+  siteName: "Ekushey 71 Sangbad",
+  siteDescription: "",
+  siteUrl: "https://ekushey71sangbad.ami.bd",
+  postsPerPage: 10,
+  allowComments: false,
+  moderateComments: false,
+};
+
 const SettingsPage = () => {
-  const [settings, setSettings] = useState(mockSettings);
+  const [settings, setSettings] = useState(defaultSettings);
 
   const handleSave = () => {
     toast.success("Settings saved!");

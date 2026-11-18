@@ -1,5 +1,6 @@
 import { Category } from "@/lib/type";
 import { getAllCategories } from "@/lib/useApi/api";
+import { categorySlug } from "@/lib/utils";
 import Link from "next/link";
 
 interface CategoryNavLinks {
@@ -20,7 +21,7 @@ export const CategoryBar = async ({ categories: initialCategories }: CategoryBar
         { label: 'সব সংবাদ', href: '/news' },
         ...categories.map(cat => ({
             label: cat.nameBN, // show Bangla name
-            href: `/category/${cat.nameEN.toLowerCase().replace(/\s+/g, '-')}`
+            href: `/category/${categorySlug(cat.nameEN)}`
         }))
     ];
 

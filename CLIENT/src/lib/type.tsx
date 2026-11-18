@@ -21,6 +21,7 @@ export interface Article {
     tags: string[]
     views: number
     isFeatured: boolean
+    status: string
 }
 export interface AUTHOR {
     name: string

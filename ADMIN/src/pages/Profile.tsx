@@ -3,11 +3,18 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { mockUserProfile } from "@/data/mockData";
 import { toast } from "sonner";
 
+const defaultProfile = {
+  name: "Admin User",
+  role: "Administrator",
+  email: "admin@example.com",
+  bio: "",
+  avatar: "https://placehold.co/64x64",
+};
+
 const Profile = () => {
-  const [profile, setProfile] = useState(mockUserProfile);
+  const [profile, setProfile] = useState(defaultProfile);
 
   const handleSave = () => {
     toast.success("Profile updated!");

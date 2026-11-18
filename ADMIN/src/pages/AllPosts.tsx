@@ -16,6 +16,7 @@ import {
 import { Search, Pencil, Trash2, Eye } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import api from "@/lib/api";
+import { revalidateClient } from "@/lib/revalidate";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Post } from "@/lib/type";
 import { formatDate } from "@/lib/formats";
@@ -77,6 +78,7 @@ const AllPosts = () => {
 
       // Refetch all posts after successful deletion
       queryClient.invalidateQueries({ queryKey: ["allNews"] });
+      void revalidateClient();
 
       // Show success toast
       toast({

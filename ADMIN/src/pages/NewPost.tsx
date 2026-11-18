@@ -15,6 +15,7 @@ import {
 import { Check, LoaderCircle, Upload, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import api from "@/lib/api";
+import { revalidateClient } from "@/lib/revalidate";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Author, Category, CategoryResponse, Post } from "@/lib/type";
 
@@ -249,6 +250,7 @@ const NewPost = () => {
           description: `"${formData.bnTitle}" সফলভাবে প্রকাশিত হয়েছে।`,
         });
         queryClient.invalidateQueries({ queryKey: ["allNews"] });
+        void revalidateClient();
         return true;
       }
       return false;
@@ -277,6 +279,7 @@ const NewPost = () => {
           description: `"${formData.bnTitle}" সফলভাবে আপডেট করা হয়েছে।`,
         });
         queryClient.invalidateQueries({ queryKey: ["allNews"] });
+        void revalidateClient();
         return true;
       }
       return false;

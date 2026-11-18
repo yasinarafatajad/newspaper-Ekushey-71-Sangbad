@@ -1,12 +1,13 @@
 import { ArticleGrid } from "@/components/ui/ArticleGrid";
 import { Article } from "@/lib/type";
 import { getAllNews } from "@/lib/useApi/api";
+import { categorySlug } from "@/lib/utils";
 import Link from "next/link";
 
 interface PageProps {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 }
 
 const Page = async (props: PageProps) => {
@@ -16,7 +17,7 @@ const Page = async (props: PageProps) => {
     
     // Filter articles by category
     const categoryArticle: Article[] = articles.filter(
-        e => e?.categoryEN?.toLowerCase() === slug?.toLowerCase()
+        e => categorySlug(e?.categoryEN ?? "") === categorySlug(slug)
     );
 
     if (!categoryArticle || categoryArticle.length <= 0)
