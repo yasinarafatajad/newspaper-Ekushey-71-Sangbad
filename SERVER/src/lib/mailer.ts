@@ -112,10 +112,23 @@ export const sendVerificationEmail = async ({ email, code, type = "verification"
     preheader: `Your ${BRAND} code is ${code} \u2014 it expires in ${CODE_TTL_MINUTES} minutes.`,
   });
 
+  const port = Number(process.env.EMAIL_PORT || 587);
+
+  // Port 587 speaks plain SMTP first and upgrades with STARTTLS; only 465 uses
+  // implicit TLS from the first byte. Setting `secure: true` on 587 makes the
+  // handshake never complete, which leaves the request hanging for minutes.
+  const secure =
+    port === 465 ? true : port === 587 ? false : process.env.EMAIL_SECURE === "true";
+
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST || "smtp.gmail.com",
-    port: Number(process.env.EMAIL_PORT || 587),
-    secure: process.env.EMAIL_SECURE === "true",
+    port,
+    secure,
+    requireTLS: port === 587,
+    // Never let an unreachable SMTP server hold the HTTP request open forever.
+    connectionTimeout: 8_000,
+    greetingTimeout: 8_000,
+    socketTimeout: 10_000,
     auth: {
       user,
       pass,

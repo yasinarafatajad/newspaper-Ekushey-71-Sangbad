@@ -5,8 +5,7 @@ import adminSchema from "../models/adminSchema.js";
 import Author from "../models/authorSchema.js";
 import { sendVerificationEmail } from "../lib/mailer.js";
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || "your_super_secret_key_which_should_be_in_env";
+const JWT_SECRET = process.env.JWT_SECRET || "your_super_secret_key_which_should_be_in_env";
 
 const RESET_CODE_TTL_MS = 5 * 60 * 1000;  //5 munites
 

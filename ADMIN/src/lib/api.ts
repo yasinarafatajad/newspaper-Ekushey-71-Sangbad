@@ -1,6 +1,10 @@
 import axios from "axios";
 
-const api = axios.create({ baseURL: import.meta.env.VITE_API_URL + "/api/v1" });
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL + "/api/v1",
+  // Fail loudly instead of leaving the UI stuck on a spinner forever.
+  timeout: 30_000,
+});
 
 api.interceptors.request.use((config) => {
   const token =
