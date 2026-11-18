@@ -29,12 +29,19 @@ export const GetNews = async (req : Request, res : Response) => {
   }
 };
 
-export const GetAllNews = async (req : Request, res : Response) => {
+export const GetAllNews = async (req: Request, res: Response) => {
   try {
-    const AllProducts = await newsSchema.find();
-    res.status(200).json(AllProducts);
-  } catch (err) {
-    throw new Error('SERVER: couldn\'t get all news');
+    // Optional status filter, e.g. /AllNews?status=published for the public site.
+    const { status } = req.query;
+    const filter = typeof status === "string" && status ? { status } : {};
+
+    // Newest first: clients must never rely on Mongo's natural order.
+    const allNews = await newsSchema.find(filter).sort({ createdAt: -1 });
+
+    res.status(200).json(allNews);
+  } catch (err: unknown) {
+    console.error("GetAllNews error:", err);
+    res.status(500).json({ message: "SERVER: couldn't get all news" });
   }
 };
 

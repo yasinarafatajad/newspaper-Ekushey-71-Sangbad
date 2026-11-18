@@ -1,5 +1,5 @@
 "use client"
-import { formatDate, formatDay } from "@/lib/utils";
+import { categorySlug, formatDate, formatDay } from "@/lib/utils";
 import { Logs, X } from "lucide-react"
 import Image from "next/image";
 import Link from "next/link";
@@ -16,35 +16,36 @@ interface HeaderProps {
 
 export const Header = ({ categories: initialCategories = [] }: HeaderProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [categories, setCategories] = useState<Category[]>(initialCategories);
+  const [fetchedCategories, setFetchedCategories] = useState<Category[]>([]);
 
   const today: string = new Date().toISOString();
+  const hasInitialCategories = initialCategories.length > 0;
+
+  // Prefer the categories supplied by the server layout; fetch only when missing.
+  const categories = hasInitialCategories ? initialCategories : fetchedCategories;
 
   useEffect(() => {
-    if (initialCategories && initialCategories.length > 0) {
-      setCategories(initialCategories);
-      return;
-    }
+    if (hasInitialCategories) return;
 
     const fetchCategories = async () => {
       try {
         const res = await fetch(`${api}/AllCategory`);
         const json = await res.json();
-        setCategories(json.data || []);
+        setFetchedCategories(json.data || []);
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchCategories();
-  }, [initialCategories]);
+  }, [hasInitialCategories]);
 
   const navlinks: NavLinks[] = [
     { label: 'হোম', href: '/' },
     { label: 'সব সংবাদ', href: '/news' },
     ...categories.map(cat => ({
       label: cat.nameBN, // show Bangla name
-      href: `/category/${cat.nameEN.toLowerCase().replace(/\s+/g, '-')}`
+      href: `/category/${categorySlug(cat.nameEN)}`
     }))
   ];
 

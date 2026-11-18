@@ -9,15 +9,16 @@ import { Activity, Share2 } from "lucide-react"
 import ShareFacebook from "@/components/ui/ShareFacebook"
 import CopyFacebookCaption from "@/components/ui/CopyFacebookCaption"
 import { getAllNews, getNews } from "@/lib/useApi/api"
+import { categorySlug } from "@/lib/utils"
 import ShareMessenger from "@/components/ui/ShareMessenger"
 import type { Metadata } from "next";
 import ShareWhatsApp from "@/components/ui/ShareWhatsApp"
 // import { DownloadPdfButton } from "@/components/ui/DownloadPdfButton"
 
 interface PageProps {
-    params: {
+    params: Promise<{
         slug: string
-    }
+    }>
 }
 function getBrandedImage(url: string) {
     if (!url) return "";
@@ -116,7 +117,7 @@ const Page = async ({ params }: PageProps) => {
                     <div className="flex items-start gap-2 text-sm text-slate-500 mb-3">
                         <Link className="hover:text-primary" href="/">হোম</Link>
                         <span className="material-symbols-outlined text-xs">/</span>
-                        <Link className="hover:text-primary" href={`/category/${article.categoryEN}`}>
+                        <Link className="hover:text-primary" href={`/category/${categorySlug(article.categoryEN)}`}>
                             {article.categoryBN}
                         </Link>
                         <span className="material-symbols-outlined text-xs">/</span>

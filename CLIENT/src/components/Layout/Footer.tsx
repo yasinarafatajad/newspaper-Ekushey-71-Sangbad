@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import logo from '@/assets/logoDark.png'
 import Image from 'next/image';
-import { formatNumber } from '@/lib/utils';
+import { categorySlug, formatNumber } from '@/lib/utils';
 import { getAllCategories } from '@/lib/useApi/api';
 import { Category } from '@/lib/type';
 
@@ -28,7 +28,7 @@ export const Footer = async ({ categories: initialCategories }: FooterProps = {}
     const subNavLinks: SubNavLink[] = [
         ...categories.map(cat => ({
             label: cat.nameBN, // show Bangla name
-            href: `/category/${cat.nameEN.toLowerCase().replace(/\s+/g, '-')}`
+            href: `/category/${categorySlug(cat.nameEN)}`
         }))
     ];
     return (
